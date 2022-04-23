@@ -1,0 +1,9 @@
+.navbar {
+    display: flex;
+    position: fixed;
+    top: 44px;
+    width: 100vw;
+    height: 50px;
+    border-top: 0.5px solid #696969;
+    border-bottom: 0.5px solid #696969;
+}

@@ -1,0 +1,23 @@
+.optionsMenu {
+    width: 55%;
+    background-color: white;
+    position: fixed;
+    top: 95.5px;
+    right: 0px;
+    padding-top: 0.6rem;
+}
+.option {
+    padding-bottom: 1.2rem;
+}
+.option a {
+    text-decoration: none;
+    color: black;
+    font-size: 1.3rem;
+    
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
+.option a img {
+    justify-self: center;
+    align-self: center;
+}

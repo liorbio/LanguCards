@@ -1,0 +1,43 @@
+.modal {
+    position: fixed;
+    top: 120px;
+    width: 88%;
+    right: 6%;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px #bbbbbb40;
+}
+.top {
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    align-items: center;
+    justify-items: center;
+    background-color: #e6e6e6;
+    color: #737373;
+    font-size: 12px;
+    border-radius: 15px 15px 0px 0px;
+}
+.top h1 {
+    grid-column: 2;
+}
+.top img {
+    grid-column: 3;
+}
+
+
+.oneButtonBottom {
+
+}
+.twoButtonBottom {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+    justify-items: center;
+    border-top: 1px solid #c9c9c9;
+}
+.twoButtonBottom div, .oneButtonBottom div {
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 18px 0 18px 0;
+}

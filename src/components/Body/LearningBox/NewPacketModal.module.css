@@ -1,0 +1,28 @@
+.modalBody {
+    display: grid;
+    grid-template-rows: 50% 50%;
+    grid-template-columns: 50% 50%;
+    justify-items: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.modalBody input {
+    border: 0;
+    border-bottom: 1px solid #c9c9c9;
+    margin: 20px 0px;
+    padding: 10px 0 4px 3px;
+    font-size: 20px;
+    width: 88%;
+    grid-column: 1 / 3;
+}
+
+.modalBody p {
+    grid-column: 1;
+    font-weight: bold;
+    color: #737373;
+}
+.modalBody div {
+    grid-column: 2;
+    text-align: center;
+}

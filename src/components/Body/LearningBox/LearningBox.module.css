@@ -1,0 +1,14 @@
+.learningBox { 
+    color: #B1B1B1;
+    width: 100%;
+    margin-top: 95.5px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+.emptyLearningBox {
+    grid-template-rows: calc((100vh - 95.5px)*20/100) calc((100vh - 95.5px)*60/100) calc((100vh - 95.5px)*20/100);
+}
+.populatedLearningBox {
+
+}

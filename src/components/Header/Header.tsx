@@ -1,31 +1,20 @@
-import { ReactElement } from "react";
+import { Route, Routes } from 'react-router-dom';
 import classes from "./Header.module.css";
-import Logo from "./Logo";
+import HeaderInAddCard from './HeaderInAddCard';
+import HeaderInCard from './HeaderInCard';
+import HeaderInMain from './HeaderInMain';
+import HeaderInPacket from './HeaderInPacket';
 
-type HeaderComponentDeclaration = ({ location }: { location: string }) => ReactElement | null;
-
-const Header: HeaderComponentDeclaration = ({ location }) => {
-    // different return according to location (as of now, only 2 locations):
-
-    const headerMain = (
-        <nav className={classes.navbar}>
-            <Logo />
-            {/* OptionsToggler */}
-        </nav>
-    );
-    const headerInPacket = (
-        <nav className={classes.navbar}>
-            {/* Return (UI component that receives the Where-to prop) */}
-            <Logo />
-            {/* SearchToggler */}
-            {/* OptionsToggler */}
-        </nav>
-    );
-    
+const Header = () => {
     return (
         <>
-            {location === "/" && headerMain}
-            {location === "/packet" && headerInPacket}
+            <div className={classes.whiteTop}></div>
+            <Routes>
+                <Route path="/" element={<HeaderInMain />} />
+                <Route path="/:language" element={<HeaderInPacket />} />
+                <Route path="/:language/add" element={<HeaderInAddCard />} />
+                <Route path="/:language/card" element={<HeaderInCard />} />
+            </Routes>
         </>
     );
 };

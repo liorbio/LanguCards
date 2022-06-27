@@ -2,9 +2,11 @@
     width: 55%;
     background-color: white;
     position: fixed;
-    top: 95.5px;
+    top: calc(5vh + 52px);
     right: 0px;
-    padding-top: 0.6rem;
+    padding-top: 1rem;
+    box-shadow: 0 3px 4px 0 #00000010;
+    z-index: 7;
 }
 .option {
     padding-bottom: 1.2rem;

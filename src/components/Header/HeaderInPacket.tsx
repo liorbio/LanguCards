@@ -10,7 +10,7 @@ const HeaderInPacket = () => {
             <GoBack link="/" icon="arrow" />
             <Logo />
             <SearchToggler />
-            <OptionsToggler />
+            <OptionsToggler fullOptionsMenu={true} />
         </nav>
     );
 };

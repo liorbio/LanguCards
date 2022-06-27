@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ReactDOM from 'react-dom';
 import OptionsMenu from "./OptionsMenu";
 import ModalBackgroundClicksPrevention from "../../UI/ModalBackgroundClicksPrevention";
+import portalElement from "../../elements/portalElement";
 
 const optionSymbolStyle = {
     gridColumn: 5,
@@ -11,12 +12,7 @@ const optionSymbolStyle = {
     paddingTop: "1px"
 };
 
-// Selecting portal element as an array since querySelectorAll returns HTMLElement
-// as opposed to querySelector that returns HTMLElement | null 🤬
-const portalElementAsArray = document.querySelectorAll<HTMLElement>("#overlay-root");
-const portalElement = portalElementAsArray[0];
-
-const OptionsToggler = () => {
+const OptionsToggler = ({ fullOptionsMenu }: { fullOptionsMenu: boolean }) => {
     const [opened, setOpened] = useState(false);
 
     const togglerClickHandler = () => {
@@ -30,8 +26,8 @@ const OptionsToggler = () => {
             .<br />
             .
         </div>
+        {opened && ReactDOM.createPortal(<OptionsMenu full={fullOptionsMenu} toggleMenu={togglerClickHandler} />, portalElement)}
         {opened && ReactDOM.createPortal(<ModalBackgroundClicksPrevention handler={togglerClickHandler} />, portalElement)}
-        {opened && ReactDOM.createPortal(<OptionsMenu />, portalElement)}
         </React.Fragment>
     );
 };

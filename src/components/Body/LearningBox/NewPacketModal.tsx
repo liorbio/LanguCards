@@ -1,17 +1,17 @@
 import { useState, useRef } from "react";
+import { PacketType } from "../../../types/types";
 import DefaultModal from "../../../UI/DefaultModal";
 import TextSwitchingToggleButton from "../../../UI/TextSwitchingToggleButton";
-import { PacketInterface } from "./LearningBox";
 import classes from './NewPacketModal.module.css';
 
-const NewPacketModal = ({ handler, toggler }: { handler: (packet: PacketInterface) => void, toggler: () => void }) => {
+const NewPacketModal = ({ handler, toggler }: { handler: (packet: PacketType) => void, toggler: () => void }) => {
     
     const [showLeftToRight, setShowLeftToRight] = useState(true);
     const languageInput = useRef<HTMLInputElement>(null);
 
     const handlerForCreateButton = () => {
         if (languageInput.current) {
-            const newPacket: PacketInterface = { language: languageInput.current.value.toLowerCase(), direction: showLeftToRight ? "ltr" : "rtl" }
+            const newPacket: PacketType = { language: languageInput.current.value.toLowerCase(), dir: showLeftToRight ? "ltr" : "rtl", cards: [] };
             handler(newPacket);
 
             // return modal inputs to their default value:

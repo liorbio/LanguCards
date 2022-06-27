@@ -6,7 +6,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #e6e6e6;
+    border: 2px solid #e6e6e6;
 }
 .packetCover h1 {
     color: #7e7e7e;

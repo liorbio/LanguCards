@@ -1,41 +1,41 @@
 import classes from "./OptionsMenu.module.css"
-import { NavLink, useLocation } from "react-router-dom";
-import switchIcon from '../../icons/switchIcon.png';
-import puzzleIcon from '../../icons/puzzleIcon.png';
-import SettingsIcon from '../../icons/SettingsIcon.png';
-import LoginIcon from '../../icons/LoginIcon.png';
+import { Link, useSearchParams } from "react-router-dom";
+import { SwitchIcon, PuzzleIcon, SettingsIcon, LoginIcon } from "../../generatedIcons";
 
-const OptionsMenuOption = ({ link, label, icon }: { link: string, label: string, icon: string }) => {
+const OptionsMenuOption = ({ link, label, icon }: { link: string, label: string, icon: JSX.Element }) => {  
     return (
         <div className={classes.option}>
-            <NavLink to={link}>
-                <img src={icon} alt={label} /> &nbsp; 
+            <Link to={link}>
+                <div style={{ justifySelf: "center" }}>{icon} </div>
                 {label}
-            </NavLink>
+            </Link>
         </div>
     )
 };
 
-// Options in menu are shown according to the below object literal:
-let options = { switchView: false, play: false, settings: false, login: false };
+const OptionsMenu = ({ full, toggleMenu }: { full: boolean, toggleMenu: () => void }) => {
+    const [searchParams] = useSearchParams();
 
-const OptionsMenu = () => {
-    const location = useLocation();
-    // Each location requires a different set of options in the menu:
-    if (location.pathname === "/") {     
-        options = { switchView: false, play: false, settings: true, login: true }; 
-    } else if (location.pathname === "/packet") {
-        options = { switchView: true, play: true, settings: true, login: true };
-    }
-
-    return (
-        <div className={classes.optionsMenu}>
-            { options.switchView &&  <OptionsMenuOption link="/packet" label="switch view" icon={switchIcon} />}
-            { options.play &&  <OptionsMenuOption link="/packet" label="play" icon={puzzleIcon} />}
-            { options.settings &&  <OptionsMenuOption link="/packet" label="settings" icon={SettingsIcon} />}
-            { options.login &&  <OptionsMenuOption link="/packet" label="login" icon={LoginIcon} />}
+    const menuInMain = (
+        <div className={classes.optionsMenu} onClick={toggleMenu}>
+            <OptionsMenuOption link="/" label="settings" icon={<SettingsIcon />} />
+            <OptionsMenuOption link="/" label="login" icon={<LoginIcon />} />
         </div>
-    )
+    );
+    const menuInPacket = (
+        <div className={classes.optionsMenu} onClick={toggleMenu}>
+            <OptionsMenuOption link={`?show=${searchParams.get('show') === "coupons" ? "list": "coupons"}`} label="switch view" icon={<SwitchIcon />} />
+            <OptionsMenuOption link="/" label="play" icon={<PuzzleIcon />} />
+            <OptionsMenuOption link="/" label="settings" icon={<SettingsIcon />} />
+            <OptionsMenuOption link="/" label="login" icon={<LoginIcon />} />
+        </div>
+    );
+
+    if (full) {
+        return menuInPacket;
+    } else {
+        return menuInMain;
+    }
 };
 
 export default OptionsMenu;

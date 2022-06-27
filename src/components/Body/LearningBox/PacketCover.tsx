@@ -1,14 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { PacketInterface } from "./LearningBox";
 import classes from './PacketCover.module.css';
 
-type PacketCoverDeclaration = ({ language, direction }: PacketInterface) => JSX.Element | null;
-
-const PacketCover: PacketCoverDeclaration = ({ language, direction }) => {
+const PacketCover = ({ language }: { language: string }) => {
     const navigate = useNavigate();
     
     const navigateToPacketRoute = () => {
-        navigate(`/${language}`);
+        navigate(`/${language}?show=list`);
     };
 
     return (

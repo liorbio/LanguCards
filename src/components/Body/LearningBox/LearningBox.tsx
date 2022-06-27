@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import ClickBelow from '../../../icons/ClickBelow.png';
 import PacketCover from './PacketCover';
@@ -7,23 +7,27 @@ import AddNew from '../AddNew';
 import ModalBackgroundClicksPrevention from '../../../UI/ModalBackgroundClicksPrevention';
 import NewPacketModal from './NewPacketModal';
 import portalElement from '../../../elements/portalElement';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
+import { PacketType } from '../../../types/types';
+import { packetsActions } from '../../../store/redux-logic';
 
 // To do:
 // change stupidHandleNewPacketAddition into a handler that adds packet to DB
 
-// interface that will be moved in the future to "types" folder
-export interface PacketInterface {
-    language: string;
-    direction: "ltr" | "rtl";
-};
-
 const LearningBox = () => {
-    const [packets, setPackets] = useState<PacketInterface[]>([]);
+    const packetsInRedux = useAppSelector(state => state.packets);
+    const dispatch = useAppDispatch();
+    const [packets, setPackets] = useState<PacketType[]>([]);
     const [newPacketModalShown, setNewPacketModalShown] = useState(false);
     // useEffect that fetches packets from local storage / mongo
-    const stupidHandleNewPacketAddition = (packet: PacketInterface) => {
+    useEffect(() => {
+        setPackets(packetsInRedux);
+    }, [packetsInRedux]);
+
+
+    const handleNewPacketAddition = (packet: PacketType) => {
         // NEEDS TO BE CHANGED TO WORK WITH local storage / mongo Inside useEffect
-        setPackets(prev => [...prev, packet]);
+        dispatch(packetsActions.addPacket(packet));
         setNewPacketModalShown(false);
     }
     
@@ -36,11 +40,11 @@ const LearningBox = () => {
             <p>Strengthen your vocab!<br /><br />Create a new card packet<br />to learn a new language</p>
             <img style={{ marginLeft: "3rem", height: "47vh" }} src={ClickBelow} alt="click on bottom right corner" />
         </>
-    );
+    ); // change img to SVG
 
     const populatedLearningBox = (
         <>
-            {packets?.map((p, idx) => <PacketCover language={p.language} direction={p.direction} key={idx} /> )}
+            {packets?.map((p, idx) => <PacketCover language={p.language} key={idx} /> )}
         </>
     );
     return (
@@ -48,7 +52,7 @@ const LearningBox = () => {
             {packets.length === 0 ? emptyLearningBox : populatedLearningBox}
             { ReactDOM.createPortal(<AddNew handler={toggleNewPacketModal} />, portalElement) }
             { newPacketModalShown && ReactDOM.createPortal(<ModalBackgroundClicksPrevention handler={toggleNewPacketModal} />, portalElement) }
-            { newPacketModalShown && ReactDOM.createPortal(<NewPacketModal toggler={toggleNewPacketModal} handler={stupidHandleNewPacketAddition} />, portalElement) }
+            { newPacketModalShown && ReactDOM.createPortal(<NewPacketModal toggler={toggleNewPacketModal} handler={handleNewPacketAddition} />, portalElement) }
         </div>
     );
 };

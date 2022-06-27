@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import LearningBox from './components/Body/LearningBox/LearningBox';
-import AddCard from './components/Body/Packet/AddCard';
+import AddCard from './components/Body/Packet/AddCard/AddCard';
 import Packet from './components/Body/Packet/Packet';
 import Header from './components/Header/Header';
 

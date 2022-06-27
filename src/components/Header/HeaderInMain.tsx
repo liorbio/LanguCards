@@ -6,7 +6,7 @@ const HeaderInMain = () => {
     return (
         <nav className={classes.navbar}>
             <Logo />
-            <OptionsToggler />
+            <OptionsToggler fullOptionsMenu={false} />
         </nav>
     )
 };

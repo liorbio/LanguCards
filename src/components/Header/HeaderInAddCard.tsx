@@ -1,13 +1,13 @@
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import GoBack from "./GoBack";
 import Logo from "./Logo";
 import classes from './Header.module.css';
 
 const HeaderInAddCard = () => {
-    const location = useLocation();
+    const params = useParams();
     return (
         <nav className={classes.navbar}>
-            <GoBack link={location.pathname.replace("/add", "")} icon="x" />
+            <GoBack link={`/${params.language}?show=list`} icon="x" />
             <Logo />
         </nav>
     )

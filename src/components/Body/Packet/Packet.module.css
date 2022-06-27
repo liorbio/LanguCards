@@ -1,11 +1,42 @@
 .packet { 
-    color: #B1B1B1;
+    color: #6e6e6e;
     width: 100%;
-    margin-top: 95.5px;
+    margin-top: calc(5vh + 50px);
+}
+.emptyPacket {
     display: grid;
     align-items: center;
     justify-items: center;
-}
-.emptyPacket {
     grid-template-rows: calc((100vh - 95.5px)*20/100) calc((100vh - 95.5px)*60/100) calc((100vh - 95.5px)*20/100);
+}
+.populatedPacket {
+    display: flex;
+    flex-wrap: wrap;
+}
+.populatedPacket section {
+    width: 50vw;
+    box-sizing: border-box;
+    border-bottom: 2px dotted #999;
+    height: 5rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.populatedPacket section:nth-child(odd) {
+    border-right: 2px dotted #999;
+}
+.populatedPacket article {
+    width: 100vw;
+    height: 7rem;
+    display: grid;
+    grid-template-columns: 80% 20%;
+    grid-template-rows: 40% 60%;
+    grid-template-areas: "term pos" "definition definition";
+    border-bottom: 1px solid #999;
+    color: #000;
+    overflow: hidden;
 }

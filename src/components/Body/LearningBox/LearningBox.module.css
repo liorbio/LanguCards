@@ -1,7 +1,7 @@
 .learningBox { 
-    color: #B1B1B1;
+    color: #6e6e6e;
     width: 100%;
-    margin-top: 95.5px;
+    margin-top: calc(5vh + 50px);
     display: grid;
     align-items: center;
     justify-items: center;

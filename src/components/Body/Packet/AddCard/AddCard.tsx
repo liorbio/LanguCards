@@ -11,6 +11,7 @@ import { useAppDispatch } from '../../../../hooks/reduxHooks';
 import { useNavigate, useParams } from 'react-router-dom';
 import { packetsActions } from '../../../../store/redux-logic';
 import { CardType } from '../../../../types/types';
+import uniqid from 'uniqid';
 
 const AddCard = ({ iTerm = "", iDefinition = "", iPos = "", iUsage = "", iNeedsRevision = false, iTags = [], iRelated = "", iDialect = "", iMemorization = 0 }: { iTerm?: string, iDefinition?: string, iPos?: string, iUsage?: string, iNeedsRevision?: boolean, iTags?: string[], iRelated?: string, iDialect?: string, iMemorization?: number }) => {
     const dispatch = useAppDispatch();
@@ -60,7 +61,7 @@ const AddCard = ({ iTerm = "", iDefinition = "", iPos = "", iUsage = "", iNeedsR
     }
     const handleAdd = () => {
         if (termRef.current!.value.length > 0) {
-            const cardToAdd: CardType = { term: termRef.current!.value, definition: definitionRef.current!.value, pos: chosenPOS, usage: usageRef.current!.value, needsRevision: needsRevision, tags: tags, related: relatedRef.current!.value, dialect: dialectRef.current!.value, memorization: memorization }; 
+            const cardToAdd: CardType = { cardId: uniqid(), term: termRef.current!.value, definition: definitionRef.current!.value, pos: chosenPOS, usage: usageRef.current!.value, needsRevision: needsRevision, tags: tags, related: relatedRef.current!.value, dialect: dialectRef.current!.value, memorization: memorization }; 
             dispatch(packetsActions.addCardToPacket({ packetLanguage: params.language!, card: cardToAdd }));
             navigate(-1);
         }

@@ -16,6 +16,13 @@ const packetsSlice = createSlice({
         addCardToPacket(state, action: PayloadAction<{ packetLanguage: string, card: CardType }>) {
             state.find(p => p.language === action.payload.packetLanguage)?.cards.push(action.payload.card);
             // set via idb-keyval
+        },
+        updateMemorization(state, action: PayloadAction<{ packetLanguage: string, cardId: string, newMemorization: number }>) {
+            const { packetLanguage, cardId, newMemorization } = action.payload;
+            const relevantCard = state.find(p => p.language === packetLanguage)?.cards.find(c => c.cardId === cardId);
+            if (relevantCard) {
+                relevantCard.memorization = newMemorization;
+            }
         }
     }
 });

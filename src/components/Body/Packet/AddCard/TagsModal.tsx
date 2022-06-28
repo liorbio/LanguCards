@@ -11,6 +11,7 @@ const TagsModal = ({ handleExit, tags, removeTag, addTag }: { handleExit: () => 
     const handleAdd = () => {
         if (inputRef.current!.value.length > 0) {
             addTag(inputRef.current!.value.toLowerCase());
+            inputRef.current!.value = "";
         }
     };
     

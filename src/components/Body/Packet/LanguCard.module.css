@@ -1,0 +1,56 @@
+.languCardWrapper {
+    margin-top: calc(5vh + 52px);
+    display: flex;
+    flex-direction: column;
+    padding-inline: 5vw;
+}
+.languCardWrapper section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2vh;
+}
+.languCardWrapper section h1 {
+    margin: 0;
+}
+.languCardWrapper p {
+    align-self: flex-start;
+}
+.xIcon {
+    position: fixed;
+    z-index: 6;
+    height: 50px;
+    width: 12vw;
+    top: 5vh;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.usage {
+    width: auto;
+    background-color: white;
+    border: 2px solid #e6e6e6;
+    border-radius: 15px;
+    min-height: 3.5rem;
+    text-align: left;
+    padding: 2vw;
+}
+.languCardWrapper h2 {
+    align-self: flex-start;
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+    color: #6e6e6e;
+}
+.tag {
+    width: fit-content;
+    padding: 8px 12px;
+    margin-inline: 5px;
+    margin-top: 10px;
+    border-radius: 30px;
+    background-color: #e6e6e6; 
+}
+.languCardWrapper h3 {
+    align-self: flex-start;
+    margin: 0;
+    margin-bottom: 0.7rem;
+}

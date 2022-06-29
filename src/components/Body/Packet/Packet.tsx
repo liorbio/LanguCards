@@ -38,7 +38,7 @@ const Packet = () => {
     const populatedPacket = ( // list of coupons -- according to query params
         <>
             {searchParams.get('show') === "coupons" && packet?.cards.map(c => <LanguCoupon key={c.term+new Date().getTime()} cardId={c.cardId} term={c.term} />)}
-            {searchParams.get('show') === "list" && packet?.cards.map(c => <LanguListItem key={c.term+new Date().getTime()} cardId={c.cardId} term={c.term} definition={c.definition} pos={c.pos} needsRevision={c.needsRevision} dir={packet.dir} />)}
+            {searchParams.get('show') === "list" && packet?.cards.map(c => <LanguListItem key={c.term+new Date().getTime()} cardId={c.cardId} term={c.term} definition={c.definition} pos={c.pos} needsRevision={c.needsRevision} packetDir={packet.dir} />)}
         </>
     );
     const packetPage = (

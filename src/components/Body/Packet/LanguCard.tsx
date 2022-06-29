@@ -14,17 +14,19 @@ const LanguCard = () => {
         const relevantPacket = state.packets.find(p => p.language === params.language);
         if (relevantPacket) {
             const relevantCard = relevantPacket.cards.find(c => c.cardId === searchParams.get('cardid'));
-            if (relevantCard) return { dir: relevantPacket.dir, ...relevantCard };
+            if (relevantCard) return { packetDir: relevantPacket.dir, ...relevantCard };
         }
         return;
     });
+    // CHANGE THIS to grab globalDir from Redux:
+    const globalDir = "ltr";
 
     const [currentMemorization, setCurrentMemorization] = useState<number | null>(null);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     if (selectedCardInfo) {
-        const { cardId, term, definition, pos, usage, needsRevision, tags, related, dialect, memorization } = selectedCardInfo;
+        const { cardId, term, definition, pos, usage, needsRevision, tags, related, dialect, memorization, packetDir } = selectedCardInfo;
         const handleChangeMemorization = (level: number) => {
             setCurrentMemorization(level);
         };
@@ -42,12 +44,12 @@ const LanguCard = () => {
         return (
             <div className={classes.languCardWrapper} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
                 <div onClick={handleQuit} className={classes.xIcon}><XVector /></div>
-                <section>
+                <section dir={packetDir}>
                     <h1>{term}</h1>
                     {pos && <div style={{ backgroundColor: partsOfSpeech[pos].color, alignSelf: "center", ...circleStyle }}>{pos}</div>}
                 </section>
-                {definition && <p>{definition}</p>}
-                {usage && <div className={classes.usage}>{usage}</div>}
+                {definition && <p style={{ textAlign: globalDir === "ltr" ? "left" : "right" }}>{definition}</p>}
+                {usage && <div className={classes.usage} dir={packetDir} style={{ textAlign: packetDir === "ltr" ? "left" : "right" }}>{usage}</div>}
                 {tags.length > 0 && (
                     <>
                         <h2>Tags</h2>
@@ -59,7 +61,9 @@ const LanguCard = () => {
                 {related && (
                     <>
                         <h2>Related words</h2>
-                        <h3>{related}</h3>
+                        <div style={{ textAlign: packetDir === "ltr" ? "left" : "right" }}>
+                            <h3>{related}</h3>
+                        </div>
                     </>
                 )}
                 {dialect && (

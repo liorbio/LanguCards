@@ -14,6 +14,7 @@ const Header = () => {
                 <Route path="/:language" element={<HeaderInPacket />} />
                 <Route path="/:language/add" element={<HeaderInAddCard />} />
                 <Route path="/:language/card" element={<HeaderInCard />} />
+                <Route path="/:language/card/edit" element={<HeaderInAddCard />} />
             </Routes>
         </>
     );

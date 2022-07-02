@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { XVector } from "../../../generatedIcons";
+import { PencilVector, XVector } from "../../../generatedIcons";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { packetsActions } from "../../../store/redux-logic";
 import Memorization from "./AddCard/Memorization";
@@ -44,6 +44,7 @@ const LanguCard = () => {
         return (
             <div className={classes.languCardWrapper} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
                 <div onClick={handleQuit} className={classes.xIcon}><XVector /></div>
+                <div onClick={() => navigate(`/${params.language}/card/edit?cardid=${searchParams.get('cardid')}`)} className={classes.editIcon}><PencilVector /></div>
                 <section dir={packetDir}>
                     <h1>{term}</h1>
                     {pos && <div style={{ backgroundColor: partsOfSpeech[pos].color, alignSelf: "center", ...circleStyle }}>{pos}</div>}
@@ -73,7 +74,7 @@ const LanguCard = () => {
                     </>
                 )}
                 <div style={{ alignSelf: "center" }}>
-                    <Memorization chosenLevel={currentMemorization ? currentMemorization : memorization} handleSetMemorization={handleChangeMemorization} />
+                    <Memorization chosenLevel={currentMemorization ?? memorization} handleSetMemorization={handleChangeMemorization} />
                 </div>
             </div>
         )

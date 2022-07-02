@@ -8,16 +8,19 @@ import PartOfSpeechModal, { circleStyle, partsOfSpeech } from './PartOfSpeechMod
 import { CheckVector } from '../../../../generatedIcons';
 import TagsModal from './TagsModal';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { packetsActions } from '../../../../store/redux-logic';
 import { CardType } from '../../../../types/types';
 import uniqid from 'uniqid';
+import DeleteCardButton from './DeleteCardButton';
 
-const AddCard = ({ iTerm = "", iDefinition = "", iPos = "", iUsage = "", iNeedsRevision = false, iTags = [], iRelated = "", iDialect = "", iMemorization = 0 }: { iTerm?: string, iDefinition?: string, iPos?: string, iUsage?: string, iNeedsRevision?: boolean, iTags?: string[], iRelated?: string, iDialect?: string, iMemorization?: number }) => {
+const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     const dispatch = useAppDispatch();
     const params = useParams();
+    const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const packetDir = useAppSelector(state => state.packets.find(p => p.language === params.language)!.dir);
+    const cardInfo = useAppSelector(state => state.packets.find(p => p.language === params.language)!.cards.find(c => c.cardId === searchParams.get('cardid')));
     // Refs: 
     const termRef = useRef<HTMLInputElement>(null);
     const definitionRef = useRef<HTMLTextAreaElement>(null);
@@ -25,15 +28,15 @@ const AddCard = ({ iTerm = "", iDefinition = "", iPos = "", iUsage = "", iNeedsR
     const relatedRef = useRef<HTMLInputElement>(null);
     const dialectRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
-        termRef.current!.value = iTerm;
-        definitionRef.current!.value = iDefinition;
-        usageRef.current!.value = iUsage;
-        relatedRef.current!.value = iRelated;
-        dialectRef.current!.value = iDialect;
-    }, [iTerm, iDefinition, iUsage, iRelated, iDialect]);
+        termRef.current!.value = cardInfo?.term ?? "";
+        definitionRef.current!.value = cardInfo?.definition ?? "";
+        usageRef.current!.value = cardInfo?.usage ?? "";
+        relatedRef.current!.value = cardInfo?.related ?? "";
+        dialectRef.current!.value = cardInfo?.dialect ?? "";
+    }, [cardInfo]);
     // States: 
     const [showPartOfSpeechModal, setShowPartOfSpeechModal] = useState(false);
-    const [chosenPOS, setChosenPOS] = useState(iPos);
+    const [chosenPOS, setChosenPOS] = useState(cardInfo?.pos ?? "");
     const handleChoose = (pos: string) => {
         if (chosenPOS === pos) {
             setChosenPOS("");
@@ -42,12 +45,12 @@ const AddCard = ({ iTerm = "", iDefinition = "", iPos = "", iUsage = "", iNeedsR
         }
         setShowPartOfSpeechModal(false);
     };
-    const [needsRevision, setNeedsRevision] = useState(iNeedsRevision);
+    const [needsRevision, setNeedsRevision] = useState(cardInfo?.needsRevision ?? false);
     const toggleNeedsRevision = () => {
         setNeedsRevision(prev => !prev);
     };
     const [tagsModalShown, setTagsModalShown] = useState(false);
-    const [tags, setTags] = useState<string[]>(iTags);
+    const [tags, setTags] = useState<string[]>(cardInfo?.tags ?? []);
     const addTag = (tag: string) => {
         if (!tags.includes(tag)) {
             setTags(prev => [...prev, tag]);
@@ -56,15 +59,21 @@ const AddCard = ({ iTerm = "", iDefinition = "", iPos = "", iUsage = "", iNeedsR
     const removeTag = (tag: string) => {
         setTags(prev => prev.filter(t => t !== tag));
     };
-    const [memorization, setMemorization] = useState(iMemorization);
+    const [memorization, setMemorization] = useState(cardInfo?.memorization ?? 0);
     const handleSetMemorization = (level: number) => {
         setMemorization(level);
     }
     const handleAdd = () => {
         if (termRef.current!.value.length > 0) {
-            const cardToAdd: CardType = { cardId: uniqid(), term: termRef.current!.value, definition: definitionRef.current!.value, pos: chosenPOS, usage: usageRef.current!.value, needsRevision: needsRevision, tags: tags, related: relatedRef.current!.value, dialect: dialectRef.current!.value, memorization: memorization }; 
-            dispatch(packetsActions.addCardToPacket({ packetLanguage: params.language!, card: cardToAdd }));
-            navigate(-1);
+            if (!editMode) { // new card
+                const cardToAdd: CardType = { cardId: uniqid(), term: termRef.current!.value, definition: definitionRef.current!.value, pos: chosenPOS, usage: usageRef.current!.value, needsRevision: needsRevision, tags: tags, related: relatedRef.current!.value, dialect: dialectRef.current!.value, memorization: memorization }; 
+                dispatch(packetsActions.addCardToPacket({ packetLanguage: params.language!, card: cardToAdd }));
+                navigate(-1);
+            } else { // editing an existing card
+                const cardUpdatedInfo: CardType = { cardId: cardInfo!.cardId, term: termRef.current!.value, definition: definitionRef.current!.value, pos: chosenPOS, usage: usageRef.current!.value, needsRevision: needsRevision, tags: tags, related: relatedRef.current!.value, dialect: dialectRef.current!.value, memorization: memorization }; 
+                dispatch(packetsActions.updateCard({ packetLanguage: params.language!, newCardInfo: cardUpdatedInfo }));
+                navigate(-1);
+            }
         }
     };
     return (
@@ -85,6 +94,7 @@ const AddCard = ({ iTerm = "", iDefinition = "", iPos = "", iUsage = "", iNeedsR
             <input dir={packetDir} ref={relatedRef} type="text" className={classes.otherInput} placeholder="Related words..." style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
             <input ref={dialectRef} type="text" className={classes.otherInput} placeholder="Dialect..." style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
             <Memorization chosenLevel={memorization} handleSetMemorization={handleSetMemorization} />
+            {editMode && <DeleteCardButton />}
         </div>
     )
 };

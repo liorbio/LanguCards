@@ -26,6 +26,17 @@
     align-items: center;
     justify-content: center;
 }
+.editIcon {
+    position: fixed;
+    z-index: 6;
+    height: 50px;
+    width: 12vw;
+    top: 5vh;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .usage {
     width: auto;
     background-color: white;

@@ -11,16 +11,18 @@ const divStyle = {
     justifyContent: "center"
 };
 
-const GoBack = ({ link, icon }: { link: string, icon: string }) => {
+const GoBack = ({ goHome = false, icon }: { goHome?: boolean, icon: string }) => {
     const navigate = useNavigate();
     
     const clickHandler = () => {
-        navigate(link);
-    }
-    
+        navigate(-1);
+    };
+    const goBackToLearningBox = () => {
+        navigate("/");
+    };
     
     return (
-        <div style={divStyle} onClick={clickHandler}>
+        <div style={divStyle} onClick={goHome ? goBackToLearningBox : clickHandler}>
             {icon === "x" ? <XVector /> : <GoBackVector />}
             </div>
     );

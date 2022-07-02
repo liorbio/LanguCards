@@ -23,6 +23,22 @@ const packetsSlice = createSlice({
             if (relevantCard) {
                 relevantCard.memorization = newMemorization;
             }
+        },
+        updateCard(state, action: PayloadAction<{ packetLanguage: string, newCardInfo: CardType }>) {
+            const foundCard = state.find(p => p.language === action.payload.packetLanguage)!.cards.find(c => c.cardId === action.payload.newCardInfo.cardId)!;
+            foundCard.term = action.payload.newCardInfo.term;
+            foundCard.definition = action.payload.newCardInfo.definition;
+            foundCard.pos = action.payload.newCardInfo.pos;
+            foundCard.usage = action.payload.newCardInfo.usage;
+            foundCard.needsRevision = action.payload.newCardInfo.needsRevision;
+            foundCard.tags = action.payload.newCardInfo.tags;
+            foundCard.related = action.payload.newCardInfo.related;
+            foundCard.dialect = action.payload.newCardInfo.dialect;
+            foundCard.memorization = action.payload.newCardInfo.memorization;
+        },
+        deleteCard(state, action: PayloadAction<{ packetLanguage: string, cardId: string }>) {
+            const packet = state.find(p => p.language === action.payload.packetLanguage)!;
+            packet.cards = packet.cards.filter(c => c.cardId !== action.payload.cardId);
         }
     }
 });

@@ -1,6 +1,6 @@
 import { createSearchParams, useNavigate } from "react-router-dom";
 
-const LanguCoupon = ({ cardId, term }: { cardId: string, term: string }) => {
+const LanguCoupon = ({ cardId, term, needsRevision }: { cardId: string, term: string, needsRevision: boolean }) => {
     const navigate = useNavigate();
     const navToCard = () => {
         navigate({
@@ -9,7 +9,7 @@ const LanguCoupon = ({ cardId, term }: { cardId: string, term: string }) => {
         });
     };
     return (
-        <section onClick={navToCard}>{term}</section>
+        <section onClick={navToCard} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>{term}</section>
     );
 };
 

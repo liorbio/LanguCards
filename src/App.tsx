@@ -15,6 +15,7 @@ function App() {
         <Route path="/:language" element={<Packet />} />
         <Route path="/:language/add" element={<AddCard />} />
         <Route path="/:language/card" element={<LanguCard />} />
+        <Route path="/:language/card/edit" element={<AddCard editMode={true} />} />
         <Route path="/" element={<LearningBox />} />
       </Routes>
     </div>

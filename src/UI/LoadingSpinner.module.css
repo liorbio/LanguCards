@@ -1,0 +1,21 @@
+.wrapper {
+    position: fixed;
+    top: 20vh;
+    width: 100vw;
+    height: 100vw;
+    display: grid;
+    place-items: center;
+}
+
+.spinner {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 85px;
+    animation: spin 1s linear infinite;
+    box-shadow: 5px 0px 0px 0px #00000030;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg);}
+}

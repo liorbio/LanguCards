@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { PencilVector, XVector } from "../../../generatedIcons";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
@@ -8,6 +9,7 @@ import { circleStyle, partsOfSpeech } from "./AddCard/PartOfSpeechModal";
 import classes from './LanguCard.module.css';
 
 const LanguCard = () => {
+    const { t } = useTranslation();
     const params = useParams();
     const [searchParams] = useSearchParams();
     const selectedCardInfo = useAppSelector(state => {
@@ -18,8 +20,6 @@ const LanguCard = () => {
         }
         return;
     });
-    // CHANGE THIS to grab globalDir from Redux:
-    const globalDir = "ltr";
 
     const [currentMemorization, setCurrentMemorization] = useState<number | null>(null);
     const navigate = useNavigate();
@@ -42,18 +42,18 @@ const LanguCard = () => {
             navigate(-1);
         }
         return (
-            <div className={classes.languCardWrapper} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
+            <div dir={t('globalDir')} className={classes.languCardWrapper} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
                 <div onClick={handleQuit} className={classes.xIcon}><XVector /></div>
                 <div onClick={() => navigate(`/${params.language}/card/edit?cardid=${searchParams.get('cardid')}`)} className={classes.editIcon}><PencilVector /></div>
                 <section dir={packetDir}>
                     <h1>{term}</h1>
                     {pos && <div style={{ backgroundColor: partsOfSpeech[pos].color, alignSelf: "center", ...circleStyle }}>{pos}</div>}
                 </section>
-                {definition && <p style={{ textAlign: globalDir === "ltr" ? "left" : "right" }}>{definition}</p>}
+                {definition && <p style={{ textAlign: t('globalDir') === "ltr" ? "left" : "right" }}>{definition}</p>}
                 {usage && <div className={classes.usage} dir={packetDir} style={{ textAlign: packetDir === "ltr" ? "left" : "right" }}>{usage}</div>}
                 {tags.length > 0 && (
                     <>
-                        <h2>Tags</h2>
+                        <h2>{t('tags')}</h2>
                         <div style={{ display: "flex", marginBottom: "0.7rem" }}>
                             {tags.map(t => <div className={classes.tag} key={t}>{t}</div>)}
                         </div>
@@ -61,7 +61,7 @@ const LanguCard = () => {
                 )}
                 {related && (
                     <>
-                        <h2>Related words</h2>
+                        <h2>{t('related_words')}</h2>
                         <div style={{ textAlign: packetDir === "ltr" ? "left" : "right" }}>
                             <h3>{related}</h3>
                         </div>
@@ -69,7 +69,7 @@ const LanguCard = () => {
                 )}
                 {dialect && (
                     <>
-                        <h2>Dialect</h2>
+                        <h2>{t('dialect')}</h2>
                         <h3>{dialect}</h3>
                     </>
                 )}

@@ -1,16 +1,17 @@
 import { CSSProperties, MouseEventHandler } from "react";
+import { useTranslation } from 'react-i18next';
 import ModalBackgroundClicksPrevention from "../../../../UI/ModalBackgroundClicksPrevention";
 
 export const partsOfSpeech: { [name: string]: { name: string, color: string } } = {
-    adj: { name: "Adjective", color: "#FED19D" },
-    v: { name: "Verb", color: "#B7EDC6" },
-    n: { name: "Noun", color: "#FFC7C7" },
-    cn: { name: "Conjunction", color: "#B7D9ED" },
-    ij: { name: "Interjection", color: "#E2B7ED" },
-    adv: { name: "Adverb", color: "#ECEDB7" },
-    st: { name: "Special Structure", color: "#B7EDE6" },
-    id: { name: "Idiom", color: "#F18888" },
-    ex: { name: "Expression", color: "#CFD7E2" }
+    adj: { name: "adjective", color: "#FED19D" },
+    v: { name: "verb", color: "#B7EDC6" },
+    n: { name: "noun", color: "#FFC7C7" },
+    cn: { name: "conjunction", color: "#B7D9ED" },
+    ij: { name: "interjection", color: "#E2B7ED" },
+    adv: { name: "adverb", color: "#ECEDB7" },
+    st: { name: "special_structure", color: "#B7EDE6" },
+    id: { name: "idiom", color: "#F18888" },
+    ex: { name: "expression", color: "#CFD7E2" }
 };
 const modalStyle: CSSProperties = {
     display: "flex",
@@ -36,6 +37,7 @@ export const circleStyle: CSSProperties = {
 }
 
 const PartOfSpeechModal = ({ handleChoose, handleExit }: { handleChoose: (pos: string) => void, handleExit: () => void }) => {
+    const { t } = useTranslation();
     const handleClick: MouseEventHandler<HTMLDivElement> = (event) => {
         handleChoose(event.currentTarget.id);
     };
@@ -44,9 +46,9 @@ const PartOfSpeechModal = ({ handleChoose, handleExit }: { handleChoose: (pos: s
             <div style={modalStyle}>
                 {Object.keys(partsOfSpeech).map(key => {
                     return (
-                        <div onClick={handleClick} style={{ display: "grid", gridTemplateColumns: "20% 1fr 75%", padding: "11px", alignItems: "center" }} key={key} id={key}>
+                        <div dir={t('globalDir')} onClick={handleClick} style={{ display: "grid", gridTemplateColumns: "20% 1fr 75%", padding: "11px", alignItems: "center" }} key={key} id={key}>
                             <div style={{ backgroundColor: partsOfSpeech[key].color, ...circleStyle }}>{key}</div>
-                            <span style={{ gridArea: "1 / 3" }}>{partsOfSpeech[key].name}</span>
+                            <span style={{ gridArea: "1 / 3" }}>{t(partsOfSpeech[key].name)}</span>
                         </div>
                     )
                 })}

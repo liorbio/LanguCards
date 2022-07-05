@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import AddNew from '../AddNew';
 import ClickBelow from '../../../icons/ClickBelow.png';
 import classes from './Packet.module.css';
@@ -8,8 +9,10 @@ import { useAppSelector } from '../../../hooks/reduxHooks';
 import LanguCoupon from './LanguCoupon';
 import LanguListItem from './LanguListItem';
 import portalElement from '../../../elements/portalElement';
+import LoadingSpinner from '../../../UI/LoadingSpinner';
 
 const Packet = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const params = useParams();
     const [searchParams] = useSearchParams();
@@ -31,7 +34,7 @@ const Packet = () => {
         <>
             <div style={{ gridRow: 1 }}>
             <h1>{lang![0].toUpperCase()+lang!.slice(1)}</h1>
-            Add words to your packet!</div>
+            {t('add_card')}</div>
             <img style={{ marginLeft: "3rem", gridRow: 2, height: "47vh" }} src={ClickBelow} alt="click on bottom right corner" />
         </>
     );
@@ -49,7 +52,7 @@ const Packet = () => {
     );
     return (
         <div className={`${classes.packet} ${packet?.cards.length === 0 ? classes.emptyPacket : classes.populatedPacket}`}>
-            {packetPage}
+            {packet ? packetPage : <LoadingSpinner />}
         </div>
     )
 };

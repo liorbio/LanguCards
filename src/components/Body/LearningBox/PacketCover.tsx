@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import classes from './PacketCover.module.css';
 
 const PacketCover = ({ language }: { language: string }) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     
     const navigateToPacketRoute = () => {
@@ -9,8 +11,8 @@ const PacketCover = ({ language }: { language: string }) => {
     };
 
     return (
-        <div className={classes.packetCover} onClick={navigateToPacketRoute}>
-            <h1>{`${language![0].toUpperCase()+language!.slice(1)} Packet`}</h1>
+        <div className={classes.packetCover} onClick={navigateToPacketRoute} dir={t('globalDir')}>
+            <h1>{t('packet', { lang: language![0].toUpperCase()+language!.slice(1) })}</h1>
         </div>
     );
 };

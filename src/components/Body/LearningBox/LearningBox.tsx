@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import ClickBelow from '../../../icons/ClickBelow.png';
 import PacketCover from './PacketCover';
 import classes from "./LearningBox.module.css";
@@ -10,14 +11,16 @@ import portalElement from '../../../elements/portalElement';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { PacketType } from '../../../types/types';
 import { packetsActions } from '../../../store/redux-logic';
+import LoadingSpinner from '../../../UI/LoadingSpinner';
 
 // To do:
 // change stupidHandleNewPacketAddition into a handler that adds packet to DB
 
 const LearningBox = () => {
+    const { t } = useTranslation();
     const packetsInRedux = useAppSelector(state => state.packets);
     const dispatch = useAppDispatch();
-    const [packets, setPackets] = useState<PacketType[]>([]);
+    const [packets, setPackets] = useState<PacketType[] | null>(null);
     const [newPacketModalShown, setNewPacketModalShown] = useState(false);
     // useEffect that fetches packets from local storage / mongo
     useEffect(() => {
@@ -37,7 +40,7 @@ const LearningBox = () => {
     
     const emptyLearningBox = (
         <>
-            <p>Strengthen your vocab!<br /><br />Create a new card packet<br />to learn a new language</p>
+            <p>{t('strengthen_vocab')}<br /><br />{t('create_packet')}<br />{t('to_learn')}</p>
             <img style={{ marginLeft: "3rem", height: "47vh" }} src={ClickBelow} alt="click on bottom right corner" />
         </>
     ); // change img to SVG
@@ -48,12 +51,16 @@ const LearningBox = () => {
         </>
     );
     return (
-        <div className={classes.learningBox + ' ' + (packets.length === 0 ? classes.emptyLearningBox : classes.populatedLearningBox)}>
-            {packets.length === 0 ? emptyLearningBox : populatedLearningBox}
-            { ReactDOM.createPortal(<AddNew handler={toggleNewPacketModal} />, portalElement) }
-            { newPacketModalShown && ReactDOM.createPortal(<ModalBackgroundClicksPrevention handler={toggleNewPacketModal} />, portalElement) }
-            { newPacketModalShown && ReactDOM.createPortal(<NewPacketModal toggler={toggleNewPacketModal} handler={handleNewPacketAddition} />, portalElement) }
-        </div>
+        <>
+            {packets === null ? <LoadingSpinner /> :
+                <div dir={t('globalDir')} className={classes.learningBox + ' ' + (packets.length === 0 ? classes.emptyLearningBox : classes.populatedLearningBox)}>
+                    {packets.length === 0 ? emptyLearningBox : populatedLearningBox}
+                    { ReactDOM.createPortal(<AddNew handler={toggleNewPacketModal} />, portalElement) }
+                    { newPacketModalShown && ReactDOM.createPortal(<ModalBackgroundClicksPrevention handler={toggleNewPacketModal} />, portalElement) }
+                    { newPacketModalShown && ReactDOM.createPortal(<NewPacketModal toggler={toggleNewPacketModal} handler={handleNewPacketAddition} />, portalElement) }
+                </div>
+            }
+        </>
     );
 };
 

@@ -39,7 +39,7 @@
     align-items: center;
 }
 .tag span {
-    margin-right: 7px;
+    margin-inline: 7px;
 }
 .bottomRow {
     width: 100%;

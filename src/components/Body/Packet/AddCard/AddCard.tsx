@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import portalElement from '../../../../elements/portalElement';
 import CircledPlus from '../../../../generatedIcons/CircledPlus.js';
 import classes from './AddCard.module.css';
@@ -15,6 +16,7 @@ import uniqid from 'uniqid';
 import DeleteCardButton from './DeleteCardButton';
 
 const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const params = useParams();
     const [searchParams] = useSearchParams();
@@ -77,22 +79,22 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
         }
     };
     return (
-        <div className={classes.addCardWrapper} dir="ltr" style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
+        <div className={classes.addCardWrapper} dir={t('globalDir')} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
             <div onClick={handleAdd} style={{ position: "fixed", zIndex: 6, width: "12vw", height: "50px", top: "5vh", right: 0, display: "flex", alignItems: "center", justifyContent: "center" }}><CheckVector /></div>
             <div dir={packetDir} style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", width: "100vw" }}>
-                <input ref={termRef} type="text" style={{ width: "80vw", fontSize: "1.5rem", backgroundColor: needsRevision ? "#FAF1ED" : "#fafafa" }} className={classes.requiredInput} placeholder="Term..." />
+                <input ref={termRef} type="text" style={{ width: "80vw", fontSize: "1.5rem", backgroundColor: needsRevision ? "#FAF1ED" : "#fafafa" }} className={classes.requiredInput} placeholder={t('term')} />
                 {chosenPOS ? <div style={{ backgroundColor: partsOfSpeech[chosenPOS].color, ...circleStyle }} onClick={() => setShowPartOfSpeechModal(true)}>{chosenPOS}</div> : <CircledPlus onClick={() => setShowPartOfSpeechModal(true)} />}
                 {showPartOfSpeechModal && ReactDOM.createPortal(<PartOfSpeechModal handleChoose={handleChoose} handleExit={() => setShowPartOfSpeechModal(false)}/>, portalElement)}
             </div>
-            <textarea ref={definitionRef} placeholder="Definition..." className={classes.definition} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
-            <textarea dir={packetDir} ref={usageRef} placeholder="Examples of usage..." className={classes.exampleUsage} />
+            <textarea ref={definitionRef} placeholder={t('definition')} className={classes.definition} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
+            <textarea dir={packetDir} ref={usageRef} placeholder={t('examples_of_usage')} className={classes.exampleUsage} />
             <div style={{ display: "flex", justifyContent: "space-evenly", width: "100vw", marginTop: "2vh" }}>
-                <div className={`${classes.button} ${classes.buttonOfSet}`} style={needsRevision ? { backgroundColor: "#ee4444", color: "white" } : {}} onClick={toggleNeedsRevision}>Needs revision</div>
-                <div onClick={() => setTagsModalShown(true)} className={`${classes.button} ${classes.buttonOfSet}`}>Tags...</div>
+                <div className={`${classes.button} ${classes.buttonOfSet}`} style={needsRevision ? { backgroundColor: "#ee4444", color: "white" } : {}} onClick={toggleNeedsRevision}>{t('needs_revision')}</div>
+                <div onClick={() => setTagsModalShown(true)} className={`${classes.button} ${classes.buttonOfSet}`}>{t('tags')}...</div>
                 {tagsModalShown && ReactDOM.createPortal(<TagsModal handleExit={() => setTagsModalShown(false)} tags={tags} addTag={addTag} removeTag={removeTag} />, portalElement)}
             </div>
-            <input dir={packetDir} ref={relatedRef} type="text" className={classes.otherInput} placeholder="Related words..." style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
-            <input ref={dialectRef} type="text" className={classes.otherInput} placeholder="Dialect..." style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
+            <input dir={packetDir} ref={relatedRef} type="text" className={classes.otherInput} placeholder={t('related_words')} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
+            <input ref={dialectRef} type="text" className={classes.otherInput} placeholder={t('dialect')} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
             <Memorization chosenLevel={memorization} handleSetMemorization={handleSetMemorization} />
             {editMode && <DeleteCardButton />}
         </div>

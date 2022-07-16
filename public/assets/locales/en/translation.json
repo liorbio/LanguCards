@@ -8,7 +8,7 @@
     "right_to_left": "right-to-left",
     "cancel": "CANCEL",
     "create": "CREATE",
-    "close": "Close",
+    "close": "CLOSE",
     "term": "Term",
     "definition": "Definition",
     "examples_of_usage": "Examples of usage",
@@ -38,6 +38,7 @@
     "settings": "settings",
     "login": "login",
     "warning": "Warning",
-    "delete": "Delete",
-    "are_you_sure_delete": "Are you sure you want to delete this card?"
+    "delete": "DELETE",
+    "are_you_sure_delete": "Are you sure you want to delete this card?",
+    "interface_language": "Interface Language"
 }

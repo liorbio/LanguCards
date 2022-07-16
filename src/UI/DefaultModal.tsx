@@ -3,17 +3,17 @@ import { useTranslation } from 'react-i18next';
 import XIcon from '../icons/XIcon.png';
 import classes from './DefaultModal.module.css';
 
-type DefaultModalDeclaration = ({ children, title, topRightX, buttonOne, buttonTwo, handler, toggler, overrideStyle }: { children: ReactNode, title: string, topRightX?: boolean, buttonOne: string, buttonTwo?: string, handler: () => void, toggler: () => void, overrideStyle?: CSSProperties }) => JSX.Element | null;
+type DefaultModalDeclaration = ({ children, title, topRightX, buttonOne, buttonTwo, handler, toggler, overrideStyle, modalType }: { children: ReactNode, title: string, topRightX?: boolean, buttonOne: string, buttonTwo?: string, handler: () => void, toggler: () => void, overrideStyle?: CSSProperties, modalType: "Warning" | "Dialogue" }) => JSX.Element | null;
 
 // This is a default modal where, if we have two bottom buttons,
 // the left one is to exit (toggle)
 // the right one is the execute whatever function
 
-const DefaultModal: DefaultModalDeclaration = ({ children, title, topRightX, buttonOne, buttonTwo, handler, toggler, overrideStyle }) => {
+const DefaultModal: DefaultModalDeclaration = ({ children, title, topRightX, buttonOne, buttonTwo, handler, toggler, overrideStyle, modalType }) => {
     const { t } = useTranslation();
     return (
         <div className={classes.modal} dir={t('globalDir')} style={overrideStyle}>
-            <div className={classes.top}>
+            <div className={`${classes.top} ${classes[`top${modalType}`]}`}>
                 <h1>{title}</h1>
                 {topRightX && <img src={XIcon} alt="exit" onClick={toggler} />}
             </div>

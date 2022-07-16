@@ -22,7 +22,7 @@ const DeleteCardButton = () => {
     }
 
     const warning = (
-        <DefaultModal title={t('warning')} buttonOne={t('cancel')} buttonTwo={t('delete')} handler={handleDelete} toggler={() =>  setShowWarning(false)}>
+        <DefaultModal title={t('warning')} buttonOne={t('cancel')} buttonTwo={t('delete')} handler={handleDelete} toggler={() =>  setShowWarning(false)} modalType="Warning">
             <div style={{ paddingBlock: "1.5rem", textAlign: "center" }}>{t('are_you_sure_delete')}</div>
         </DefaultModal>
     )

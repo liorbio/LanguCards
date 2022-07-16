@@ -3,11 +3,13 @@
     display: flex;
     flex-direction: column;
     padding-inline: 5vw;
+    height: calc(95vh - 52px);
 }
 .languCardWrapper section {
     display: flex;
     justify-content: space-between;
     margin-top: 2vh;
+    margin-bottom: 1vh;
 }
 .languCardWrapper section h1 {
     margin: 0;

@@ -22,7 +22,7 @@ const NewPacketModal = ({ handler, toggler }: { handler: (packet: PacketType) =>
     }
     
     return (
-        <DefaultModal title={t('new_packet')} buttonOne={t('cancel')} buttonTwo={t('create')} handler={handlerForCreateButton} toggler={toggler}>
+        <DefaultModal title={t('new_packet')} buttonOne={t('cancel')} buttonTwo={t('create')} handler={handlerForCreateButton} toggler={toggler} modalType="Dialogue">
             <div className={classes.modalBody}>
                 <input type="text" placeholder={t('language_name')} ref={languageInput} />
                 <p style={{ display: "flex" }}>{t('writing_direction')} </p><TextSwitchingToggleButton textOne={t("left_to_right")} textTwo={t("right_to_left")} showTextOneState={showLeftToRight} setShowTextOneState={setShowLeftToRight} />

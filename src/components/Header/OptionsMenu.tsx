@@ -20,7 +20,7 @@ const OptionsMenu = ({ full, toggleMenu }: { full: boolean, toggleMenu: () => vo
 
     const menuInMain = (
         <div dir={t('globalDir')} className={classes.optionsMenu} onClick={toggleMenu}>
-            <OptionsMenuOption link="/" label={t("settings")} icon={<SettingsIcon />} />
+            <OptionsMenuOption link="/settings" label={t("settings")} icon={<SettingsIcon />} />
             <OptionsMenuOption link="/" label={t("login")} icon={<LoginIcon />} />
         </div>
     );
@@ -28,7 +28,7 @@ const OptionsMenu = ({ full, toggleMenu }: { full: boolean, toggleMenu: () => vo
         <div dir={t('globalDir')} className={classes.optionsMenu} onClick={toggleMenu}>
             <OptionsMenuOption link={`?show=${searchParams.get('show') === "coupons" ? "list": "coupons"}`} label={t("switch_view")} icon={<SwitchIcon />} />
             <OptionsMenuOption link="/" label={t("play")} icon={<PuzzleIcon />} />
-            <OptionsMenuOption link="/" label={t("settings")} icon={<SettingsIcon />} />
+            <OptionsMenuOption link="/settings" label={t("settings")} icon={<SettingsIcon />} />
             <OptionsMenuOption link="/" label={t("login")} icon={<LoginIcon />} />
         </div>
     );

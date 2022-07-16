@@ -1,0 +1,29 @@
+.settingsWrapper {
+    margin-top: calc(5vh + 52px);
+    height: calc(95vh - 52px);
+}
+.settingsWrapper h1 {
+    margin-inline: 1rem;
+    padding-top: 0.5rem;
+    font-size: 1.8rem;
+    color: #666;
+    font-weight: normal;
+}
+.languageChoiceRow {
+    display: flex;
+    justify-content: space-evenly;
+}
+.languageButton {
+    height: 2.4rem;
+    width: 25vw;
+    display: grid;
+    place-items: center;
+    border-radius: 50px;
+    color: #000;
+    border: 1px solid #d9d9d9;
+}
+.chosenButton {
+    font-weight: bold;
+    color: #fff;
+    background-color: #e40089;
+}

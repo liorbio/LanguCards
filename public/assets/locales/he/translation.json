@@ -39,5 +39,6 @@
     "login": "התחברות",
     "warning": "אזהרה",
     "delete": "מחיקה",
-    "are_you_sure_delete": "האם הנכם בטוחים שתרצו למחוק את הכרטיס?"
+    "are_you_sure_delete": "האם הנכם בטוחים שתרצו למחוק את הכרטיס?",
+    "interface_language": "שפת הממשק"
 }

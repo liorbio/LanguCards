@@ -29,7 +29,7 @@
     "special_structure": "مبنى خاص",
     "idiom": "مثل",
     "expression": "تعبير",
-    "strengthen_vocab": "قوّي ثروتك اللغوية!",
+    "strengthen_vocab": "وسّع ثروتك اللغوية!",
     "create_packet": "اصنع رزمة بطاقات جديدة",
     "to_learn": "لتعليم اي لغة",
     "add_card": "اضف بطاقة على الرزمة!",
@@ -39,5 +39,6 @@
     "login": "دخول",
     "warning": "الحذر",
     "delete": "ازالة",
-    "are_you_sure_delete": "هل تريد على الاكيد تزيل البطاقة؟"
+    "are_you_sure_delete": "هل تريد على الاكيد تزيل البطاقة؟",
+    "interface_language": "لغة التطبيق"
 }

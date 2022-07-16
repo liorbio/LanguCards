@@ -4,6 +4,7 @@ import HeaderInAddCard from './HeaderInAddCard';
 import HeaderInCard from './HeaderInCard';
 import HeaderInMain from './HeaderInMain';
 import HeaderInPacket from './HeaderInPacket';
+import HeaderInSettings from './HeaderInSettings';
 
 const Header = () => {
     return (
@@ -15,6 +16,7 @@ const Header = () => {
                 <Route path="/:language/add" element={<HeaderInAddCard />} />
                 <Route path="/:language/card" element={<HeaderInCard />} />
                 <Route path="/:language/card/edit" element={<HeaderInAddCard />} />
+                <Route path="/settings" element={<HeaderInSettings />} />
             </Routes>
         </>
     );

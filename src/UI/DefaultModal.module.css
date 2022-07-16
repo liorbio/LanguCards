@@ -13,10 +13,16 @@
     grid-template-columns: 20% 60% 20%;
     align-items: center;
     justify-items: center;
-    background-color: #e6e6e6;
-    color: #737373;
     font-size: 12px;
     border-radius: 15px 15px 0px 0px;
+}
+.topWarning {
+    background-color: #ee4444;
+    color: #fff;
+}
+.topDialogue {
+    background-color: #b796a8;
+    color: #fff;
 }
 .top h1 {
     grid-column: 2;

@@ -7,7 +7,7 @@ import classes from './Header.module.css';
 const HeaderInPacket = () => {
     return (
         <nav className={classes.navbar}>
-            <GoBack icon="arrow" goHome={true} />
+            <GoBack icon="arrow" goToLearningBox={true} />
             <Logo />
             <SearchToggler />
             <OptionsToggler fullOptionsMenu={true} />

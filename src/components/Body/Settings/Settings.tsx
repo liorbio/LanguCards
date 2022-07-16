@@ -27,7 +27,6 @@ const Settings = () => {
 
     useEffect(() => {
         let lang = localStorage.getItem("i18nextLng");
-        console.log(lang)
         if (!lang) { lang = "en" }
         setInterfaceLanguage(lang);
     }, []);

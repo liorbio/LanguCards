@@ -80,7 +80,7 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     };
     return (
         <div className={classes.addCardWrapper} dir={t('globalDir')} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
-            <div onClick={handleAdd} style={{ position: "fixed", zIndex: 6, width: "12vw", height: "50px", top: "5vh", right: 0, display: "flex", alignItems: "center", justifyContent: "center" }}><CheckVector /></div>
+            <div onClick={handleAdd} style={{ position: "fixed", zIndex: 6, width: "12vw", height: "50px", top: "0", right: 0, display: "flex", alignItems: "center", justifyContent: "center" }}><CheckVector /></div>
             <div dir={packetDir} style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", width: "100vw" }}>
                 <input ref={termRef} type="text" style={{ width: "80vw", fontSize: "1.5rem", backgroundColor: needsRevision ? "#FAF1ED" : "#fafafa" }} className={classes.requiredInput} placeholder={t('term')} />
                 {chosenPOS ? <div style={{ backgroundColor: partsOfSpeech[chosenPOS].color, ...circleStyle }} onClick={() => setShowPartOfSpeechModal(true)}>{chosenPOS}</div> : <CircledPlus onClick={() => setShowPartOfSpeechModal(true)} />}

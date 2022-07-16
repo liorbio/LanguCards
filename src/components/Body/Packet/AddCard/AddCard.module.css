@@ -1,5 +1,4 @@
 .addCardWrapper {
-    top: calc(5vh + 51px);
     position: absolute;
     padding-top: 2vh;
     display: flex;

@@ -6,7 +6,7 @@
     display: grid;
     align-items: center;
     justify-items: center;
-    grid-template-rows: calc((100vh)*20/100) calc((100vh)*50/100) calc((100vh)*30/100);
+    grid-template-rows: calc((100vh - 61px)*20/100) calc((100vh - 61px)*55/100) calc((100vh - 61px)*25/100);
 }
 .populatedPacket {
     display: flex;
@@ -15,7 +15,7 @@
 .populatedPacket section {
     width: 50vw;
     box-sizing: border-box;
-    border-bottom: 2px dotted #999;
+    border-bottom: 2px dotted #cdcdcd;
     height: 5rem;
     font-size: 1.3rem;
     font-weight: bold;
@@ -26,14 +26,14 @@
     overflow: hidden;
 }
 .populatedPacket section:nth-child(odd) {
-    border-right: 2px dotted #999;
+    border-right: 2px dotted #cdcdcd;
 }
 .populatedPacket article {
     width: 100vw;
     height: 7rem;
     display: grid;
     grid-template-rows: 40% 60%;
-    border-bottom: 1px solid #999;
+    border-bottom: 1px solid #cdcdcd;
     color: #000;
     overflow: hidden;
 }

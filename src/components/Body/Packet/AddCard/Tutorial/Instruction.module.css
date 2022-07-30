@@ -1,0 +1,26 @@
+.instructionBubble {
+    position: fixed;
+    z-index: 8;
+    display: grid;
+    place-items: center;
+    top: 60vh;
+    padding: 5vw;
+    line-height: 1.5;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 0 3px 3px #88888820;
+}
+.bigBubble {
+    font-weight: bold;
+    font-size: 2rem;
+    width: 60vw;
+    left: 15vw;
+    top: 45vh;
+    z-index: 10;
+}
+.wholeScreenClickStealer {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 9;
+}

@@ -21,8 +21,8 @@
     color: #fff;
 }
 .topDialogue {
-    background-color: #b796a8;
-    color: #fff;
+    background-color: white;
+    color: black;
 }
 .top h1 {
     grid-column: 2;

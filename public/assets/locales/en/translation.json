@@ -40,5 +40,11 @@
     "warning": "Warning",
     "delete": "DELETE",
     "are_you_sure_delete": "Are you sure you want to delete this card?",
-    "interface_language": "Interface Language"
+    "interface_language": "Interface Language",
+    "term_tutorial": "Write a term, the rest is optional!",
+    "pos_tutorial": "Choose the term's part of speech",
+    "needs_revision_tutorial": "If unsure about the card, mark that it needs revision",
+    "tags_tutorial": "Add tags to search by later. For example, add a \"food\" tag so you can later find all food-related cards",
+    "replay_tutorial": "Replay tutorial",
+    "continue": "Continue"
 }

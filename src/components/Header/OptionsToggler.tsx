@@ -9,7 +9,7 @@ const optionSymbolStyle = {
     width: "100%",
     lineHeight: "0.3em",
     fontSize: "1.9em",
-    paddingTop: "1px"
+    paddingTop: "7px"
 };
 
 const OptionsToggler = ({ fullOptionsMenu }: { fullOptionsMenu: boolean }) => {

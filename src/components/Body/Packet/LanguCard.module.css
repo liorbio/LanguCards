@@ -1,9 +1,8 @@
 .languCardWrapper {
-    margin-top: calc(5vh + 52px);
     display: flex;
     flex-direction: column;
     padding-inline: 5vw;
-    height: calc(95vh - 52px);
+    height: calc(100vh - 61px);
 }
 .languCardWrapper section {
     display: flex;
@@ -20,9 +19,9 @@
 .xIcon {
     position: fixed;
     z-index: 6;
-    height: 50px;
-    width: 12vw;
-    top: 5vh;
+    height: 60px;
+    width: 15vw;
+    top: 0;
     left: 0;
     display: flex;
     align-items: center;
@@ -31,9 +30,9 @@
 .editIcon {
     position: fixed;
     z-index: 6;
-    height: 50px;
-    width: 12vw;
-    top: 5vh;
+    height: 60px;
+    width: 15vw;
+    top: 0;
     right: 0;
     display: flex;
     align-items: center;

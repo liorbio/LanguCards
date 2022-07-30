@@ -1,3 +1,11 @@
+:root {
+    --term-input-width: 80vw;
+    --other-input-width: 89vw;
+    --pos-width: 26px; /* in PartOfSpeechModal.tsx */
+    --button-set-width: 30vw;
+
+}
+
 .addCardWrapper {
     position: absolute;
     padding-top: 2vh;
@@ -5,7 +13,7 @@
     flex-direction: column;
     align-items: center;
     width: 100vw;
-    height: calc(100vh - 7vh - 51px);
+    height: calc(100vh - 2vh - 61px);
 }
 .addCardWrapper input::placeholder, .addCardWrapper textarea::placeholder {
     color: #6e6e6e;
@@ -16,6 +24,9 @@
     border-bottom: 2px solid #a4a4a4;
     background-color: #fafafa;
     font-family: 'Assistant', sans-serif;
+}
+.termInput {
+    width: var(--term-input-width);
 }
 .definition {
     border: 0;
@@ -47,10 +58,58 @@
     font-size: 1rem;
     font-weight: bold;
     padding: 1rem;
-    width: 30vw;
+    width: var(--button-set-width);
 }
 .otherInput {
-    width: 89vw;
+    width: var(--other-input-width);
     font-size: 1.2rem;
     margin-top: 3vh;
+}
+
+.hole {
+    position: fixed;
+    z-index: 5;
+    box-shadow: 0 0 0 65534px #b9b9b9ab;
+    border-radius: 15px;
+    padding: 15px;
+}
+.termHole {
+    height: calc(1.5rem);
+    width: calc(var(--term-input-width) - 8px);
+    top: calc(61px + 1vh);
+    left: 1.5vw;
+}
+.termHoleRtl {
+    left: unset;
+    right: 1.5vw;
+}
+.posHole {
+    height: var(--pos-width);
+    width: var(--pos-width);
+    top: calc(61px + 1vh);
+    right: 0;
+}
+.posHoleRtl {
+    right: unset;
+    left: 0;
+}
+.needsRevisionHole {
+    height: 3rem;
+    width: calc(4vw + var(--button-set-width));
+    top: calc(61px + 2vh + 1.5rem + 2.5vh + 2.5vh + 3.5rem + 3.5rem + 4vw + 3vh);
+    left: 6vw;
+}
+.needsRevisionHoleRtl {
+    left: unset;
+    right: 6vw;
+}
+.tagsHole {
+    height: 3rem;
+    width: calc(4vw + var(--button-set-width));
+    top: calc(61px + 2vh + 1.5rem + 2.5vh + 2.5vh + 3.5rem + 3.5rem + 4vw + 3vh);
+    right: 6vw;
+}
+.tagsHoleRtl {
+    right: unset;
+    left: 6vw;
 }

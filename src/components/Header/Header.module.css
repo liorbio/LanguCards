@@ -1,8 +1,8 @@
 .navbar {
     display: grid;
-    grid-template-columns: 12% 12% 52% 12% 12%;
+    grid-template-columns: 15% 15% 40% 15% 15%;
     width: 100vw;
-    height: 50px;
+    height: 60px;
     background-color: #fff;
-    border-bottom: 0.5px solid #696969;
+    border-bottom: 0.5px solid #e5e5e5;
 }

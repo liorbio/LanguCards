@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEventHandler, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import portalElement from '../../../../elements/portalElement';
 import CircledPlus from '../../../../generatedIcons/CircledPlus.js';
@@ -26,35 +26,43 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     const navigate = useNavigate();
     const packetDir = useAppSelector(state => state.packets.find(p => p.language === params.language)!.dir);
     const cardInfo = useAppSelector(state => state.packets.find(p => p.language === params.language)!.cards.find(c => c.cardId === searchParams.get('cardid')));
-    // Refs: 
-    const termRef = useRef<HTMLInputElement>(null);
-    const definitionRef = useRef<HTMLTextAreaElement>(null);
-    const usageRef = useRef<HTMLTextAreaElement>(null);
-    const relatedRef = useRef<HTMLInputElement>(null);
-    const dialectRef = useRef<HTMLInputElement>(null);
-    
+
     // States: 
     const showTutorial = !useAppSelector(state => state.settings.seenTutorial);
+    const [changeDetected, setChangeDetected] = useState(false);
     const [showWarning, setShowWarning] = useState(false);
     const [showPartOfSpeechModal, setShowPartOfSpeechModal] = useState(false);
     const [chosenPOS, setChosenPOS] = useState(cardInfo?.pos ?? "");
+    const [textStates, setTextStates] = useState({
+        term: cardInfo?.term ?? "",
+        definition: cardInfo?.definition ?? "",
+        usage: cardInfo?.usage ?? "",
+        related: cardInfo?.related ?? "",
+        dialect: cardInfo?.dialect ?? ""
+    });
+    // const [term, setTerm] = useState(cardInfo?.term ?? "");
+    // const [definition, setDefinition] = useState(cardInfo?.definition ?? "");
+    // const [usage, setUsage] = useState(cardInfo?.usage ?? "");
+    // const [related, setRelated] = useState(cardInfo?.related ?? "");
+    // const [dialect, setDialsect] = useState(cardInfo?.dialect ?? "");
     const [needsRevision, setNeedsRevision] = useState(cardInfo?.needsRevision ?? false);    
     const [tagsModalShown, setTagsModalShown] = useState(false);
     const [tags, setTags] = useState<string[]>(cardInfo?.tags ?? []);
     const [memorization, setMemorization] = useState(cardInfo?.memorization ?? 0);
-
-    useEffect(() => {
-        termRef.current!.value = cardInfo?.term ?? "";
-        definitionRef.current!.value = cardInfo?.definition ?? "";
-        usageRef.current!.value = cardInfo?.usage ?? "";
-        relatedRef.current!.value = cardInfo?.related ?? "";
-        dialectRef.current!.value = cardInfo?.dialect ?? "";
-    }, [cardInfo]);
-    
-    const changed = cardInfo ? termRef.current?.value !== cardInfo.term : termRef.current?.value !== "";
-    console.log(changed)
     
     // Handlers:
+    const handleChangeText = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setTextStates(prev => { 
+            const newObj = {...prev};
+            newObj[event.target.id as keyof typeof textStates] = event.target.value;
+            return newObj });
+        const initialValue = cardInfo ? cardInfo[event.target.id as keyof typeof cardInfo] : "";
+        if (event.target.value !== initialValue) {
+            setChangeDetected(true);
+        } else {
+            setChangeDetected(false);
+        }
+    }
     const handleChoose = (pos: string) => {
         if (chosenPOS === pos) {
             setChosenPOS("");
@@ -82,7 +90,7 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
         navigate(-1);
     }
     const handleXClick = () => {
-        if (changed) {
+        if (changeDetected) {
             setShowWarning(true);
         } else {
             handleExit();
@@ -90,13 +98,13 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     };
 
     const handleAdd = () => {
-        if (termRef.current!.value.length > 0) {
+        if (textStates.term.length > 0) {
             if (!editMode) { // new card
-                const cardToAdd: CardType = { cardId: uniqid(), term: termRef.current!.value, definition: definitionRef.current!.value, pos: chosenPOS, usage: usageRef.current!.value, needsRevision: needsRevision, tags: tags, related: relatedRef.current!.value, dialect: dialectRef.current!.value, memorization: memorization }; 
+                const cardToAdd: CardType = { cardId: uniqid(), term: textStates.term, definition: textStates.definition, pos: chosenPOS, usage: textStates.usage, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
                 dispatch(packetsActions.addCardToPacket({ packetLanguage: params.language!, card: cardToAdd }));
                 navigate(-1);
             } else { // editing an existing card
-                const cardUpdatedInfo: CardType = { cardId: cardInfo!.cardId, term: termRef.current!.value, definition: definitionRef.current!.value, pos: chosenPOS, usage: usageRef.current!.value, needsRevision: needsRevision, tags: tags, related: relatedRef.current!.value, dialect: dialectRef.current!.value, memorization: memorization }; 
+                const cardUpdatedInfo: CardType = { cardId: cardInfo!.cardId, term: textStates.term, definition: textStates.definition, pos: chosenPOS, usage: textStates.usage, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
                 dispatch(packetsActions.updateCard({ packetLanguage: params.language!, newCardInfo: cardUpdatedInfo }));
                 navigate(-1);
             }
@@ -111,22 +119,22 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
                 <div style={{ paddingBlock: "1.5rem", textAlign: "center" }}>{t('are_you_sure_exit_without_save')}</div>
             </DefaultModal>, portalElement)}
             <div className={classes.addCardWrapper} dir={t('globalDir')} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
-                <div onClick={handleXClick} style={{ position: "fixed", zIndex: 4, width: "12vw", height: "60px", top: "0", left: "6px", display: "flex", alignItems: "center", justifyContent: "center" }}><GoBack icon="x" /></div>
+                <div onClick={handleXClick} style={{ position: "fixed", zIndex: 4, width: "12vw", height: "60px", top: "0", left: "6px", display: "flex", alignItems: "center", justifyContent: "center" }}><GoBack icon="x" goTo="NONE" /></div>
                 <div onClick={handleAdd} style={{ position: "fixed", zIndex: 4, width: "12vw", height: "60px", top: "0", right: "6px", display: "flex", alignItems: "center", justifyContent: "center" }}><CheckVector /></div>
                 <div dir={packetDir} style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", width: "100vw" }}>
-                    <input ref={termRef} type="text" style={{ fontSize: "1.5rem", backgroundColor: needsRevision ? "#FAF1ED" : "#fafafa" }} className={classes.termInput} placeholder={t('term')} />
+                    <input id="term" value={textStates.term} onChange={handleChangeText} type="text" style={{ fontSize: "1.5rem", backgroundColor: needsRevision ? "#FAF1ED" : "#fafafa" }} className={classes.termInput} placeholder={t('term')} />
                     {chosenPOS ? <div style={{ backgroundColor: partsOfSpeech[chosenPOS].color, ...circleStyle }} onClick={() => setShowPartOfSpeechModal(true)}>{chosenPOS}</div> : <CircledPlus onClick={() => setShowPartOfSpeechModal(true)} />}
                     {showPartOfSpeechModal && ReactDOM.createPortal(<PartOfSpeechModal handleChoose={handleChoose} handleExit={() => setShowPartOfSpeechModal(false)}/>, portalElement)}
                 </div>
-                <textarea ref={definitionRef} placeholder={t('definition')} className={classes.definition} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
-                <textarea dir={packetDir} ref={usageRef} placeholder={t('examples_of_usage')} className={classes.exampleUsage} />
+                <textarea id="definition" value={textStates.definition} onChange={handleChangeText} placeholder={t('definition')} className={classes.definition} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
+                <textarea dir={packetDir} id="usage" value={textStates.usage} onChange={handleChangeText} placeholder={t('examples_of_usage')} className={classes.exampleUsage} />
                 <div style={{ display: "flex", justifyContent: "space-evenly", width: "100vw", marginTop: "2vh" }}>
                     <div className={`${classes.button} ${classes.buttonOfSet}`} style={needsRevision ? { backgroundColor: "#ee4444", color: "white" } : {}} onClick={toggleNeedsRevision}>{t('needs_revision')}</div>
                     <div onClick={() => setTagsModalShown(true)} className={`${classes.button} ${classes.buttonOfSet}`}>{t('tags')}...</div>
                     {tagsModalShown && ReactDOM.createPortal(<TagsModal handleExit={() => setTagsModalShown(false)} tags={tags} addTag={addTag} removeTag={removeTag} />, portalElement)}
                 </div>
-                <input dir={packetDir} ref={relatedRef} type="text" className={classes.otherInput} placeholder={t('related_words')} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
-                <input ref={dialectRef} type="text" className={classes.otherInput} placeholder={t('dialect')} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
+                <input dir={packetDir} id="related" value={textStates.related} onChange={handleChangeText} type="text" className={classes.otherInput} placeholder={t('related_words')} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
+                <input id="dialect" type="text" value={textStates.dialect} onChange={handleChangeText} className={classes.otherInput} placeholder={t('dialect')} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
                 <Memorization chosenLevel={memorization} handleSetMemorization={handleSetMemorization} />
                 {editMode && <DeleteCardButton />}
             </div>

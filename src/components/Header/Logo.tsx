@@ -15,11 +15,3 @@ const Logo = () => {
 };
 
 export default Logo;
-
-// if ('serviceWorker' in navigator) {
-//     window.addEventListener('load', () => {
-//         navigator.serviceWorker
-//             .register('./[NAME OF SW FILE.js]')
-//             .then(reg => )
-//     });
-// }

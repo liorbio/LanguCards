@@ -1,4 +1,3 @@
-import GoBack from "./GoBack";
 import Logo from "./Logo";
 import classes from './Header.module.css';
 

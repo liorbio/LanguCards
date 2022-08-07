@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import React, { ChangeEventHandler, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import portalElement from '../../../../elements/portalElement';
 import CircledPlus from '../../../../generatedIcons/CircledPlus.js';
@@ -40,11 +40,6 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
         related: cardInfo?.related ?? "",
         dialect: cardInfo?.dialect ?? ""
     });
-    // const [term, setTerm] = useState(cardInfo?.term ?? "");
-    // const [definition, setDefinition] = useState(cardInfo?.definition ?? "");
-    // const [usage, setUsage] = useState(cardInfo?.usage ?? "");
-    // const [related, setRelated] = useState(cardInfo?.related ?? "");
-    // const [dialect, setDialsect] = useState(cardInfo?.dialect ?? "");
     const [needsRevision, setNeedsRevision] = useState(cardInfo?.needsRevision ?? false);    
     const [tagsModalShown, setTagsModalShown] = useState(false);
     const [tags, setTags] = useState<string[]>(cardInfo?.tags ?? []);

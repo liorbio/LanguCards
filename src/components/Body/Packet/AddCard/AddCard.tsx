@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import portalElement from '../../../../elements/portalElement';
 import CircledPlus from '../../../../generatedIcons/CircledPlus.js';
@@ -15,7 +15,8 @@ import { CardType } from '../../../../types/types';
 import uniqid from 'uniqid';
 import DeleteCardButton from './DeleteCardButton';
 import Tutorial from './Tutorial/Tutorial';
-import { get } from 'idb-keyval';
+import GoBack from '../../../Header/GoBack';
+import DefaultModal from '../../../../UI/DefaultModal';
 
 const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     const { t } = useTranslation();
@@ -33,26 +34,25 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     const dialectRef = useRef<HTMLInputElement>(null);
     
     // States: 
-    const [showTutorial, setShowTutorial] = useState(false);
+    const showTutorial = !useAppSelector(state => state.settings.seenTutorial);
+    const [showWarning, setShowWarning] = useState(false);
     const [showPartOfSpeechModal, setShowPartOfSpeechModal] = useState(false);
     const [chosenPOS, setChosenPOS] = useState(cardInfo?.pos ?? "");
     const [needsRevision, setNeedsRevision] = useState(cardInfo?.needsRevision ?? false);    
     const [tagsModalShown, setTagsModalShown] = useState(false);
     const [tags, setTags] = useState<string[]>(cardInfo?.tags ?? []);
     const [memorization, setMemorization] = useState(cardInfo?.memorization ?? 0);
-    
+
     useEffect(() => {
         termRef.current!.value = cardInfo?.term ?? "";
         definitionRef.current!.value = cardInfo?.definition ?? "";
         usageRef.current!.value = cardInfo?.usage ?? "";
         relatedRef.current!.value = cardInfo?.related ?? "";
         dialectRef.current!.value = cardInfo?.dialect ?? "";
-
-        // show tutorial if first time adding a card
-        get('seenTutorial').then(val => {
-            if (!val) setShowTutorial(true);
-        });
     }, [cardInfo]);
+    
+    const changed = cardInfo ? termRef.current?.value !== cardInfo.term : termRef.current?.value !== "";
+    console.log(changed)
     
     // Handlers:
     const handleChoose = (pos: string) => {
@@ -77,6 +77,18 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     const handleSetMemorization = (level: number) => {
         setMemorization(level);
     };
+
+    const handleExit = () => {
+        navigate(-1);
+    }
+    const handleXClick = () => {
+        if (changed) {
+            setShowWarning(true);
+        } else {
+            handleExit();
+        }
+    };
+
     const handleAdd = () => {
         if (termRef.current!.value.length > 0) {
             if (!editMode) { // new card
@@ -94,8 +106,12 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
 
     return (
         <>
-            {showTutorial && ReactDOM.createPortal(<Tutorial unmountTutorial={() => setShowTutorial(false)} />, portalElement)}
+            {showTutorial && ReactDOM.createPortal(<Tutorial packetDir={packetDir} />, portalElement)}
+            {showWarning && ReactDOM.createPortal(<DefaultModal title={t('warning')} buttonOne={t('cancel')} buttonTwo={t('exit')} handler={handleExit} toggler={() => setShowWarning(false)} modalType="Warning">
+                <div style={{ paddingBlock: "1.5rem", textAlign: "center" }}>{t('are_you_sure_exit_without_save')}</div>
+            </DefaultModal>, portalElement)}
             <div className={classes.addCardWrapper} dir={t('globalDir')} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
+                <div onClick={handleXClick} style={{ position: "fixed", zIndex: 4, width: "12vw", height: "60px", top: "0", left: "6px", display: "flex", alignItems: "center", justifyContent: "center" }}><GoBack icon="x" /></div>
                 <div onClick={handleAdd} style={{ position: "fixed", zIndex: 4, width: "12vw", height: "60px", top: "0", right: "6px", display: "flex", alignItems: "center", justifyContent: "center" }}><CheckVector /></div>
                 <div dir={packetDir} style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", width: "100vw" }}>
                     <input ref={termRef} type="text" style={{ fontSize: "1.5rem", backgroundColor: needsRevision ? "#FAF1ED" : "#fafafa" }} className={classes.termInput} placeholder={t('term')} />

@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import LearningBox from './components/Body/LearningBox/LearningBox';
@@ -7,10 +7,20 @@ import LanguCard from './components/Body/Packet/LanguCard';
 import Packet from './components/Body/Packet/Packet';
 import Settings from './components/Body/Settings/Settings';
 import Header from './components/Header/Header';
+import { useAppDispatch } from './hooks/reduxHooks';
+import { settingsActions } from './store/redux-logic';
+import { get } from 'idb-keyval';
 import LoadingSpinner from './UI/LoadingSpinner';
 
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    get('seenTutorial').then(val => {
+      dispatch(settingsActions.updateSettingsFromIdb({ seenTutorial: val }));    
+    });
+  }, [dispatch]);
 
   return (
     <Suspense fallback={<LoadingSpinner />}>

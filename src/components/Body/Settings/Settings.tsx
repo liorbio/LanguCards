@@ -24,7 +24,7 @@ const Settings = () => {
     const { t, i18n } = useTranslation();
 
     const [interfaceLanguage, setInterfaceLanguage] = useState<string | null>(null);
-
+    // MAYBE CHANGE interfacelanguage settings to INITIALLY LOAD VIA USEselector ✏️
     useEffect(() => {
         let lang = localStorage.getItem("i18nextLng");
         if (!lang) { lang = "en" }

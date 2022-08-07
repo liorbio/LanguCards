@@ -41,10 +41,12 @@
     "delete": "DELETE",
     "are_you_sure_delete": "Are you sure you want to delete this card?",
     "interface_language": "Interface Language",
-    "term_tutorial": "Write a term, the rest is optional!",
-    "pos_tutorial": "Choose the term's part of speech",
-    "needs_revision_tutorial": "If unsure about the card, mark that it needs revision",
-    "tags_tutorial": "Add tags to search by later. For example, add a \"food\" tag so you can later find all food-related cards",
+    "term_tutorial": "This is where you'll write the term. The other fields are optional!",
+    "pos_tutorial": "This is where you'll choose the term's part of speech",
+    "needs_revision_tutorial": "If unsure about the card, you can mark that it needs revision",
+    "tags_tutorial": "This is where you add tags to search by later. For example, if you add a \"food\" tag to all food-related cards, it will be easy to search them later",
     "replay_tutorial": "Replay tutorial",
-    "continue": "Continue"
+    "continue": "Continue",
+    "are_you_sure_exit_without_save": "Are you sure you want to exit without saving?",
+    "exit": "EXIT"
 }

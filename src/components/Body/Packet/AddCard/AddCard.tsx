@@ -125,7 +125,7 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
                 <textarea dir={packetDir} id="usage" value={textStates.usage} onChange={handleChangeText} placeholder={t('examples_of_usage')} className={classes.exampleUsage} />
                 <div style={{ display: "flex", justifyContent: "space-evenly", width: "100vw", marginTop: "2vh" }}>
                     <div className={`${classes.button} ${classes.buttonOfSet}`} style={needsRevision ? { backgroundColor: "#ee4444", color: "white" } : {}} onClick={toggleNeedsRevision}>{t('needs_revision')}</div>
-                    <div onClick={() => setTagsModalShown(true)} className={`${classes.button} ${classes.buttonOfSet}`}>{t('tags')}...</div>
+                    <div onClick={() => setTagsModalShown(true)} className={`${classes.button} ${classes.buttonOfSet} ${tags.length > 0 ? classes.hasTags : null}`}>{t('tags')}...</div>
                     {tagsModalShown && ReactDOM.createPortal(<TagsModal handleExit={() => setTagsModalShown(false)} tags={tags} addTag={addTag} removeTag={removeTag} />, portalElement)}
                 </div>
                 <input dir={packetDir} id="related" value={textStates.related} onChange={handleChangeText} type="text" className={classes.otherInput} placeholder={t('related_words')} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />

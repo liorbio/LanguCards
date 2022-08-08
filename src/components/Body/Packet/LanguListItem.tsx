@@ -14,7 +14,7 @@ const LanguListItem = ({ cardId, term, definition, pos, needsRevision, packetDir
     };
     return (
         <article onClick={navToCard} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
-            <div dir={packetDir} style={{ display: "grid", gridTemplateColumns: "80% 20%" }}>
+            <div dir={packetDir} style={{ display: "grid", gridTemplateColumns: "85% 15%" }}>
                 <div style={{ alignSelf: "center", justifySelf: "start", fontSize: "1.3rem", fontWeight: "bold", paddingInline: "1rem" }}>{term}</div>
                 {pos && <div style={{ backgroundColor: partsOfSpeech[pos].color, alignSelf: "center", ...circleStyle }}>{pos}</div>}
             </div>

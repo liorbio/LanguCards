@@ -2,13 +2,13 @@
     bottom: 8vh;
     right: 7vw;
     position: fixed;
-    width: 5rem;
-    height: 5rem;
+    width: 3.5rem;
+    height: 3.5rem;
     border-radius: 100%;
     background-color: #E40089;
     text-align: center;
     font-size: 4rem;
-    line-height: 1.2;
+    line-height: 0.8;
     color: white;
     box-shadow: 0 4px 12px #aaa;
 }

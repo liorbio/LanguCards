@@ -60,6 +60,10 @@
     padding: 1rem;
     width: var(--button-set-width);
 }
+.hasTags {
+    background-color: #ffceeb;
+    color: #222;
+}
 .otherInput {
     width: var(--other-input-width);
     font-size: 1.2rem;
@@ -70,6 +74,7 @@
     position: fixed;
     z-index: 5;
     box-shadow: 0 0 0 65534px #b9b9b9ab;
+    background-color: #E4008970;
     border-radius: 15px;
     padding: 15px;
 }

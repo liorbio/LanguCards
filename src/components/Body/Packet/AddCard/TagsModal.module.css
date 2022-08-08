@@ -12,18 +12,8 @@
     display: flex;
     flex-direction: column;
 }
-.topRow {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 88% 12%;
-    place-items: center;
-    margin-bottom: 10px;
-}
-.topRow input {
-    border: 0;
-    border-bottom: 1px solid #000;
-    font-size: 1.3rem;
-    width: 95%;
+.modalWrapper input {
+    opacity: 0;
 }
 .tagsWrapper {
     display: flex;

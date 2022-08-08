@@ -16,6 +16,7 @@ const Instruction = ({ stageIndex, nextStage, packetDir } : { stageIndex: number
     return (
         <>
             <div className={classes.wholeScreenClickStealer} onClick={nextStage}></div>
+            <div className={`${addCardClasses.holeContour} ${addCardClasses[stages[stageIndex].cssClass]} ${direction === "rtl" ? addCardClasses[`${stages[stageIndex].cssClass}Rtl`] : null}`} style={stageIndex === 4 ? { padding: 0, animation: "none" } : {}}></div>
             <div className={`${addCardClasses.hole} ${addCardClasses[stages[stageIndex].cssClass]} ${direction === "rtl" ? addCardClasses[`${stages[stageIndex].cssClass}Rtl`] : null}`} style={stageIndex === 4 ? { padding: 0 } : {}}></div>
             <div dir={t('globalDir')} className={classes.instructionBubble} style={stageIndex !== 4 ? { width: "70vw", left: "10vw" } : { width: "30vw", left: "30vw"}}>{t(stages[stageIndex].text)}</div>
         </>

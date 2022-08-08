@@ -74,13 +74,32 @@
     position: fixed;
     z-index: 5;
     box-shadow: 0 0 0 65534px #b9b9b9ab;
-    background-color: #E4008970;
+    background-color: #b9b9b9ab;
     border-radius: 15px;
     padding: 15px;
 }
+@keyframes glow {
+    from {
+        border: 4px solid #E40089;
+    }
+    to {
+        border: 4px solid #E4008905;
+    }
+
+}
+.holeContour {
+    position: fixed;
+    z-index: 6;
+    padding: 15px;
+    border-radius: 100px;
+    animation-duration: 1s;
+    animation-name: glow;
+    animation-iteration-count: infinite;
+}
+
 .termHole {
     height: calc(1.5rem);
-    width: calc(var(--term-input-width) - 8px);
+    width: calc(var(--term-input-width) - 12px);
     top: calc(61px + 1vh);
     left: 1.5vw;
 }
@@ -89,8 +108,8 @@
     right: 1.5vw;
 }
 .posHole {
-    height: var(--pos-width);
-    width: var(--pos-width);
+    height: calc(var(--pos-width) - 6px);
+    width: calc(var(--pos-width) - 6px);
     top: calc(61px + 1vh);
     right: 0;
 }
@@ -102,19 +121,19 @@
     height: 3rem;
     width: calc(4vw + var(--button-set-width));
     top: calc(61px + 2vh + 1.5rem + 2.5vh + 2.5vh + 3.5rem + 3.5rem + 4vw + 3vh);
-    left: 6vw;
+    left: 5vw;
 }
 .needsRevisionHoleRtl {
     left: unset;
-    right: 6vw;
+    right: 5vw;
 }
 .tagsHole {
     height: 3rem;
     width: calc(4vw + var(--button-set-width));
     top: calc(61px + 2vh + 1.5rem + 2.5vh + 2.5vh + 3.5rem + 3.5rem + 4vw + 3vh);
-    right: 6vw;
+    right: 5vw;
 }
 .tagsHoleRtl {
     right: unset;
-    left: 6vw;
+    left: 5vw;
 }

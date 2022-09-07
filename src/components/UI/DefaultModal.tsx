@@ -1,6 +1,6 @@
 import { CSSProperties, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import XIcon from '../icons/XIcon.png';
+import XIcon from '../../icons/XIcon.png';
 import classes from './DefaultModal.module.css';
 
 type DefaultModalDeclaration = ({ children, title, topRightX, buttonOne, buttonTwo, handler, toggler, overrideStyle, modalType }: { children: ReactNode, title: string, topRightX?: boolean, buttonOne: string, buttonTwo?: string, handler: () => void, toggler: () => void, overrideStyle?: CSSProperties, modalType: "Warning" | "Dialogue" }) => JSX.Element | null;

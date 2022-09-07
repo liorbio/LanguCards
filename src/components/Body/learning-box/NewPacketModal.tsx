@@ -1,9 +1,9 @@
 import { useState, useRef } from "react";
 import { useTranslation } from 'react-i18next';
 import { PacketType } from "../../../types/types";
-import DefaultModal from "../../../UI/DefaultModal";
-import TextSwitchingToggleButton from "../../../UI/TextSwitchingToggleButton";
-import classes from './NewPacketModal.module.css';
+import DefaultModal from "../../UI/DefaultModal";
+import TextSwitchingToggleButton from "../../UI/TextSwitchingToggleButton";
+import classes from './LearningBox.module.css';
 
 const NewPacketModal = ({ handler, toggler }: { handler: (packet: PacketType) => void, toggler: () => void }) => {
     const { t } = useTranslation();

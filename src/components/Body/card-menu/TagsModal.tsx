@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import ModalBackgroundClicksPrevention from "../../../../UI/ModalBackgroundClicksPrevention";
-import { ThinXVector } from '../../../../generatedIcons';
+import ModalBackgroundClicksPrevention from "../../UI/ModalBackgroundClicksPrevention";
+import { ThinXVector } from '../../../generatedIcons';
 import classes from './TagsModal.module.css';
 import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
 

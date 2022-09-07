@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Instruction from "./Instruction";
 import instructionClasses from './Instruction.module.css';
-import { useAppDispatch } from "../../../../../hooks/reduxHooks";
-import { settingsActions } from "../../../../../store/redux-logic";
+import { useAppDispatch } from "../../../../hooks/reduxHooks";
+import { settingsActions } from "../../../../store/redux-logic";
 
 const Tutorial = ({ packetDir }: { packetDir: "ltr" | "rtl" }) => {
     const [stageIndex, setStageIndex] = useState(0);

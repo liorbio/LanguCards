@@ -1,14 +1,13 @@
-.packetCover {
+.bigWhiteButton {
     background-color: white;
     width: 92vw;
-    margin-top: 1rem;
     height: 7rem;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 2px solid #e6e6e6;
 }
-.packetCover h1 {
+.bigWhiteButton h1 {
     color: #7e7e7e;
     font-size: 1.5rem;
 }

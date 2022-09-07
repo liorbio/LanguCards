@@ -1,6 +1,6 @@
 import { CSSProperties, MouseEventHandler } from "react";
 import { useTranslation } from 'react-i18next';
-import ModalBackgroundClicksPrevention from "../../../../UI/ModalBackgroundClicksPrevention";
+import ModalBackgroundClicksPrevention from "../../UI/ModalBackgroundClicksPrevention";
 
 export const partsOfSpeech: { [name: string]: { name: string, color: string } } = {
     adj: { name: "adjective", color: "#FED19D" },

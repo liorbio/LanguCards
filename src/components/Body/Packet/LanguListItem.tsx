@@ -1,6 +1,6 @@
 import { createSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import { circleStyle, partsOfSpeech } from "./AddCard/PartOfSpeechModal";
+import { circleStyle, partsOfSpeech } from "../card-menu/PartOfSpeechModal";
 
 const LanguListItem = ({ cardId, term, definition, pos, needsRevision, packetDir }: { cardId: string, term: string, definition: string, pos: string, needsRevision: boolean, packetDir: "ltr" | "rtl" }) => {
     const navigate = useNavigate();

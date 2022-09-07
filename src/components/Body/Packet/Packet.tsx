@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
-import AddNew from '../AddNew';
+import AddNew from '../../UI/AddNew';
 import ClickBelow from '../../../icons/ClickBelow.png';
 import classes from './Packet.module.css';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { useAppSelector } from '../../../hooks/reduxHooks';
 import LanguCoupon from './LanguCoupon';
 import LanguListItem from './LanguListItem';
 import portalElement from '../../../elements/portalElement';
-import LoadingSpinner from '../../../UI/LoadingSpinner';
+import LoadingSpinner from '../../UI/LoadingSpinner';
 
 const Packet = () => {
     const { t } = useTranslation();

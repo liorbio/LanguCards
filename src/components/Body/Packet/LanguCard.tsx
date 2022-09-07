@@ -4,8 +4,8 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { PencilVector, XVector } from "../../../generatedIcons";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { packetsActions } from "../../../store/redux-logic";
-import Memorization from "./AddCard/Memorization";
-import { circleStyle, partsOfSpeech } from "./AddCard/PartOfSpeechModal";
+import Memorization from "../card-menu/Memorization";
+import { circleStyle, partsOfSpeech } from "../card-menu/PartOfSpeechModal";
 import classes from './LanguCard.module.css';
 
 const LanguCard = () => {

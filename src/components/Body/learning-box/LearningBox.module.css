@@ -1,0 +1,50 @@
+@import '../../../css-variables/constants.css';
+
+/* LearningBox */
+.learningBox { 
+    color: #6e6e6e;
+    width: 100%;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+.emptyLearningBox {
+    grid-template-rows: calc((100vh - 61px)*20/100) calc((100vh - 61px)*55/100) calc((100vh - 61px)*25/100);
+}
+
+.newLearningBoxVersion {
+    width: 100%;
+    height: calc(100vh - var(--headerHeight));
+    background-image: url('/public/FishboneDarkBold.png');
+    background-repeat: repeat
+}
+
+/* NewPacketModal */
+.modalBody {
+    display: grid;
+    grid-template-rows: 50% 50%;
+    grid-template-columns: 50% 50%;
+    justify-items: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.modalBody input {
+    border: 0;
+    border-bottom: 1px solid #c9c9c9;
+    margin: 20px 0px;
+    padding: 10px 0 4px 3px;
+    font-size: 20px;
+    width: 88%;
+    grid-column: 1 / 3;
+}
+
+.modalBody p {
+    grid-column: 1;
+    font-weight: bold;
+    color: #737373;
+}
+.modalBody div {
+    grid-column: 2;
+    text-align: center;
+}

@@ -1,16 +1,18 @@
 import { Suspense, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import LearningBox from './components/Body/LearningBox/LearningBox';
-import AddCard from './components/Body/Packet/AddCard/AddCard';
-import LanguCard from './components/Body/Packet/LanguCard';
-import Packet from './components/Body/Packet/Packet';
-import Settings from './components/Body/Settings/Settings';
-import Header from './components/Header/Header';
+import LearningBox from './components/body/learning-box/LearningBox';
+import AddCard from './components/body/card-menu/AddCard';
+import LanguCard from './components/body/packet/LanguCard';
+import Packet from './components/body/packet/Packet';
+import Settings from './components/body/settings/Settings';
+import Header from './components/header/Header';
 import { useAppDispatch } from './hooks/reduxHooks';
 import { settingsActions } from './store/redux-logic';
 import { get } from 'idb-keyval';
-import LoadingSpinner from './UI/LoadingSpinner';
+import LoadingSpinner from './components/UI/LoadingSpinner';
+import Welcome from './components/body/welcome/Welcome';
+import LoginRequired from './components/authorization/LoginRequired';
 
 
 function App() {
@@ -27,12 +29,13 @@ function App() {
     <div className="App">
       <Header />
       <Routes>
-        <Route path="/:language" element={<Packet />} />
-        <Route path="/:language/add" element={<AddCard />} />
-        <Route path="/:language/card" element={<LanguCard />} />
-        <Route path="/:language/card/edit" element={<AddCard editMode={true} />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/" element={<LearningBox />} />
+        <Route path="/:language" element={<LoginRequired><Packet /></LoginRequired>} />
+        <Route path="/:language/add" element={<LoginRequired><AddCard /></LoginRequired>} />
+        <Route path="/:language/card" element={<LoginRequired><LanguCard /></LoginRequired>} />
+        <Route path="/:language/card/edit" element={<LoginRequired><AddCard editMode={true} /></LoginRequired>} />
+        <Route path="/settings" element={<LoginRequired><Settings /></LoginRequired>} />
+        <Route path="/learning-box" element={<LoginRequired><LearningBox /></LoginRequired>} />
+        <Route path="/" element={<Welcome />} />
       </Routes>
     </div>
     </Suspense>

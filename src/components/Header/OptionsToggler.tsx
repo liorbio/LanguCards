@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from 'react-dom';
-import OptionsMenu from "./OptionsMenu";
-import ModalBackgroundClicksPrevention from "../../UI/ModalBackgroundClicksPrevention";
+import OptionsMenu from './OptionsMenu';
+import ModalBackgroundClicksPrevention from "../UI/ModalBackgroundClicksPrevention";
 import portalElement from "../../elements/portalElement";
 
 const optionSymbolStyle = {

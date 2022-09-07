@@ -1,13 +1,13 @@
 import ReactDOM from 'react-dom';
 import { useState } from "react";
 import { useTranslation } from 'react-i18next';
-import DefaultModal from '../../../../UI/DefaultModal';
-import portalElement from '../../../../elements/portalElement';
-import ModalBackgroundClicksPrevention from '../../../../UI/ModalBackgroundClicksPrevention';
+import DefaultModal from '../../UI/DefaultModal';
+import portalElement from '../../../elements/portalElement';
+import ModalBackgroundClicksPrevention from '../../UI/ModalBackgroundClicksPrevention';
 import classes from './DeleteCardButton.module.css';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { useAppDispatch } from '../../../../hooks/reduxHooks';
-import { packetsActions } from '../../../../store/redux-logic';
+import { useAppDispatch } from '../../../hooks/reduxHooks';
+import { packetsActions } from '../../../store/redux-logic';
 
 const DeleteCardButton = () => {
     const { t } = useTranslation();

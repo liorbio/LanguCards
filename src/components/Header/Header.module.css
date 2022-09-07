@@ -1,8 +1,10 @@
+@import '../../css-variables/constants.css';
+
 .navbar {
     display: grid;
     grid-template-columns: 15% 15% 40% 15% 15%;
     width: 100vw;
-    height: 60px;
+    height: var(--headerHeight);
     background-color: #fff;
     border-bottom: 0.5px solid #e5e5e5;
 }

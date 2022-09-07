@@ -5,13 +5,13 @@ import ClickBelow from '../../../icons/ClickBelow.png';
 import PacketCover from './PacketCover';
 import classes from "./LearningBox.module.css";
 import AddNew from '../AddNew';
-import ModalBackgroundClicksPrevention from '../../../UI/ModalBackgroundClicksPrevention';
+import ModalBackgroundClicksPrevention from '../../UI/ModalBackgroundClicksPrevention';
 import NewPacketModal from './NewPacketModal';
 import portalElement from '../../../elements/portalElement';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { PacketType } from '../../../types/types';
 import { packetsActions } from '../../../store/redux-logic';
-import LoadingSpinner from '../../../UI/LoadingSpinner';
+import LoadingSpinner from '../../UI/LoadingSpinner';
 
 // To do:
 // change stupidHandleNewPacketAddition into a handler that adds packet to DB
@@ -52,14 +52,17 @@ const LearningBox = () => {
     );
     return (
         <>
-            {packets === null ? <LoadingSpinner /> :
+        <div className={classes.newLearningBoxVersion}>
+
+        </div>
+            {/* packets === null ? <LoadingSpinner /> :
                 <div dir={t('globalDir')} className={classes.learningBox + ' ' + (packets.length === 0 ? classes.emptyLearningBox : classes.populatedLearningBox)}>
                     {packets.length === 0 ? emptyLearningBox : populatedLearningBox}
                     { ReactDOM.createPortal(<AddNew handler={toggleNewPacketModal} />, portalElement) }
                     { newPacketModalShown && ReactDOM.createPortal(<ModalBackgroundClicksPrevention handler={toggleNewPacketModal} />, portalElement) }
                     { newPacketModalShown && ReactDOM.createPortal(<NewPacketModal toggler={toggleNewPacketModal} handler={handleNewPacketAddition} />, portalElement) }
                 </div>
-            }
+    */}
         </>
     );
 };

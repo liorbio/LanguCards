@@ -1,22 +1,22 @@
 import ReactDOM from 'react-dom';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import portalElement from '../../../../elements/portalElement';
-import CircledPlus from '../../../../generatedIcons/CircledPlus.js';
+import portalElement from '../../../elements/portalElement';
+import CircledPlus from '../../../generatedIcons/CircledPlus.js';
 import classes from './AddCard.module.css';
 import Memorization from './Memorization';
 import PartOfSpeechModal, { circleStyle, partsOfSpeech } from './PartOfSpeechModal';
-import { CheckVector } from '../../../../generatedIcons';
+import { CheckVector } from '../../../generatedIcons';
 import TagsModal from './TagsModal';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { packetsActions } from '../../../../store/redux-logic';
-import { CardType } from '../../../../types/types';
+import { packetsActions } from '../../../store/redux-logic';
+import { CardType } from '../../../types/types';
 import uniqid from 'uniqid';
 import DeleteCardButton from './DeleteCardButton';
 import Tutorial from './Tutorial/Tutorial';
-import GoBack from '../../../Header/GoBack';
-import DefaultModal from '../../../../UI/DefaultModal';
+import GoBack from '../../header/GoBack';
+import DefaultModal from '../../UI/DefaultModal';
 
 const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     const { t } = useTranslation();

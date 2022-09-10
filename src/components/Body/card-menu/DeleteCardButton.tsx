@@ -30,9 +30,7 @@ const DeleteCardButton = () => {
     return (
         <>
             <div className={classes.deleteButton} onClick={() => setShowWarning(true)}>{t('delete')}</div>
-            {showWarning && ReactDOM.createPortal(<ModalBackgroundClicksPrevention handler={() => setShowWarning(false)} />, portalElement)}
-            {showWarning && ReactDOM.createPortal(warning, portalElement)}
-
+            {showWarning && warning}
         </>
         
     )

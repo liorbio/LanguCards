@@ -110,9 +110,9 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     return (
         <>
             {showTutorial && ReactDOM.createPortal(<Tutorial packetDir={packetDir} />, portalElement)}
-            {showWarning && ReactDOM.createPortal(<DefaultModal title={t('warning')} buttonOne={t('cancel')} buttonTwo={t('exit')} handler={handleExit} toggler={() => setShowWarning(false)} modalType="Warning">
+            {showWarning && <DefaultModal title={t('warning')} buttonOne={t('cancel')} buttonTwo={t('exit')} handler={handleExit} toggler={() => setShowWarning(false)} modalType="Warning">
                 <div style={{ paddingBlock: "1.5rem", textAlign: "center" }}>{t('are_you_sure_exit_without_save')}</div>
-            </DefaultModal>, portalElement)}
+            </DefaultModal>}
             <div className={classes.addCardWrapper} dir={t('globalDir')} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
                 <div onClick={handleXClick} style={{ position: "fixed", zIndex: 4, width: "12vw", height: "60px", top: "0", left: "6px", display: "flex", alignItems: "center", justifyContent: "center" }}><GoBack icon="x" goTo="NONE" /></div>
                 <div onClick={handleAdd} style={{ position: "fixed", zIndex: 4, width: "12vw", height: "60px", top: "0", right: "6px", display: "flex", alignItems: "center", justifyContent: "center" }}><CheckVector /></div>

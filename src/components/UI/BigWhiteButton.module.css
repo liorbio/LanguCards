@@ -1,6 +1,8 @@
+@import '../../css-variables/constants.css';
+
 .bigWhiteButton {
     background-color: white;
-    width: 92vw;
+    width: var(--bigButtonWidth);
     height: 7rem;
     display: flex;
     justify-content: center;

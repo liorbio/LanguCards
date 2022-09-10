@@ -1,8 +1,9 @@
+import { CSSProperties } from 'react';
 import classes from './ModalBackgroundClicksPrevention.module.css';
 
-const ModalBackgroundClicksPrevention = ({ handler }: { handler: () => void }) => {
+const ModalBackgroundClicksPrevention = ({ handler, overrideStyle }: { handler: () => void, overrideStyle?: CSSProperties }) => {
     return (
-        <div onClick={handler} className={classes.prevention}>
+        <div onClick={handler} className={classes.prevention} style={overrideStyle}>
         </div>
     )
 };

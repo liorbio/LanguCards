@@ -10,6 +10,7 @@ const Header = () => {
         <>
             <Routes>
                 <Route path="/" element={<HeaderInMain />} />
+                <Route path="/learning-box" element={<HeaderInMain />} />
                 <Route path="/:language" element={<HeaderInPacket />} />
                 <Route path="/:language/add" element={<HeaderInAddCard />} />
                 <Route path="/:language/card" element={<HeaderInCard />} />

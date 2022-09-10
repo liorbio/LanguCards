@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import ModalBackgroundClicksPrevention from "../../UI/ModalBackgroundClicksPrevention";
-import { ThinXVector } from '../../../generatedIcons';
+import SmallXVector from '../../../generatedIcons/SmallXVector';
 import classes from './TagsModal.module.css';
 import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
 
@@ -42,8 +42,8 @@ const TagsModal = ({ handleExit, tags, removeTag, addTag }: { handleExit: () => 
         <>
             <div dir={t('globalDir')} className={classes.modalWrapper} onClick={refocusInput}>
                 <div className={classes.tagsWrapper}>
-                    {tags.map(tg => <div className={classes.tag} key={tg} id={tg} onClick={handleCreatedTagXClick}><span>{tg}</span><ThinXVector /></div>)}
-                    {typedTag !== "" && <div className={classes.tag} onClick={handleTypedTagXClick}><span>{typedTag}</span><ThinXVector /></div>}
+                    {tags.map(tg => <div className={classes.tag} key={tg} id={tg} onClick={handleCreatedTagXClick}><span>{tg}</span><SmallXVector /></div>)}
+                    {typedTag !== "" && <div className={classes.tag} onClick={handleTypedTagXClick}><span>{typedTag}</span><SmallXVector /></div>}
                 </div>
                 <input type="text" value={typedTag} ref={inputRef} onChange={typeCharacters} onKeyUp={detectEnterPress} onBlur={addTagBeforeUnmount} />
                 <div className={classes.bottomRow} onClick={handleExit}>{t('close')}</div>

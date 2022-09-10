@@ -1,13 +1,60 @@
 @import '../../../css-variables/constants.css';
 
+:root {
+    --gap: 2rem;
+    --padding: 20px;
+}
+
 .welcome {
     width: 100%;
-    height: calc(100vh - var(--headerHeight));
+    height: calc(100vh - 1px - var(--headerHeight));
     background-image: url('/public/FishboneDarkBold.png');
     background-repeat: repeat;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    justify-content: center;
+    gap: var(--gap);
     align-items: center;
+}
+
+
+
+.welcome section {
+    margin-top: var(--gap);
+    width: calc(var(--bigButtonWidth) - 2*var(--padding));
+    padding: var(--padding);
+    background-color: white;
+    font-size: 1.2rem;
+    line-height: 1.4;
+}
+.welcome section div {
+    text-align: center;
+}
+
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    padding-inline: calc(2*var(--horizontalGutter));
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+.modalContent input {
+    font-family: 'Assistant', 'sans-serif';
+    font-size: 1.4rem;
+    border: 0;
+    border-bottom: 1px solid #C4C4C4;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+}
+.modalContent input::placeholder {
+    color: #CECECE;
+}
+.modalContent input[type=checkbox] {
+    transform: scale(1.8);
+    margin-right: 0.7rem;
+    margin-bottom: 1.5rem;
+}
+.modalContent p {
+    margin-block: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
 }

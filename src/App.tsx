@@ -8,11 +8,12 @@ import Packet from './components/body/packet/Packet';
 import Settings from './components/body/settings/Settings';
 import Header from './components/header/Header';
 import { useAppDispatch } from './hooks/reduxHooks';
-import { settingsActions } from './store/redux-logic';
+import { authActions, settingsActions } from './store/redux-logic';
 import { get } from 'idb-keyval';
 import LoadingSpinner from './components/UI/LoadingSpinner';
 import Welcome from './components/body/welcome/Welcome';
 import LoginRequired from './components/authorization/LoginRequired';
+import Logout from './components/authorization/Logout';
 
 
 function App() {
@@ -21,6 +22,9 @@ function App() {
   useEffect(() => {
     get('seenTutorial').then(val => {
       dispatch(settingsActions.updateSettingsFromIdb({ seenTutorial: val }));    
+    });
+    get('languCardsJwt').then(val => {
+      dispatch(authActions.consumeJwtFromIDB(val));
     });
   }, [dispatch]);
 
@@ -33,8 +37,9 @@ function App() {
         <Route path="/:language/add" element={<LoginRequired><AddCard /></LoginRequired>} />
         <Route path="/:language/card" element={<LoginRequired><LanguCard /></LoginRequired>} />
         <Route path="/:language/card/edit" element={<LoginRequired><AddCard editMode={true} /></LoginRequired>} />
-        <Route path="/settings" element={<LoginRequired><Settings /></LoginRequired>} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/learning-box" element={<LoginRequired><LearningBox /></LoginRequired>} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="/" element={<Welcome />} />
       </Routes>
     </div>

@@ -1,13 +1,15 @@
 export { default as CheckVector } from "./CheckVector";
 export { default as CircledPlus } from "./CircledPlus";
+export { default as ClickBelow } from "./ClickBelow";
 export { default as GoBackVector } from "./GoBackVector";
 export { default as LoginIcon } from "./LoginIcon";
+export { default as LogoutIcon } from "./LogoutIcon";
 export { default as MagnifVector } from "./MagnifVector";
 export { default as PencilVector } from "./PencilVector";
 export { default as PlusVector } from "./PlusVector";
 export { default as PuzzleIcon } from "./PuzzleIcon";
 export { default as SettingsIcon } from "./SettingsIcon";
 export { default as SketchpadVector } from "./SketchpadVector";
+export { default as SmallXVector } from "./SmallXVector";
 export { default as SwitchIcon } from "./SwitchIcon";
-export { default as ThinXVector } from "./ThinXVector";
 export { default as XVector } from "./XVector";

@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
-import ClickBelow from '../../../icons/ClickBelow.png';
 import PacketCover from './PacketCover';
 import classes from "./LearningBox.module.css";
-import AddNew from '../AddNew';
-import ModalBackgroundClicksPrevention from '../../UI/ModalBackgroundClicksPrevention';
+import AddNew from '../../UI/AddNew';
 import NewPacketModal from './NewPacketModal';
 import portalElement from '../../../elements/portalElement';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { PacketType } from '../../../types/types';
 import { packetsActions } from '../../../store/redux-logic';
 import LoadingSpinner from '../../UI/LoadingSpinner';
+import { ClickBelow } from '../../../generatedIcons';
 
 // To do:
 // change stupidHandleNewPacketAddition into a handler that adds packet to DB
@@ -41,10 +40,9 @@ const LearningBox = () => {
     const emptyLearningBox = (
         <>
             <p>{t('strengthen_vocab')}<br /><br />{t('create_packet')}<br />{t('to_learn')}</p>
-            <img style={{ marginLeft: "3rem", height: "47vh" }} src={ClickBelow} alt="click on bottom right corner" />
+            <ClickBelow />
         </>
-    ); // change img to SVG
-
+    );
     const populatedLearningBox = (
         <>
             {packets?.map((p, idx) => <PacketCover language={p.language} key={idx} /> )}
@@ -52,17 +50,13 @@ const LearningBox = () => {
     );
     return (
         <>
-        <div className={classes.newLearningBoxVersion}>
-
-        </div>
-            {/* packets === null ? <LoadingSpinner /> :
+            {packets === null ? <LoadingSpinner /> :
                 <div dir={t('globalDir')} className={classes.learningBox + ' ' + (packets.length === 0 ? classes.emptyLearningBox : classes.populatedLearningBox)}>
                     {packets.length === 0 ? emptyLearningBox : populatedLearningBox}
-                    { ReactDOM.createPortal(<AddNew handler={toggleNewPacketModal} />, portalElement) }
-                    { newPacketModalShown && ReactDOM.createPortal(<ModalBackgroundClicksPrevention handler={toggleNewPacketModal} />, portalElement) }
-                    { newPacketModalShown && ReactDOM.createPortal(<NewPacketModal toggler={toggleNewPacketModal} handler={handleNewPacketAddition} />, portalElement) }
+                    {ReactDOM.createPortal(<AddNew handler={toggleNewPacketModal} />, portalElement)}
+                    {newPacketModalShown && <NewPacketModal toggler={toggleNewPacketModal} handler={handleNewPacketAddition} />}
                 </div>
-    */}
+            }
         </>
     );
 };

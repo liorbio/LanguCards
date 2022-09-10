@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import AddNew from '../../UI/AddNew';
-import ClickBelow from '../../../icons/ClickBelow.png';
+import { ClickBelow } from '../../../generatedIcons';
 import classes from './Packet.module.css';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -33,9 +33,9 @@ const Packet = () => {
     const emptyPacket = (
         <>
             <div style={{ gridRow: 1 }}>
-            <h1>{lang![0].toUpperCase()+lang!.slice(1)}</h1>
+            <h1 style={{ marginBlock: 0 }}>{lang![0].toUpperCase()+lang!.slice(1)}</h1>
             {t('add_card')}</div>
-            <img style={{ marginLeft: "3rem", gridRow: 2, height: "47vh" }} src={ClickBelow} alt="click on bottom right corner" />
+            <ClickBelow />
         </>
     );
     const populatedPacket = ( // list of coupons -- according to query params

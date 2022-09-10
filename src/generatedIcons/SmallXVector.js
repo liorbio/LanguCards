@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const SvgThinXVector = (props) => (
+const SvgSmallXVector = (props) => (
   <svg
     width={11}
     height={11}
@@ -16,4 +16,4 @@ const SvgThinXVector = (props) => (
   </svg>
 );
 
-export default SvgThinXVector;
+export default SvgSmallXVector;

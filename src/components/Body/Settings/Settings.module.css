@@ -1,7 +1,12 @@
+@import '../../../css-variables/constants.css';
+
 .settingsWrapper {
-    height: calc(100vh - 52px);
+    --padding: 1rem;
+    height: calc(100vh - 1px - var(--headerHeight) - var(--padding));
+    padding-top: var(--padding);
 }
 .settingsWrapper h1 {
+    margin-top: 0;
     margin-inline: 1rem;
     font-size: 1.8rem;
     color: #666;

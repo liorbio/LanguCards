@@ -1,18 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './authSlice';
-import packetsSlice from './packetsSlice';
+import packetSlice from './packetSlice';
 import settingsSlice from './settingsSlice';
 
 
 const store = configureStore({
-    reducer: { packets: packetsSlice.reducer,
-               settings: settingsSlice.reducer,
+    reducer: { settings: settingsSlice.reducer,
+               packet: packetSlice.reducer,
                auth: authSlice.reducer }
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-export const packetsActions = packetsSlice.actions;
+export const packetActions = packetSlice.actions;
 export const settingsActions = settingsSlice.actions;
 export const authActions = authSlice.actions;
 export default store;

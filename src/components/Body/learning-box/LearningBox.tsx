@@ -6,31 +6,44 @@ import classes from "./LearningBox.module.css";
 import AddNew from '../../UI/AddNew';
 import NewPacketModal from './NewPacketModal';
 import portalElement from '../../../elements/portalElement';
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
+import { useAppSelector } from '../../../hooks/reduxHooks';
 import { PacketType } from '../../../types/types';
-import { packetsActions } from '../../../store/redux-logic';
 import LoadingSpinner from '../../UI/LoadingSpinner';
 import { ClickBelow } from '../../../generatedIcons';
 
-// To do:
-// change stupidHandleNewPacketAddition into a handler that adds packet to DB
-
 const LearningBox = () => {
     const { t } = useTranslation();
-    const packetsInRedux = useAppSelector(state => state.packets);
-    const dispatch = useAppDispatch();
+    const authToken = useAppSelector(state => state.auth.jwt);
     const [packets, setPackets] = useState<PacketType[] | null>(null);
     const [newPacketModalShown, setNewPacketModalShown] = useState(false);
-    // useEffect that fetches packets from local storage / mongo
+    
     useEffect(() => {
-        setPackets(packetsInRedux);
-    }, [packetsInRedux]);
+        fetch(`/packets`, {
+            headers: {
+                'auth-token': authToken
+            }
+        })
+            .then((res) => res.json())
+            .then((res) => setPackets(res))
+            .catch((err) => console.log(`Error fetching packets: ${err}`));
+    }, [authToken]);
 
 
     const handleNewPacketAddition = (packet: PacketType) => {
-        // NEEDS TO BE CHANGED TO WORK WITH local storage / mongo Inside useEffect
-        dispatch(packetsActions.addPacket(packet));
-        setNewPacketModalShown(false);
+        fetch(`/packets`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'auth-token': authToken
+            },
+            body: JSON.stringify({ language: packet.language, writingDir: packet.dir })
+        })
+            .then((res) => {
+                console.log(`Successfully added new packet of ${packet.language}`);
+                setNewPacketModalShown(false);
+            })
+            .catch((err) => console.log(`Error adding a ${packet.language} packet: ${err}`));
     }
     
     const toggleNewPacketModal = () => {

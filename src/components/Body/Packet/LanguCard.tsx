@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { PencilVector, XVector } from "../../../generatedIcons";
-import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
-import { packetsActions } from "../../../store/redux-logic";
+import { useAppSelector } from "../../../hooks/reduxHooks";
+import { CardType } from "../../../types/types";
 import Memorization from "../card-menu/Memorization";
 import { circleStyle, partsOfSpeech } from "../card-menu/PartOfSpeechModal";
 import classes from './LanguCard.module.css';
@@ -12,34 +12,53 @@ const LanguCard = () => {
     const { t } = useTranslation();
     const params = useParams();
     const [searchParams] = useSearchParams();
-    const selectedCardInfo = useAppSelector(state => {
-        const relevantPacket = state.packets.find(p => p.language === params.language);
-        if (relevantPacket) {
-            const relevantCard = relevantPacket.cards.find(c => c.cardId === searchParams.get('cardid'));
-            if (relevantCard) return { packetDir: relevantPacket.dir, ...relevantCard };
-        }
-        return;
-    });
-
+    const packetDir = useAppSelector(state => state.packet.packetDir);
+    const packetId = useAppSelector(state => state.packet.packetId);
+    const authToken = useAppSelector(state => state.auth.jwt);
+    const [card, setCard] = useState<CardType | null>(null);
     const [currentMemorization, setCurrentMemorization] = useState<number | null>(null);
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
 
-    if (selectedCardInfo) {
-        const { cardId, term, definition, pos, usage, needsRevision, tags, related, dialect, memorization, packetDir } = selectedCardInfo;
+    useEffect(() => {
+        fetch(`packets/${packetId}/${searchParams.get('cardid')}`, {
+            headers: {
+                'auth-token': authToken
+            }
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                setCard(res);
+                setCurrentMemorization(res.memorization);
+            })
+            .catch((err) => console.log(`Error fetching card: ${err}`));
+    }, [packetId, searchParams, authToken]);
+
+    const navigate = useNavigate();
+
+    if (card) {
+        const { term, definition, pos, usage, needsRevision, tags, related, dialect, memorization } = card;
         const handleChangeMemorization = (level: number) => {
             setCurrentMemorization(level);
         };
         const handleQuit = () => {
             if (currentMemorization && currentMemorization !== memorization) {
-                // call Mongo and update card
-
-                // and/or also change Redux state 
-                dispatch(packetsActions.updateMemorization({ packetLanguage: params.language!, cardId: cardId, newMemorization: currentMemorization }));
-                // and navigate out:
-                
+                fetch(`packets/${packetId}/${searchParams.get('cardid')}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'auth-token': authToken
+                    },
+                    body: JSON.stringify({ term, definition, pos, usage, needsRevision, tags, related, dialect, currentMemorization })
+                })
+                    .then((res) => {
+                        console.log(`Card updated successfully!`);
+                        navigate(-1);
+                    })
+                    .catch((res) => console.log(`Card update unsuccessful`));
+            } else {
+                navigate(-1);
             }
-            navigate(-1);
+            
         }
         return (
             <div dir={t('globalDir')} className={classes.languCardWrapper} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>

@@ -1,24 +1,29 @@
-import ReactDOM from 'react-dom';
 import { useState } from "react";
 import { useTranslation } from 'react-i18next';
 import DefaultModal from '../../UI/DefaultModal';
-import portalElement from '../../../elements/portalElement';
-import ModalBackgroundClicksPrevention from '../../UI/ModalBackgroundClicksPrevention';
 import classes from './DeleteCardButton.module.css';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { useAppDispatch } from '../../../hooks/reduxHooks';
-import { packetsActions } from '../../../store/redux-logic';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useAppSelector } from '../../../hooks/reduxHooks';
 
 const DeleteCardButton = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const params = useParams();
     const [searchParams] = useSearchParams();
-    const dispatch = useAppDispatch();
+    const packetId = useAppSelector(state => state.packet.packetId);
+    const authToken = useAppSelector(state => state.auth.jwt);
     const [showWarning, setShowWarning] = useState(false);
     const handleDelete = () => {
-        dispatch(packetsActions.deleteCard({ packetLanguage: params.language as string, cardId: searchParams.get('cardid') as string }));
-        navigate(-2);
+        fetch(`packets/${packetId}/${searchParams.get('cardid')}`, {
+            method: 'DELETE',
+            headers: {
+                'auth-token': authToken
+            }
+        })
+            .then((res) => {
+                console.log(`Card deletion successful`);
+                navigate(-2);
+            })
+            .catch((err) => console.log(`Error deleting card: ${err}`));
     }
 
     const warning = (

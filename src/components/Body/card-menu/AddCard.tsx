@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import portalElement from '../../../elements/portalElement';
 import CircledPlus from '../../../generatedIcons/CircledPlus.js';
@@ -8,11 +8,9 @@ import Memorization from './Memorization';
 import PartOfSpeechModal, { circleStyle, partsOfSpeech } from './PartOfSpeechModal';
 import { CheckVector } from '../../../generatedIcons';
 import TagsModal from './TagsModal';
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { packetsActions } from '../../../store/redux-logic';
+import { useAppSelector } from '../../../hooks/reduxHooks';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { CardType } from '../../../types/types';
-import uniqid from 'uniqid';
 import DeleteCardButton from './DeleteCardButton';
 import Tutorial from './Tutorial/Tutorial';
 import GoBack from '../../header/GoBack';
@@ -20,43 +18,64 @@ import DefaultModal from '../../UI/DefaultModal';
 
 const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     const { t } = useTranslation();
-    const dispatch = useAppDispatch();
-    const params = useParams();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const packetDir = useAppSelector(state => state.packets.find(p => p.language === params.language)!.dir);
-    const cardInfo = useAppSelector(state => state.packets.find(p => p.language === params.language)!.cards.find(c => c.cardId === searchParams.get('cardid')));
+    const packetDir = useAppSelector(state => state.packet.packetDir);
 
     // States: 
     const showTutorial = !useAppSelector(state => state.settings.seenTutorial);
+    const packetId = useAppSelector(state => state.packet.packetId);
+    const authToken = useAppSelector(state => state.auth.jwt);
     const [changeDetected, setChangeDetected] = useState(false);
     const [showWarning, setShowWarning] = useState(false);
     const [showPartOfSpeechModal, setShowPartOfSpeechModal] = useState(false);
-    const [chosenPOS, setChosenPOS] = useState(cardInfo?.pos ?? "");
+    const [chosenPOS, setChosenPOS] = useState("");
     const [textStates, setTextStates] = useState({
-        term: cardInfo?.term ?? "",
-        definition: cardInfo?.definition ?? "",
-        usage: cardInfo?.usage ?? "",
-        related: cardInfo?.related ?? "",
-        dialect: cardInfo?.dialect ?? ""
+        term: "",
+        definition: "",
+        usage: "",
+        related: "",
+        dialect: ""
     });
-    const [needsRevision, setNeedsRevision] = useState(cardInfo?.needsRevision ?? false);    
+    const [needsRevision, setNeedsRevision] = useState(false);    
     const [tagsModalShown, setTagsModalShown] = useState(false);
-    const [tags, setTags] = useState<string[]>(cardInfo?.tags ?? []);
-    const [memorization, setMemorization] = useState(cardInfo?.memorization ?? 0);
+    const [tags, setTags] = useState<string[]>([]);
+    const [memorization, setMemorization] = useState(0);
+
+    // Load state values from Mongo if in edit mode:
+    useEffect(() => {
+        if (editMode) {
+            fetch(`packets/${packetId}/${searchParams.get('cardid')}`, {
+                headers: {
+                    'auth-token': authToken
+                }
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    setChosenPOS(res.pos);
+                    setTextStates({
+                        term: res.term,
+                        definition: res.definition,
+                        usage: res.usage,
+                        related: res.related,
+                        dialect: res.dialect,
+                    })
+                    setNeedsRevision(res.needsRevision);
+                    setTags(res.tags);
+                    setMemorization(res.memorization);
+                })
+                .catch((err) => console.log(`Error fetching card: ${err}`));
+        }
+    }, [authToken, editMode, packetId, searchParams]);
     
     // Handlers:
     const handleChangeText = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setTextStates(prev => { 
             const newObj = {...prev};
             newObj[event.target.id as keyof typeof textStates] = event.target.value;
-            return newObj });
-        const initialValue = cardInfo ? cardInfo[event.target.id as keyof typeof cardInfo] : "";
-        if (event.target.value !== initialValue) {
-            setChangeDetected(true);
-        } else {
-            setChangeDetected(false);
-        }
+            return newObj;
+        });
+        setChangeDetected(true);
     }
     const handleChoose = (pos: string) => {
         if (chosenPOS === pos) {
@@ -95,13 +114,37 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     const handleAdd = () => {
         if (textStates.term.length > 0) {
             if (!editMode) { // new card
-                const cardToAdd: CardType = { cardId: uniqid(), term: textStates.term, definition: textStates.definition, pos: chosenPOS, usage: textStates.usage, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
-                dispatch(packetsActions.addCardToPacket({ packetLanguage: params.language!, card: cardToAdd }));
-                navigate(-1);
+                const cardToAdd: CardType = { term: textStates.term, definition: textStates.definition, pos: chosenPOS, usage: textStates.usage, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
+                fetch(`packets/${packetId}/${searchParams.get('cardid')}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'auth-token': authToken
+                    },
+                    body: JSON.stringify(cardToAdd)
+                })
+                    .then((res) => {
+                        console.log(`Added card successfully`);
+                        navigate(-1);
+                    })
+                    .catch((err) => console.log(`Error adding card: ${err}`));
             } else { // editing an existing card
-                const cardUpdatedInfo: CardType = { cardId: cardInfo!.cardId, term: textStates.term, definition: textStates.definition, pos: chosenPOS, usage: textStates.usage, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
-                dispatch(packetsActions.updateCard({ packetLanguage: params.language!, newCardInfo: cardUpdatedInfo }));
-                navigate(-1);
+                const cardUpdatedInfo: CardType = { term: textStates.term, definition: textStates.definition, pos: chosenPOS, usage: textStates.usage, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
+                fetch(`packets/${packetId}/${searchParams.get('cardid')}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'auth-token': authToken
+                    },
+                    body: JSON.stringify(cardUpdatedInfo)
+                })
+                    .then((res) => {
+                        console.log(`Added card successfully`)
+                        navigate(-1);
+                    })
+                    .catch((err) => console.log(`Error adding card: ${err}`));
             }
         }
     };

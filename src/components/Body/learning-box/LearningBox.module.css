@@ -1,19 +1,15 @@
 @import '../../../css-variables/constants.css';
 
-:root {
-    --gap: 1rem;
-}
 /* LearningBox */
 .learningBox { 
+    --gap: 1.5rem;
     color: #6e6e6e;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--gap);
-}
-.learningBox:first-child {
-    margin-top: var(--gap);
+    padding-top: var(--gap);
 }
 .emptyLearningBox {
     grid-template-rows: calc((100vh - 61px)*20/100) calc((100vh - 61px)*55/100) calc((100vh - 61px)*25/100);

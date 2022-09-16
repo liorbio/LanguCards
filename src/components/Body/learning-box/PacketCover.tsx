@@ -1,12 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import BigWhiteButton from "../../UI/BigWhiteButton";
+import { useAppDispatch } from "../../../hooks/reduxHooks";
+import { packetActions } from "../../../store/redux-logic";
 
-const PacketCover = ({ language }: { language: string }) => {
+const PacketCover = ({ language, packetId, packetDir }: { language: string, packetId: string, packetDir: "ltr" | "rtl" }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
     
     const navigateToPacketRoute = () => {
+        dispatch(packetActions.setPacketDetails({ packetId: packetId, packetDir: packetDir }))
         navigate(`/${language}?show=list`);
     };
 

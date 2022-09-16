@@ -20,7 +20,7 @@ const GoBack = ({ goTo = "ONE-BACK", icon }: { goTo?: string, icon: string }) =>
                 navigate(-1);
                 break;
             case "LEARNING-BOX":
-                navigate("/");
+                navigate("/learning-box");
                 break;
             case "NONE":
                 break;

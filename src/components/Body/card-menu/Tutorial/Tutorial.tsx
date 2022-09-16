@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Instruction from "./Instruction";
 import instructionClasses from './Instruction.module.css';
-import { useAppDispatch } from "../../../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { settingsActions } from "../../../../store/redux-logic";
 
 const Tutorial = ({ packetDir }: { packetDir: "ltr" | "rtl" }) => {
-    const [stageIndex, setStageIndex] = useState(0);
     const dispatch = useAppDispatch();
+    const [stageIndex, setStageIndex] = useState(0);
+    const authToken = useAppSelector(state => state.auth.jwt);
     
     const { t } = useTranslation();
 
@@ -15,7 +16,16 @@ const Tutorial = ({ packetDir }: { packetDir: "ltr" | "rtl" }) => {
         setStageIndex(s => (s+1)%5); // 0,1,2,3,4,0,1,2,...
     };
     const handleContinue = () => {
-        dispatch(settingsActions.seeTutorial());
+        fetch(`/seen-tutorial`, {
+            headers: {
+                'auth-token': authToken
+            }
+        })
+            .then((res) => {
+                dispatch(settingsActions.seeTutorial());
+                console.log("Success marking 'seen tutorial'")
+            })
+            .catch((err) => console.log(`Error marking 'seen tutorial': ${err}`));
     };
     return (
         <>

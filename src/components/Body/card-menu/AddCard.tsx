@@ -8,18 +8,21 @@ import Memorization from './Memorization';
 import PartOfSpeechModal, { circleStyle, partsOfSpeech } from './PartOfSpeechModal';
 import { CheckVector } from '../../../generatedIcons';
 import TagsModal from './TagsModal';
-import { useAppSelector } from '../../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { CardType } from '../../../types/types';
 import DeleteCardButton from './DeleteCardButton';
 import Tutorial from './Tutorial/Tutorial';
 import GoBack from '../../header/GoBack';
 import DefaultModal from '../../UI/DefaultModal';
+import { packetActions } from '../../../store/redux-logic';
 
 const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     const { t } = useTranslation();
-    const [searchParams] = useSearchParams();
+    const [searchParams] = useSearchParams(); // for edit mode
+    const cardId = searchParams.get('cardid'); // for edit mode
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
     const packetDir = useAppSelector(state => state.packet.packetDir);
 
     // States: 
@@ -44,8 +47,8 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
 
     // Load state values from Mongo if in edit mode:
     useEffect(() => {
-        if (editMode) {
-            fetch(`packets/${packetId}/${searchParams.get('cardid')}`, {
+        if (editMode && !!packetId) {
+            fetch(`/packets/${packetId}/${cardId}`, {
                 headers: {
                     'auth-token': authToken
                 }
@@ -66,7 +69,7 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
                 })
                 .catch((err) => console.log(`Error fetching card: ${err}`));
         }
-    }, [authToken, editMode, packetId, searchParams]);
+    }, [authToken, editMode, packetId, cardId]);
     
     // Handlers:
     const handleChangeText = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -115,7 +118,7 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
         if (textStates.term.length > 0) {
             if (!editMode) { // new card
                 const cardToAdd: CardType = { term: textStates.term, definition: textStates.definition, pos: chosenPOS, usage: textStates.usage, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
-                fetch(`packets/${packetId}/${searchParams.get('cardid')}`, {
+                fetch(`/packets/${packetId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -126,12 +129,13 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
                 })
                     .then((res) => {
                         console.log(`Added card successfully`);
+                        dispatch(packetActions.clearCards());
                         navigate(-1);
                     })
                     .catch((err) => console.log(`Error adding card: ${err}`));
             } else { // editing an existing card
                 const cardUpdatedInfo: CardType = { term: textStates.term, definition: textStates.definition, pos: chosenPOS, usage: textStates.usage, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
-                fetch(`packets/${packetId}/${searchParams.get('cardid')}`, {
+                fetch(`/packets/${packetId}/${cardId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -141,10 +145,11 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
                     body: JSON.stringify(cardUpdatedInfo)
                 })
                     .then((res) => {
-                        console.log(`Added card successfully`)
-                        navigate(-1);
+                        console.log(`Edited card successfully`);
+                        dispatch(packetActions.clearCards());
+                        navigate(-2);
                     })
-                    .catch((err) => console.log(`Error adding card: ${err}`));
+                    .catch((err) => console.log(`Error editing card: ${err}`));
             }
         }
     };

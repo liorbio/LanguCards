@@ -8,7 +8,7 @@ import Packet from './components/body/packet/Packet';
 import Settings from './components/body/settings/Settings';
 import Header from './components/header/Header';
 import { useAppDispatch } from './hooks/reduxHooks';
-import { authActions, settingsActions } from './store/redux-logic';
+import { authActions } from './store/redux-logic';
 import { get } from 'idb-keyval';
 import LoadingSpinner from './components/UI/LoadingSpinner';
 import Welcome from './components/body/welcome/Welcome';
@@ -20,12 +20,34 @@ function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    get('seenTutorial').then(val => {
-      dispatch(settingsActions.updateSettingsFromIdb({ seenTutorial: val }));    
+    // CHANGE THE seenTutorial TO WORK THROUGH DB
+
+    // get('seenTutorial').then(val => {
+    //   dispatch(settingsActions.updateSettingsFromIdb({ seenTutorial: val }));    
+    // });
+    let autoLogoutTimer: NodeJS.Timeout;
+
+    Promise.all([get('languCardsJwt'), get('languCardsJwtExpiryDate')]).then((values) => {
+      const [jwt, jwtExpiryDate] = values;
+
+      if (!jwtExpiryDate) {
+        dispatch(authActions.consumeJwtFromIDB({ jwt: jwt, jwtExpiryDate: null}));
+      }
+
+      if (jwtExpiryDate) {
+        if (new Date().getTime() >= jwtExpiryDate) {
+          dispatch(authActions.clearJwt());
+        } else {
+          dispatch(authActions.consumeJwtFromIDB({ jwt: jwt, jwtExpiryDate: jwtExpiryDate}));
+          autoLogoutTimer = setTimeout(() => {
+            dispatch(authActions.clearJwt());
+          }, jwtExpiryDate - new Date().getTime());
+        }
+      }   
     });
-    get('languCardsJwt').then(val => {
-      dispatch(authActions.consumeJwtFromIDB(val));
-    });
+    return () => {
+      clearTimeout(autoLogoutTimer);
+    }
   }, [dispatch]);
 
   return (

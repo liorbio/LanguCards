@@ -19,7 +19,7 @@ const LanguCard = () => {
     const [currentMemorization, setCurrentMemorization] = useState<number | null>(null);
 
     useEffect(() => {
-        fetch(`packets/${packetId}/${searchParams.get('cardid')}`, {
+        fetch(`/packets/${packetId}/${searchParams.get('cardid')}`, {
             headers: {
                 'auth-token': authToken
             }
@@ -41,7 +41,7 @@ const LanguCard = () => {
         };
         const handleQuit = () => {
             if (currentMemorization && currentMemorization !== memorization) {
-                fetch(`packets/${packetId}/${searchParams.get('cardid')}`, {
+                fetch(`/packets/${packetId}/${searchParams.get('cardid')}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

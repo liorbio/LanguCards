@@ -2,7 +2,7 @@ import { t } from "i18next";
 import { ChangeEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
-import { authActions } from "../../../store/redux-logic";
+import { authActions, settingsActions } from "../../../store/redux-logic";
 import DefaultModal from "../../UI/DefaultModal";
 import MessageModal from "../../UI/MessageModal";
 import classes from './Welcome.module.css';
@@ -43,9 +43,15 @@ const LoginModal = ({ toggleModal, switchToRegister }: { toggleModal: () => void
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ email: emailInput.toLowerCase(), password: passwordInput })
+            body: JSON.stringify({ email: emailInput.toLowerCase(), password: passwordInput, rememberMe: rememberMe })
         }).then((res) => res.json()).then((res) => {
-            dispatch(authActions.setJwtUponLogin({ jwt: res.authToken, rememberMe: rememberMe }));
+            dispatch(authActions.setJwtUponLogin({ jwt: res.authToken, jwtExpiryDate: res.expiryDate }));
+            if (res.seenTutorial) dispatch(settingsActions.seeTutorial());
+            if (res.expiryDate) {
+                setTimeout(() => {
+                    dispatch(authActions.clearJwt());
+                }, res.expiryDate - new Date().getTime())
+            }
             toggleModal();
         }).catch((err) => {
             console.log(`Error handling login: ${err}`);

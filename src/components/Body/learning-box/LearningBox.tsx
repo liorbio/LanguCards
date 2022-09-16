@@ -16,6 +16,7 @@ const LearningBox = () => {
     const authToken = useAppSelector(state => state.auth.jwt);
     const [packets, setPackets] = useState<PacketType[] | null>(null);
     const [newPacketModalShown, setNewPacketModalShown] = useState(false);
+    const [forcedReload, setForcedReload] = useState(false);
     
     useEffect(() => {
         fetch(`/packets`, {
@@ -26,7 +27,7 @@ const LearningBox = () => {
             .then((res) => res.json())
             .then((res) => setPackets(res))
             .catch((err) => console.log(`Error fetching packets: ${err}`));
-    }, [authToken]);
+    }, [authToken, forcedReload]);
 
 
     const handleNewPacketAddition = (packet: PacketType) => {
@@ -42,6 +43,7 @@ const LearningBox = () => {
             .then((res) => {
                 console.log(`Successfully added new packet of ${packet.language}`);
                 setNewPacketModalShown(false);
+                setForcedReload(prev => !prev);
             })
             .catch((err) => console.log(`Error adding a ${packet.language} packet: ${err}`));
     }
@@ -58,7 +60,7 @@ const LearningBox = () => {
     );
     const populatedLearningBox = (
         <>
-            {packets?.map((p, idx) => <PacketCover language={p.language} key={idx} /> )}
+            {packets?.map((p, idx) => <PacketCover language={p.language} key={idx} packetId={p._id!} packetDir={p.dir} /> )}
         </>
     );
     return (

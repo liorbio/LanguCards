@@ -1,3 +1,5 @@
+@import '../../../css-variables/constants.css';
+
 .packet { 
     color: #6e6e6e;
     width: 100%;
@@ -10,7 +12,8 @@
 }
 .populatedPacket {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    overflow: scroll;
 }
 .populatedPacket section {
     width: 50vw;

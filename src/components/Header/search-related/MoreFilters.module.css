@@ -1,0 +1,14 @@
+.modalBody {
+    height: 22rem;
+    overflow-y: scroll;
+}
+.filterPack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 15px;
+}
+.filterSection h4 {
+    margin-block: 0;
+    margin-inline: 10px;
+}

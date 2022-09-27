@@ -4,6 +4,7 @@ import HeaderInCard from './HeaderInCard';
 import HeaderInMain from './HeaderInMain';
 import HeaderInPacket from './HeaderInPacket';
 import HeaderInSettings from './HeaderInSettings';
+import classes from './Header.module.css';
 
 const Header = () => {
     return (
@@ -17,6 +18,7 @@ const Header = () => {
                 <Route path="/:language/card/edit" element={<HeaderInAddCard />} />
                 <Route path="/settings" element={<HeaderInSettings />} />
             </Routes>
+            <div className={classes.contentPusher}></div>
         </>
     );
 };

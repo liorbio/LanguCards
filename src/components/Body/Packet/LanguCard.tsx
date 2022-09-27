@@ -48,7 +48,7 @@ const LanguCard = () => {
                         'Accept': 'application/json',
                         'auth-token': authToken
                     },
-                    body: JSON.stringify({ term, definition, pos, usage, needsRevision, tags, related, dialect, currentMemorization })
+                    body: JSON.stringify({ term, definition, pos, usage, needsRevision, tags, related, dialect, memorization: currentMemorization })
                 })
                     .then((res) => {
                         console.log(`Card updated successfully!`);

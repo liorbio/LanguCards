@@ -1,17 +1,9 @@
 import { MagnifVector } from "../../generatedIcons";
+import classes from './Header.module.css';
 
-const divStyle = {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "end"
-};
-
-const SearchToggler = () => {
+const SearchToggler = ({ toggle }: { toggle: () => void }) => {
     return (
-        <div style={divStyle}>
-            {/*<img style={{ margin: "auto" }} src={MagnifyingGlass} alt="search and filters" />*/}
+        <div onClick={toggle} className={classes.searchToggler}>
             <MagnifVector />
         </div>
     )

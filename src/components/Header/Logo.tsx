@@ -5,7 +5,7 @@ const logoStyle = {
     lineHeight: 0,
     alignSelf: "center",
     margin: "auto",
-    color: "#E40089"
+    color: "#E40089",
 };
 
 const Logo = () => {

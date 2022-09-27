@@ -1,14 +1,5 @@
 import React, { SetStateAction } from 'react';
-
-const buttonStyle = {
-    backgroundColor: "black",
-    color: "white",
-    borderRadius: "30px",
-    padding: "10px",
-    width: "7em",
-    alignSelf: "center",
-    fontWeight: "bold"
-}
+import classes from './TextSwitchingToggleButton.module.css';
 
 type TextSwitchingToggleButtonDeclaration = ({ textOne, textTwo, showTextOneState, setShowTextOneState }: { textOne: string; textTwo: string; showTextOneState: boolean; setShowTextOneState: React.Dispatch<SetStateAction<boolean>> }) => JSX.Element | null;
 
@@ -18,7 +9,7 @@ const TextSwitchingToggleButton: TextSwitchingToggleButtonDeclaration = ({ textO
     }
 
     return (
-        <div onClick={toggler} style={buttonStyle}>
+        <div onClick={toggler} className={classes.button}>
             {showTextOneState ? textOne : textTwo}
         </div>
     );

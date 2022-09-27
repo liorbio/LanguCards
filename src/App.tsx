@@ -8,7 +8,7 @@ import Packet from './components/body/packet/Packet';
 import Settings from './components/body/settings/Settings';
 import Header from './components/header/Header';
 import { useAppDispatch } from './hooks/reduxHooks';
-import { authActions } from './store/redux-logic';
+import { authActions, settingsActions } from './store/redux-logic';
 import { get } from 'idb-keyval';
 import LoadingSpinner from './components/UI/LoadingSpinner';
 import Welcome from './components/body/welcome/Welcome';
@@ -27,20 +27,22 @@ function App() {
     // });
     let autoLogoutTimer: NodeJS.Timeout;
 
-    Promise.all([get('languCardsJwt'), get('languCardsJwtExpiryDate')]).then((values) => {
-      const [jwt, jwtExpiryDate] = values;
+    Promise.all([get('languCardsJwt'), get('languCardsJwtExpiryDate'), get('languCardsSeenTutorial')]).then((values) => {
+      const [jwt, jwtExpiryDate, seenTutorial] = values;
 
-      if (!jwtExpiryDate) {
-        dispatch(authActions.consumeJwtFromIDB({ jwt: jwt, jwtExpiryDate: null}));
-      }
+      if (seenTutorial) dispatch(settingsActions.seeTutorial());
+
+      if (!jwtExpiryDate) dispatch(authActions.consumeJwtFromIDB({ jwt: jwt, jwtExpiryDate: null}));
 
       if (jwtExpiryDate) {
         if (new Date().getTime() >= jwtExpiryDate) {
           dispatch(authActions.clearJwt());
+          dispatch(settingsActions.clearSeenTutorialFromIDBUponLogout());
         } else {
           dispatch(authActions.consumeJwtFromIDB({ jwt: jwt, jwtExpiryDate: jwtExpiryDate}));
           autoLogoutTimer = setTimeout(() => {
             dispatch(authActions.clearJwt());
+            dispatch(settingsActions.clearSeenTutorialFromIDBUponLogout());
           }, jwtExpiryDate - new Date().getTime());
         }
       }   

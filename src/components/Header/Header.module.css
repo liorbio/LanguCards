@@ -1,10 +1,125 @@
 @import '../../css-variables/constants.css';
 
+:root {
+    --itemWidth: 3rem;
+}
+
 .navbar {
     display: grid;
-    grid-template-columns: 3rem 3rem 1fr 3rem 3rem;
+    grid-template-columns: var(--itemWidth) var(--itemWidth) 1fr var(--itemWidth) var(--itemWidth);
     width: 100vw;
     height: var(--headerHeight);
     background-color: #fff;
     border-bottom: 0.5px solid #e5e5e5;
+    position: fixed;
+    z-index: 3;
+    top: 0;
+}
+.contentPusher {
+    height: calc(var(--headerHeight) + 0.5px);
+}
+
+.packetNavBar {
+    right: 0;
+    transition: right 300ms ease-in-out;
+}
+.packetNavBar .clearSearchButton {
+    background-color: #ffa1da;
+    grid-column: 3;
+    padding: 3px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    width: 8rem;
+    justify-self: center;
+    margin-top: 0.5rem;
+    border-radius: 20px;
+    transition: opacity 3000ms ease-in;
+}
+.packetNavBar .halo {
+    position: absolute;
+    right: calc(var(--itemWidth) - 0.8rem);
+    top: 0.4rem;
+    height: var(--itemWidth);
+    width: var(--itemWidth);
+    box-shadow: 0px 0px 16px 0px #ffa1da;
+    border-radius: 3rem;
+}
+.searchToggler {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    height: var(--headerHeight);
+    width: var(--itemWidth);
+}
+
+.searchMenu {
+    height: var(--searchMenuHeight);
+    width: 100vw;
+    background-color: white;
+    position: fixed;
+    z-index: 2;
+    transition: top 300ms ease-in-out;
+}
+.searchBar {
+    position: fixed;
+    z-index: 3;
+    width: 100vw;
+    top: 0;
+    display: flex;
+    align-items: stretch;
+    transition: right 300ms ease-in-out;
+}
+.searchBar .goBack {
+    flex-basis: 3rem;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.searchBar input {
+    --inputIndent: 4rem;
+    padding: 1rem;
+    font-size: 1.5rem;
+    border-style: solid;
+    border-radius: 0;
+    border: 0px solid;
+    flex-grow: 1;
+}
+.searchBar input:focus {
+    outline: none;
+    border-style: solid;
+    border: 0;
+}
+.searchBar .xSymbol {
+    font-size: 2rem;
+    position: absolute;
+    right: 10px;
+    height: 100%;
+    line-height: 1.8;
+}
+.sortBy {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    padding-inline: 1rem;
+    margin-top: 0.8rem;
+    flex-wrap: wrap;
+}
+.filterButton {
+    background-color: #e9e9e9;
+    color: #868686;
+    border-radius: 30px;
+    padding: 5px 9px;
+}
+.selectedFilterButton {
+    background-color: #E40089;
+    color: white;
+}
+
+.clickPreventionWhileSearching {
+    width: 100vw;
+    height: calc(100vh - var(--searchMenuHeight) - var(--headerHeight));
+    top: calc(var(--headerHeight) + var(--searchMenuHeight));
+    position: fixed;
+    z-index: 1;
 }

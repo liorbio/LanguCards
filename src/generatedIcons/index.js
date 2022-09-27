@@ -1,6 +1,7 @@
 export { default as CheckVector } from "./CheckVector";
 export { default as CircledPlus } from "./CircledPlus";
 export { default as ClickBelow } from "./ClickBelow";
+export { default as GoBackArrow } from "./GoBackArrow";
 export { default as GoBackVector } from "./GoBackVector";
 export { default as LoginIcon } from "./LoginIcon";
 export { default as LogoutIcon } from "./LogoutIcon";

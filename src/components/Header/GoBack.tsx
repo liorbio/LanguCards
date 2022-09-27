@@ -1,5 +1,3 @@
-//import Back from "../../icons/Back.png";
-//import XIcon from '../../icons/XIcon.png';
 import { XVector, GoBackVector } from "../../generatedIcons";
 import { useNavigate } from "react-router-dom";
 

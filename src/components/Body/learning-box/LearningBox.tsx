@@ -6,19 +6,25 @@ import classes from "./LearningBox.module.css";
 import AddNew from '../../UI/AddNew';
 import NewPacketModal from './NewPacketModal';
 import portalElement from '../../../elements/portalElement';
-import { useAppSelector } from '../../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { PacketType } from '../../../types/types';
 import LoadingSpinner from '../../UI/LoadingSpinner';
 import { ClickBelow } from '../../../generatedIcons';
+import { packetActions, searchActions } from '../../../store/redux-logic';
 
 const LearningBox = () => {
     const { t } = useTranslation();
     const authToken = useAppSelector(state => state.auth.jwt);
+    const dispatch = useAppDispatch();
     const [packets, setPackets] = useState<PacketType[] | null>(null);
     const [newPacketModalShown, setNewPacketModalShown] = useState(false);
     const [forcedReload, setForcedReload] = useState(false);
     
     useEffect(() => {
+        // Clear cards of last viewed packet
+        dispatch(packetActions.clearCards());
+        dispatch(searchActions.clearSearch());
+        // fetch packets
         fetch(`/packets`, {
             headers: {
                 'auth-token': authToken
@@ -27,7 +33,7 @@ const LearningBox = () => {
             .then((res) => res.json())
             .then((res) => setPackets(res))
             .catch((err) => console.log(`Error fetching packets: ${err}`));
-    }, [authToken, forcedReload]);
+    }, [authToken, forcedReload, dispatch]);
 
 
     const handleNewPacketAddition = (packet: PacketType) => {

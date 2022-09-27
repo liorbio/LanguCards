@@ -29,7 +29,7 @@ const OptionsMenu = ({ full, toggleMenu }: { full: boolean, toggleMenu: () => vo
     const menuInPacket = (
         <div dir={t('globalDir')} className={classes.optionsMenu} onClick={toggleMenu}>
             <OptionsMenuOption link={`?show=${searchParams.get('show') === "coupons" ? "list": "coupons"}`} label={t("switch_view")} icon={<SwitchIcon />} />
-            <OptionsMenuOption link="/" label={t("play")} icon={<PuzzleIcon />} />
+            {/*<OptionsMenuOption link="/" label={t("play")} icon={<PuzzleIcon />} />*/}
             <OptionsMenuOption link="/settings" label={t("settings")} icon={<SettingsIcon />} />
             <OptionsMenuOption link="/logout" label={t("logout")} icon={<LogoutIcon />} />
         </div>

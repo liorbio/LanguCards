@@ -1,0 +1,14 @@
+.button {
+    background-color: black;
+    border: 3px solid black;
+    color: white;
+    border-radius: 30px;
+    padding: 10px;
+    width: 7em;
+    align-self: center;
+    text-align: center;
+    font-weight: bold;
+}
+.deselectable {
+    width: 5em;
+}

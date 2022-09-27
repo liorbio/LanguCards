@@ -4,13 +4,14 @@ import AddNew from '../../UI/AddNew';
 import { ClickBelow } from '../../../generatedIcons';
 import classes from './Packet.module.css';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { UIEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import LanguCoupon from './LanguCoupon';
 import LanguListItem from './LanguListItem';
 import portalElement from '../../../elements/portalElement';
 import LoadingSpinner from '../../UI/LoadingSpinner';
 import { packetActions } from '../../../store/redux-logic';
+import { delimitBySemicolon } from "../../../helpers/functions";
 
 const Packet = () => {
     const { t } = useTranslation();
@@ -22,8 +23,39 @@ const Packet = () => {
     const packetDir = useAppSelector(state => state.packet.packetDir);
     const packetId = useAppSelector(state => state.packet.packetId);
     const authToken = useAppSelector(state => state.auth.jwt);
-    const [showEmptyPacket, setShowEmptyPacket] = useState(false);
+    const [packetIsEmpty, setPacketIsEmpty] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [pageNumber, setPageNumber] = useState(1);
+
+    const searchCriteriaOn = useAppSelector(state => {
+        if (state.search.searchVal.length > 0) return true;
+        if (state.search.nrFilter === 1) return true;
+        if (state.search.diaFilter.length > 0 || state.search.memoFilter.length > 0 || state.search.posFilter.length > 0 || state.search.tagsFilter.length > 0) return true;
+        return false;
+    });
+
+    const searchVal = useAppSelector(state => state.search.searchVal);
+    const sortBy = useAppSelector(state => {
+        let sortBy = state.search.selectedSorter === "alphabetical" ? "term" : "date";
+        if ((state.search.selectedSorter === "alphabetical" && state.search.sortAlphabetically === -1) || (state.search.selectedSorter === "date" && state.search.sortByDate === -1)) {
+            sortBy = `-${sortBy}`;
+        }
+        return sortBy;
+    });
+    const posFilter = useAppSelector(state => delimitBySemicolon(state.search.posFilter));
+    const tagsFilter = useAppSelector(state => delimitBySemicolon(state.search.tagsFilter));
+    const diaFilter = useAppSelector(state => delimitBySemicolon(state.search.diaFilter));
+    const memoFilter = useAppSelector(state => delimitBySemicolon(state.search.memoFilter));
+    const nrFilter = useAppSelector(state => state.search.nrFilter.toString());
+
+    let pathWithoutSlash = `packets/${packetId}/cards?sort=${sortBy}&nrfilter=${nrFilter}`
+    if (searchVal) pathWithoutSlash += `&search=${searchVal}`;
+    if (posFilter) pathWithoutSlash += `&posfilter=${posFilter}`;
+    if (tagsFilter) pathWithoutSlash += `&tagsfilter=${tagsFilter}`;
+    if (diaFilter) pathWithoutSlash += `&diafilter=${diaFilter}`;
+    if (memoFilter) pathWithoutSlash += `&memofilter=${memoFilter}`;
+
+    const [blockLoadMore, setBlockLoadMore] = useState(false);
     const lang = params.language;
 
     const handleGoToAddNewCard = () => {
@@ -31,8 +63,9 @@ const Packet = () => {
     }
 
     useEffect(() => {
+        console.log(pathWithoutSlash)
         if (!!packetId) {
-            fetch(`/packets/${packetId}/cards`, {
+            fetch(`/${pathWithoutSlash}`, {
                 headers: {
                     'auth-token': authToken
                 }
@@ -40,15 +73,15 @@ const Packet = () => {
                 .then((res) => res.json())
                 .then((res) => {
                     setLoading(false);
-                    if (res.length > 0) {
-                        dispatch(packetActions.loadCards(res));
+                    if (!searchCriteriaOn && res.length === 0) {
+                        setPacketIsEmpty(true);
                     } else {
-                        setShowEmptyPacket(true);
+                        dispatch(packetActions.loadCards(res));
                     }
                 })
                 .catch((err) => console.log(`Error loading cards: ${err}`));
         }
-    }, [cards.length, dispatch, packetId, authToken]);
+    }, [dispatch, packetId, authToken, pathWithoutSlash, searchCriteriaOn]);
 
     const emptyPacket = (
         <>
@@ -60,14 +93,37 @@ const Packet = () => {
     );
     const populatedPacket = ( // list of coupons -- according to query params
         <>
-            {searchParams.get('show') === "coupons" && cards.map(c => <LanguCoupon key={c.term+new Date().getTime()} cardId={c._id as string} term={c.term} needsRevision={c.needsRevision} />)}
-            {searchParams.get('show') === "list" && cards.map(c => <LanguListItem key={c.term+new Date().getTime()} cardId={c._id as string} term={c.term} definition={c.definition} pos={c.pos} needsRevision={c.needsRevision} packetDir={packetDir} />)}
+            {searchParams.get('show') === "coupons" && cards.map(c => <LanguCoupon key={c._id as string} cardId={c._id as string} term={c.term} needsRevision={c.needsRevision} />)}
+            {searchParams.get('show') === "list" && cards.map(c => <LanguListItem key={c._id as string} cardId={c._id as string} term={c.term} definition={c.definition} pos={c.pos} needsRevision={c.needsRevision} packetDir={packetDir} />)}
         </>
     );
+
+    let scrollThrottler = true;
+    const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+        if (scrollThrottler && !blockLoadMore && (event.currentTarget.scrollHeight - event.currentTarget.scrollTop < event.currentTarget.clientHeight + 100)) {
+            scrollThrottler = false;
+            fetch(`/packets/${packetId}/cards?page=${pageNumber}`, {
+                headers: {
+                    'auth-token': authToken
+                }
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    if (res.length > 0) {
+                        dispatch(packetActions.loadMoreCards(res));
+                        setPageNumber(prev => prev + 1);
+                    } else {
+                        setBlockLoadMore(true);
+                    }
+                })
+                .catch((err) => console.log(`Error loading more cards: ${err}`));
+        }
+    }
+
     return (
-        <div className={`${classes.packet} ${showEmptyPacket ? classes.emptyPacket : classes.populatedPacket}`}>
-            {(!loading && showEmptyPacket) && emptyPacket}
-            {(!loading && !showEmptyPacket) && populatedPacket}
+        <div className={`${classes.packet} ${packetIsEmpty ? classes.emptyPacket : classes.populatedPacket}`} style={searchParams.get('show') === "coupons" ? { flexDirection: "row", flexWrap: "wrap" } : {}} onScroll={handleScroll}>
+            {(!loading && packetIsEmpty) && emptyPacket}
+            {(!loading && !packetIsEmpty) && populatedPacket}
             {!loading && ReactDOM.createPortal(<AddNew handler={handleGoToAddNewCard} />, portalElement)}
             {loading && <LoadingSpinner />}
         </div>

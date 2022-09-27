@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/reduxHooks";
-import { authActions } from "../../store/redux-logic";
+import { authActions, settingsActions } from "../../store/redux-logic";
 
 const Logout = () => {
     const dispatch = useAppDispatch();
@@ -9,6 +9,7 @@ const Logout = () => {
 
     useEffect(() => {
         dispatch(authActions.clearJwt());
+        dispatch(settingsActions.clearSeenTutorialFromIDBUponLogout());
         navigate('/');
     }, [navigate, dispatch]);
     return (

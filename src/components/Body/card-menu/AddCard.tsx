@@ -16,6 +16,7 @@ import Tutorial from './Tutorial/Tutorial';
 import GoBack from '../../header/GoBack';
 import DefaultModal from '../../UI/DefaultModal';
 import { packetActions } from '../../../store/redux-logic';
+import { backendUrl } from '../../../backend-variables/address';
 
 const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     const { t } = useTranslation();
@@ -36,7 +37,7 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     const [textStates, setTextStates] = useState({
         term: "",
         definition: "",
-        usage: "",
+        example: "",
         related: "",
         dialect: ""
     });
@@ -48,7 +49,7 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     // Load state values from Mongo if in edit mode:
     useEffect(() => {
         if (editMode && !!packetId) {
-            fetch(`/packets/${packetId}/${cardId}`, {
+            fetch(`${backendUrl}/packets/${packetId}/${cardId}`, {
                 headers: {
                     'auth-token': authToken
                 }
@@ -59,7 +60,7 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
                     setTextStates({
                         term: res.term,
                         definition: res.definition,
-                        usage: res.usage,
+                        example: res.example,
                         related: res.related,
                         dialect: res.dialect,
                     })
@@ -117,8 +118,8 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     const handleAdd = () => {
         if (textStates.term.length > 0) {
             if (!editMode) { // new card
-                const cardToAdd: CardType = { term: textStates.term, definition: textStates.definition, pos: chosenPOS, usage: textStates.usage, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
-                fetch(`/packets/${packetId}`, {
+                const cardToAdd: CardType = { term: textStates.term, definition: textStates.definition, pos: chosenPOS, example: textStates.example, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
+                fetch(`${backendUrl}/packets/${packetId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -134,8 +135,8 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
                     })
                     .catch((err) => console.log(`Error adding card: ${err}`));
             } else { // editing an existing card
-                const cardUpdatedInfo: CardType = { term: textStates.term, definition: textStates.definition, pos: chosenPOS, usage: textStates.usage, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
-                fetch(`/packets/${packetId}/${cardId}`, {
+                const cardUpdatedInfo: CardType = { term: textStates.term, definition: textStates.definition, pos: chosenPOS, example: textStates.example, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
+                fetch(`${backendUrl}/packets/${packetId}/${cardId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -170,7 +171,7 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
                     {showPartOfSpeechModal && ReactDOM.createPortal(<PartOfSpeechModal handleChoose={handleChoose} handleExit={() => setShowPartOfSpeechModal(false)}/>, portalElement)}
                 </div>
                 <textarea id="definition" value={textStates.definition} onChange={handleChangeText} placeholder={t('definition')} className={classes.definition} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
-                <textarea dir={packetDir} id="usage" value={textStates.usage} onChange={handleChangeText} placeholder={t('examples_of_usage')} className={classes.exampleUsage} />
+                <textarea dir={packetDir} id="example" value={textStates.example} onChange={handleChangeText} placeholder={t('examples_of_usage')} className={classes.exampleUsage} />
                 <div style={{ display: "flex", justifyContent: "space-evenly", width: "100vw", marginTop: "2vh" }}>
                     <div className={`${classes.button} ${classes.buttonOfSet}`} style={needsRevision ? { backgroundColor: "#ee4444", color: "white" } : {}} onClick={toggleNeedsRevision}>{t('needs_revision')}</div>
                     <div onClick={() => setTagsModalShown(true)} className={`${classes.button} ${classes.buttonOfSet} ${tags.length > 0 ? classes.hasTags : null}`}>{t('tags')}...</div>

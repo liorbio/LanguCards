@@ -4,6 +4,7 @@ import Instruction from "./Instruction";
 import instructionClasses from './Instruction.module.css';
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { settingsActions } from "../../../../store/redux-logic";
+import { backendUrl } from "../../../../backend-variables/address";
 
 const Tutorial = ({ packetDir }: { packetDir: "ltr" | "rtl" }) => {
     const dispatch = useAppDispatch();
@@ -16,7 +17,7 @@ const Tutorial = ({ packetDir }: { packetDir: "ltr" | "rtl" }) => {
         setStageIndex(s => (s+1)%5); // 0,1,2,3,4,0,1,2,...
     };
     const handleContinue = () => {
-        fetch(`/seen-tutorial`, {
+        fetch(`${backendUrl}/seen-tutorial`, {
             headers: {
                 'auth-token': authToken
             }

@@ -4,6 +4,7 @@ import DefaultModal from '../../UI/DefaultModal';
 import classes from './DeleteCardButton.module.css';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/reduxHooks';
+import { backendUrl } from "../../../backend-variables/address";
 
 const DeleteCardButton = () => {
     const { t } = useTranslation();
@@ -13,7 +14,7 @@ const DeleteCardButton = () => {
     const authToken = useAppSelector(state => state.auth.jwt);
     const [showWarning, setShowWarning] = useState(false);
     const handleDelete = () => {
-        fetch(`/packets/${packetId}/${searchParams.get('cardid')}`, {
+        fetch(`${backendUrl}/packets/${packetId}/${searchParams.get('cardid')}`, {
             method: 'DELETE',
             headers: {
                 'auth-token': authToken

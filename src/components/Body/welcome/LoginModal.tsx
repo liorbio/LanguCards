@@ -1,6 +1,7 @@
 import { t } from "i18next";
 import { ChangeEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { backendUrl } from "../../../backend-variables/address";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
 import { authActions, settingsActions } from "../../../store/redux-logic";
 import DefaultModal from "../../UI/DefaultModal";
@@ -22,7 +23,7 @@ const LoginModal = ({ toggleModal, switchToRegister }: { toggleModal: () => void
     const [emailInput, setEmailInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
-    const [wrongCredentialsModal, setWrongCredentialsModal] = useState(false);
+    const [wrongCredentials, setWrongCredentials] = useState(false);
 
 
     const handleWriteEmail = (event: ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +38,7 @@ const LoginModal = ({ toggleModal, switchToRegister }: { toggleModal: () => void
         if (!emailInput.toLowerCase().match(/^[a-zA-Z]+(\d|.|\w)*@[a-zA-Z]+.[a-zA-Z]+.*[a-zA-Z]+$/)) return;
         if (passwordInput.length < 6) return;
 
-        fetch('/login', {
+        fetch(`${backendUrl}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,7 +56,7 @@ const LoginModal = ({ toggleModal, switchToRegister }: { toggleModal: () => void
             toggleModal();
         }).catch((err) => {
             console.log(`Error handling login: ${err}`);
-            setWrongCredentialsModal(true);
+            setWrongCredentials(true);
         });
     }
 
@@ -73,7 +74,7 @@ const LoginModal = ({ toggleModal, switchToRegister }: { toggleModal: () => void
                     <p style={{ color: "#0029FF" }} onClick={switchToRegister}>Create a user!</p>
                 </div>
             </DefaultModal>
-            {wrongCredentialsModal && <MessageModal text="Email or password wrong!" toggler={()=>setWrongCredentialsModal(false)} overrideStyle={{ zIndex: 15 }}/>}
+            {wrongCredentials && <MessageModal text="Wrong email or password!" toggler={()=>setWrongCredentials(false)} overrideStyle={{ zIndex: 15 }}/>}
         </>
     );
 };

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { backendUrl } from "../../../backend-variables/address";
 import { PencilVector, XVector } from "../../../generatedIcons";
 import { useAppSelector } from "../../../hooks/reduxHooks";
 import { CardType } from "../../../types/types";
@@ -13,13 +14,14 @@ const LanguCard = () => {
     const params = useParams();
     const [searchParams] = useSearchParams();
     const packetDir = useAppSelector(state => state.packet.packetDir);
+    console.log(`PACKET DIR: ${packetDir}`)
     const packetId = useAppSelector(state => state.packet.packetId);
     const authToken = useAppSelector(state => state.auth.jwt);
     const [card, setCard] = useState<CardType | null>(null);
     const [currentMemorization, setCurrentMemorization] = useState<number | null>(null);
 
     useEffect(() => {
-        fetch(`/packets/${packetId}/${searchParams.get('cardid')}`, {
+        fetch(`${backendUrl}/packets/${packetId}/${searchParams.get('cardid')}`, {
             headers: {
                 'auth-token': authToken
             }
@@ -35,20 +37,20 @@ const LanguCard = () => {
     const navigate = useNavigate();
 
     if (card) {
-        const { term, definition, pos, usage, needsRevision, tags, related, dialect, memorization } = card;
+        const { term, definition, pos, example, needsRevision, tags, related, dialect, memorization } = card;
         const handleChangeMemorization = (level: number) => {
             setCurrentMemorization(level);
         };
         const handleQuit = () => {
             if (currentMemorization && currentMemorization !== memorization) {
-                fetch(`/packets/${packetId}/${searchParams.get('cardid')}`, {
+                fetch(`${backendUrl}/packets/${packetId}/${searchParams.get('cardid')}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
                         'auth-token': authToken
                     },
-                    body: JSON.stringify({ term, definition, pos, usage, needsRevision, tags, related, dialect, memorization: currentMemorization })
+                    body: JSON.stringify({ term, definition, pos, example, needsRevision, tags, related, dialect, memorization: currentMemorization })
                 })
                     .then((res) => {
                         console.log(`Card updated successfully!`);
@@ -69,7 +71,7 @@ const LanguCard = () => {
                     {pos && <div style={{ backgroundColor: partsOfSpeech[pos].color, alignSelf: "center", ...circleStyle }}>{pos}</div>}
                 </section>
                 {definition && <p style={{ textAlign: t('globalDir') === "ltr" ? "left" : "right" }}>{definition}</p>}
-                {usage && <div className={classes.usage} dir={packetDir} style={{ textAlign: packetDir === "ltr" ? "left" : "right" }}>{usage}</div>}
+                {example && <div className={classes.exampleUsage} dir={packetDir} style={{ textAlign: packetDir === "ltr" ? "left" : "right" }}>{example}</div>}
                 {tags.length > 0 && (
                     <>
                         <h2>{t('tags')}</h2>

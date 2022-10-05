@@ -1,0 +1,1 @@
+export const backendUrl = 'https://us-central1-langucardsapp.cloudfunctions.net/expressApi';

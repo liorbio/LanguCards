@@ -11,6 +11,7 @@ import { PacketType } from '../../../types/types';
 import LoadingSpinner from '../../UI/LoadingSpinner';
 import { ClickBelow } from '../../../generatedIcons';
 import { packetActions, searchActions } from '../../../store/redux-logic';
+import { backendUrl } from '../../../backend-variables/address';
 
 const LearningBox = () => {
     const { t } = useTranslation();
@@ -25,7 +26,7 @@ const LearningBox = () => {
         dispatch(packetActions.clearCards());
         dispatch(searchActions.clearSearch());
         // fetch packets
-        fetch(`/packets`, {
+        fetch(`${backendUrl}/packets`, {
             headers: {
                 'auth-token': authToken
             }
@@ -37,7 +38,7 @@ const LearningBox = () => {
 
 
     const handleNewPacketAddition = (packet: PacketType) => {
-        fetch(`/packets`, {
+        fetch(`${backendUrl}/packets`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

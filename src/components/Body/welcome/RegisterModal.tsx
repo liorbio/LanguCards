@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { backendUrl } from "../../../backend-variables/address";
 import DefaultModal from "../../UI/DefaultModal";
 import MessageModal from "../../UI/MessageModal";
 import classes from './Welcome.module.css';
@@ -41,7 +42,7 @@ const RegisterModal = ({ toggleModal, showRegisterComplete }: { toggleModal: () 
             return;
         }
 
-        fetch('/register', {
+        fetch(`${backendUrl}/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

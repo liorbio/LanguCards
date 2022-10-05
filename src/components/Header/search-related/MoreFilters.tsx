@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { backendUrl } from "../../../backend-variables/address";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { searchActions } from "../../../store/redux-logic";
 import DefaultModal from "../../UI/DefaultModal";
@@ -30,7 +31,7 @@ const MoreFilters = ({ handler, toggler }: { handler: () => void, toggler: () =>
     const [dialects, setDialects] = useState([]);
 
     useEffect(() => {
-        fetch(`/packets/${packetId}/tags-and-dialects`, {
+        fetch(`${backendUrl}/packets/${packetId}/tags-and-dialects`, {
             method: 'GET',
             headers: {
                 'auth-token': authToken

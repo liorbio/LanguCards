@@ -12,6 +12,7 @@ import portalElement from '../../../elements/portalElement';
 import LoadingSpinner from '../../UI/LoadingSpinner';
 import { packetActions } from '../../../store/redux-logic';
 import { delimitBySemicolon } from "../../../helpers/functions";
+import { backendUrl } from '../../../backend-variables/address';
 
 const Packet = () => {
     const { t } = useTranslation();
@@ -48,12 +49,12 @@ const Packet = () => {
     const memoFilter = useAppSelector(state => delimitBySemicolon(state.search.memoFilter));
     const nrFilter = useAppSelector(state => state.search.nrFilter.toString());
 
-    let pathWithoutSlash = `packets/${packetId}/cards?sort=${sortBy}&nrfilter=${nrFilter}`
-    if (searchVal) pathWithoutSlash += `&search=${searchVal}`;
-    if (posFilter) pathWithoutSlash += `&posfilter=${posFilter}`;
-    if (tagsFilter) pathWithoutSlash += `&tagsfilter=${tagsFilter}`;
-    if (diaFilter) pathWithoutSlash += `&diafilter=${diaFilter}`;
-    if (memoFilter) pathWithoutSlash += `&memofilter=${memoFilter}`;
+    let fullPath = `${backendUrl}/packets/${packetId}/cards?sort=${sortBy}&nrfilter=${nrFilter}`
+    if (searchVal) fullPath += `&search=${searchVal}`;
+    if (posFilter) fullPath += `&posfilter=${posFilter}`;
+    if (tagsFilter) fullPath += `&tagsfilter=${tagsFilter}`;
+    if (diaFilter) fullPath += `&diafilter=${diaFilter}`;
+    if (memoFilter) fullPath += `&memofilter=${memoFilter}`;
 
     const [blockLoadMore, setBlockLoadMore] = useState(false);
     const lang = params.language;
@@ -63,9 +64,8 @@ const Packet = () => {
     }
 
     useEffect(() => {
-        console.log(pathWithoutSlash)
         if (!!packetId) {
-            fetch(`/${pathWithoutSlash}`, {
+            fetch(`${fullPath}`, {
                 headers: {
                     'auth-token': authToken
                 }
@@ -81,7 +81,7 @@ const Packet = () => {
                 })
                 .catch((err) => console.log(`Error loading cards: ${err}`));
         }
-    }, [dispatch, packetId, authToken, pathWithoutSlash, searchCriteriaOn]);
+    }, [dispatch, packetId, authToken, fullPath, searchCriteriaOn]);
 
     const emptyPacket = (
         <>
@@ -102,7 +102,7 @@ const Packet = () => {
     const handleScroll = (event: UIEvent<HTMLDivElement>) => {
         if (scrollThrottler && !blockLoadMore && (event.currentTarget.scrollHeight - event.currentTarget.scrollTop < event.currentTarget.clientHeight + 100)) {
             scrollThrottler = false;
-            fetch(`/packets/${packetId}/cards?page=${pageNumber}`, {
+            fetch(`${fullPath}&page=${pageNumber}`, {
                 headers: {
                     'auth-token': authToken
                 }
@@ -121,7 +121,7 @@ const Packet = () => {
     }
 
     return (
-        <div className={`${classes.packet} ${packetIsEmpty ? classes.emptyPacket : classes.populatedPacket}`} style={searchParams.get('show') === "coupons" ? { flexDirection: "row", flexWrap: "wrap" } : {}} onScroll={handleScroll}>
+        <div className={`${classes.packet} ${packetIsEmpty ? classes.emptyPacket : classes.populatedPacket}`} style={searchParams.get('show') === "coupons" ? { display: "flex", flexDirection: "row", flexWrap: "wrap" } : {}} onScroll={handleScroll}>
             {(!loading && packetIsEmpty) && emptyPacket}
             {(!loading && !packetIsEmpty) && populatedPacket}
             {!loading && ReactDOM.createPortal(<AddNew handler={handleGoToAddNewCard} />, portalElement)}

@@ -11,8 +11,7 @@
     grid-template-rows: calc((100vh - 61px)*20/100) calc((100vh - 61px)*55/100) calc((100vh - 61px)*25/100);
 }
 .populatedPacket {
-    display: flex;
-    flex-direction: column;
+    height: calc(100vh - var(--headerHeight));
     overflow: scroll;
 }
 .populatedPacket section {

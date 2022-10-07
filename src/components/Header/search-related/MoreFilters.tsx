@@ -27,6 +27,9 @@ const MoreFilters = ({ handler, toggler }: { handler: () => void, toggler: () =>
     const memoFilter = useAppSelector(state => state.search.memoFilter);
     const tagsFilter = useAppSelector(state => state.search.tagsFilter);
     const diaFilter = useAppSelector(state => state.search.diaFilter);
+
+    // 🦋 useTagsAndDialects
+
     const [tags, setTags] = useState([]);
     const [dialects, setDialects] = useState([]);
 

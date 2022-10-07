@@ -13,8 +13,9 @@ const LanguCard = () => {
     const { t } = useTranslation();
     const params = useParams();
     const [searchParams] = useSearchParams();
+    // 🦋 useCard: outputs "updateMemorizationFetch"
+
     const packetDir = useAppSelector(state => state.packet.packetDir);
-    console.log(`PACKET DIR: ${packetDir}`)
     const packetId = useAppSelector(state => state.packet.packetId);
     const authToken = useAppSelector(state => state.auth.jwt);
     const [card, setCard] = useState<CardType | null>(null);
@@ -37,6 +38,7 @@ const LanguCard = () => {
     const navigate = useNavigate();
 
     if (card) {
+        // 🦋 updateMemorizationFetch: the if statement should be (currentMemorization && currentMemorization !== card.memorization)
         const { term, definition, pos, example, needsRevision, tags, related, dialect, memorization } = card;
         const handleChangeMemorization = (level: number) => {
             setCurrentMemorization(level);

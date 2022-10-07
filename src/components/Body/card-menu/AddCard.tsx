@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import portalElement from '../../../elements/portalElement';
 import CircledPlus from '../../../generatedIcons/CircledPlus.js';
@@ -8,69 +8,34 @@ import Memorization from './Memorization';
 import PartOfSpeechModal, { circleStyle, partsOfSpeech } from './PartOfSpeechModal';
 import { CheckVector } from '../../../generatedIcons';
 import TagsModal from './TagsModal';
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { CardType } from '../../../types/types';
+import { useAppSelector } from '../../../hooks/reduxHooks';
+import { useNavigate } from 'react-router-dom';
 import DeleteCardButton from './DeleteCardButton';
 import Tutorial from './Tutorial/Tutorial';
 import GoBack from '../../header/GoBack';
 import DefaultModal from '../../UI/DefaultModal';
-import { packetActions } from '../../../store/redux-logic';
-import { backendUrl } from '../../../backend-variables/address';
+import { useCardMenu } from '../../../hooks/useCardMenu';
 
 const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
+    const {
+        showPOSModal, setShowPOSModal,
+        chosenPOS, handleChoosePOS,
+        textStates, setTextStates,
+        needsRevision, toggleNeedsRevision,
+        tags, setTags,
+        memorization, handleSetMemorization,
+        executeSave
+    } = useCardMenu(editMode);
+
     const { t } = useTranslation();
-    const [searchParams] = useSearchParams(); // for edit mode
-    const cardId = searchParams.get('cardid'); // for edit mode
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
     const packetDir = useAppSelector(state => state.packet.packetDir);
 
-    // States: 
+    // States:
     const showTutorial = !useAppSelector(state => state.settings.seenTutorial);
-    const packetId = useAppSelector(state => state.packet.packetId);
-    const authToken = useAppSelector(state => state.auth.jwt);
     const [changeDetected, setChangeDetected] = useState(false);
     const [showWarning, setShowWarning] = useState(false);
-    const [showPartOfSpeechModal, setShowPartOfSpeechModal] = useState(false);
-    const [chosenPOS, setChosenPOS] = useState("");
-    const [textStates, setTextStates] = useState({
-        term: "",
-        definition: "",
-        example: "",
-        related: "",
-        dialect: ""
-    });
-    const [needsRevision, setNeedsRevision] = useState(false);    
     const [tagsModalShown, setTagsModalShown] = useState(false);
-    const [tags, setTags] = useState<string[]>([]);
-    const [memorization, setMemorization] = useState(0);
-
-    // Load state values from Mongo if in edit mode:
-    useEffect(() => {
-        if (editMode && !!packetId) {
-            fetch(`${backendUrl}/packets/${packetId}/${cardId}`, {
-                headers: {
-                    'auth-token': authToken
-                }
-            })
-                .then((res) => res.json())
-                .then((res) => {
-                    setChosenPOS(res.pos);
-                    setTextStates({
-                        term: res.term,
-                        definition: res.definition,
-                        example: res.example,
-                        related: res.related,
-                        dialect: res.dialect,
-                    })
-                    setNeedsRevision(res.needsRevision);
-                    setTags(res.tags);
-                    setMemorization(res.memorization);
-                })
-                .catch((err) => console.log(`Error fetching card: ${err}`));
-        }
-    }, [authToken, editMode, packetId, cardId]);
     
     // Handlers:
     const handleChangeText = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -81,17 +46,6 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
         });
         setChangeDetected(true);
     }
-    const handleChoose = (pos: string) => {
-        if (chosenPOS === pos) {
-            setChosenPOS("");
-        } else {
-            setChosenPOS(pos);
-        }
-        setShowPartOfSpeechModal(false);
-    };
-    const toggleNeedsRevision = () => {
-        setNeedsRevision(prev => !prev);
-    };
     const addTag = (tag: string) => {
         if (!tags.includes(tag)) {
             setTags(prev => [...prev, tag]);
@@ -99,9 +53,6 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
     };
     const removeTag = (tag: string) => {
         setTags(prev => prev.filter(t => t !== tag));
-    };
-    const handleSetMemorization = (level: number) => {
-        setMemorization(level);
     };
 
     const handleExit = () => {
@@ -115,47 +66,6 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
         }
     };
 
-    const handleAdd = () => {
-        if (textStates.term.length > 0) {
-            if (!editMode) { // new card
-                const cardToAdd: CardType = { term: textStates.term, definition: textStates.definition, pos: chosenPOS, example: textStates.example, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
-                fetch(`${backendUrl}/packets/${packetId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'auth-token': authToken
-                    },
-                    body: JSON.stringify(cardToAdd)
-                })
-                    .then((res) => {
-                        console.log(`Added card successfully`);
-                        dispatch(packetActions.clearCards());
-                        navigate(-1);
-                    })
-                    .catch((err) => console.log(`Error adding card: ${err}`));
-            } else { // editing an existing card
-                const cardUpdatedInfo: CardType = { term: textStates.term, definition: textStates.definition, pos: chosenPOS, example: textStates.example, needsRevision: needsRevision, tags: tags, related: textStates.related, dialect: textStates.dialect, memorization: memorization }; 
-                fetch(`${backendUrl}/packets/${packetId}/${cardId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'auth-token': authToken
-                    },
-                    body: JSON.stringify(cardUpdatedInfo)
-                })
-                    .then((res) => {
-                        console.log(`Edited card successfully`);
-                        dispatch(packetActions.clearCards());
-                        navigate(-2);
-                    })
-                    .catch((err) => console.log(`Error editing card: ${err}`));
-            }
-        }
-    };
-
-
     return (
         <>
             {showTutorial && ReactDOM.createPortal(<Tutorial packetDir={packetDir} />, portalElement)}
@@ -164,11 +74,11 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
             </DefaultModal>}
             <div className={classes.addCardWrapper} dir={t('globalDir')} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
                 <div onClick={handleXClick} style={{ position: "fixed", zIndex: 4, width: "12vw", height: "60px", top: "0", left: "6px", display: "flex", alignItems: "center", justifyContent: "center" }}><GoBack icon="x" goTo="NONE" /></div>
-                <div onClick={handleAdd} style={{ position: "fixed", zIndex: 4, width: "12vw", height: "60px", top: "0", right: "6px", display: "flex", alignItems: "center", justifyContent: "center" }}><CheckVector /></div>
+                <div onClick={executeSave} style={{ position: "fixed", zIndex: 4, width: "12vw", height: "60px", top: "0", right: "6px", display: "flex", alignItems: "center", justifyContent: "center" }}><CheckVector /></div>
                 <div dir={packetDir} style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", width: "100vw" }}>
                     <input id="term" value={textStates.term} onChange={handleChangeText} type="text" style={{ fontSize: "1.5rem", backgroundColor: needsRevision ? "#FAF1ED" : "#fafafa" }} className={classes.termInput} placeholder={t('term')} />
-                    {chosenPOS ? <div style={{ backgroundColor: partsOfSpeech[chosenPOS].color, ...circleStyle }} onClick={() => setShowPartOfSpeechModal(true)}>{chosenPOS}</div> : <CircledPlus onClick={() => setShowPartOfSpeechModal(true)} />}
-                    {showPartOfSpeechModal && ReactDOM.createPortal(<PartOfSpeechModal handleChoose={handleChoose} handleExit={() => setShowPartOfSpeechModal(false)}/>, portalElement)}
+                    {chosenPOS ? <div style={{ backgroundColor: partsOfSpeech[chosenPOS].color, ...circleStyle }} onClick={() => setShowPOSModal(true)}>{chosenPOS}</div> : <CircledPlus onClick={() => setShowPOSModal(true)} />}
+                    {showPOSModal && ReactDOM.createPortal(<PartOfSpeechModal handleChoose={handleChoosePOS} handleExit={() => setShowPOSModal(false)}/>, portalElement)}
                 </div>
                 <textarea id="definition" value={textStates.definition} onChange={handleChangeText} placeholder={t('definition')} className={classes.definition} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
                 <textarea dir={packetDir} id="example" value={textStates.example} onChange={handleChangeText} placeholder={t('examples_of_usage')} className={classes.exampleUsage} />

@@ -18,6 +18,8 @@ const modalStyle = {
 }
 
 const LoginModal = ({ toggleModal, switchToRegister }: { toggleModal: () => void, switchToRegister: () => void }) => {
+    // 🦋 useLogin
+
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const [emailInput, setEmailInput] = useState("");

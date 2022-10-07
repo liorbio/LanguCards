@@ -17,6 +17,8 @@ const Tutorial = ({ packetDir }: { packetDir: "ltr" | "rtl" }) => {
         setStageIndex(s => (s+1)%5); // 0,1,2,3,4,0,1,2,...
     };
     const handleContinue = () => {
+        // 🦋 seeTutorialFetch
+
         fetch(`${backendUrl}/seen-tutorial`, {
             headers: {
                 'auth-token': authToken

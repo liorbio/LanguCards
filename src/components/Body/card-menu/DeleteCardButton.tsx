@@ -14,6 +14,8 @@ const DeleteCardButton = () => {
     const authToken = useAppSelector(state => state.auth.jwt);
     const [showWarning, setShowWarning] = useState(false);
     const handleDelete = () => {
+        // 🦋 deleteCardFetch
+
         fetch(`${backendUrl}/packets/${packetId}/${searchParams.get('cardid')}`, {
             method: 'DELETE',
             headers: {

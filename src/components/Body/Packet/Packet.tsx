@@ -15,6 +15,8 @@ import { delimitBySemicolon } from "../../../helpers/functions";
 import { backendUrl } from '../../../backend-variables/address';
 
 const Packet = () => {
+    // 🦋 useCards: outputs "loadMoreCardsFetch"
+
     const { t } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -102,6 +104,9 @@ const Packet = () => {
     const handleScroll = (event: UIEvent<HTMLDivElement>) => {
         if (scrollThrottler && !blockLoadMore && (event.currentTarget.scrollHeight - event.currentTarget.scrollTop < event.currentTarget.clientHeight + 100)) {
             scrollThrottler = false;
+
+            // 🦋 loadMoreCardsFetch
+
             fetch(`${fullPath}&page=${pageNumber}`, {
                 headers: {
                     'auth-token': authToken

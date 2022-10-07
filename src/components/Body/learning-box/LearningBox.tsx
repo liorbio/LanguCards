@@ -14,6 +14,8 @@ import { packetActions, searchActions } from '../../../store/redux-logic';
 import { backendUrl } from '../../../backend-variables/address';
 
 const LearningBox = () => {
+    // 🦋 usePackets: should include in its outputs addPacketPromise(packet: PacketType)
+
     const { t } = useTranslation();
     const authToken = useAppSelector(state => state.auth.jwt);
     const dispatch = useAppDispatch();
@@ -38,6 +40,8 @@ const LearningBox = () => {
 
 
     const handleNewPacketAddition = (packet: PacketType) => {
+        // 🦋 addPacketPromise
+        
         fetch(`${backendUrl}/packets`, {
             method: 'POST',
             headers: {

@@ -16,6 +16,8 @@ const modalStyle = {
 };
 
 const RegisterModal = ({ toggleModal, showRegisterComplete }: { toggleModal: () => void, showRegisterComplete: () => void }) => {
+    // 🦋 useRegister
+
     const { t } = useTranslation();
     const [emailInput, setEmailInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");

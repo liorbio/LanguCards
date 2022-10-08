@@ -1,73 +1,40 @@
-import { useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { backendUrl } from "../../../backend-variables/address";
+import { useNavigate, useParams } from "react-router-dom";
 import { PencilVector, XVector } from "../../../generatedIcons";
 import { useAppSelector } from "../../../hooks/reduxHooks";
-import { CardType } from "../../../types/types";
+import { useCard } from "../../../hooks/useCard";
 import Memorization from "../card-menu/Memorization";
 import { circleStyle, partsOfSpeech } from "../card-menu/PartOfSpeechModal";
 import classes from './LanguCard.module.css';
 
 const LanguCard = () => {
     const { t } = useTranslation();
-    const params = useParams();
-    const [searchParams] = useSearchParams();
-    // 🦋 useCard: outputs "updateMemorizationFetch"
-
     const packetDir = useAppSelector(state => state.packet.packetDir);
-    const packetId = useAppSelector(state => state.packet.packetId);
-    const authToken = useAppSelector(state => state.auth.jwt);
-    const [card, setCard] = useState<CardType | null>(null);
-    const [currentMemorization, setCurrentMemorization] = useState<number | null>(null);
-
-    useEffect(() => {
-        fetch(`${backendUrl}/packets/${packetId}/${searchParams.get('cardid')}`, {
-            headers: {
-                'auth-token': authToken
-            }
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                setCard(res);
-                setCurrentMemorization(res.memorization);
-            })
-            .catch((err) => console.log(`Error fetching card: ${err}`));
-    }, [packetId, searchParams, authToken]);
-
     const navigate = useNavigate();
+    const params = useParams();
+    const {
+        card, cardId, currentMemorization, handleChangeMemorization, updateMemorizationPromise, error
+    } = useCard();
 
     if (card) {
-        // 🦋 updateMemorizationFetch: the if statement should be (currentMemorization && currentMemorization !== card.memorization)
         const { term, definition, pos, example, needsRevision, tags, related, dialect, memorization } = card;
-        const handleChangeMemorization = (level: number) => {
-            setCurrentMemorization(level);
-        };
+
         const handleQuit = () => {
             if (currentMemorization && currentMemorization !== memorization) {
-                fetch(`${backendUrl}/packets/${packetId}/${searchParams.get('cardid')}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'auth-token': authToken
-                    },
-                    body: JSON.stringify({ term, definition, pos, example, needsRevision, tags, related, dialect, memorization: currentMemorization })
-                })
+                updateMemorizationPromise(card)
                     .then((res) => {
                         console.log(`Card updated successfully!`);
                         navigate(-1);
-                    })
-                    .catch((res) => console.log(`Card update unsuccessful`));
+                    });
             } else {
                 navigate(-1);
             }
-            
-        }
+        };
+
         return (
             <div dir={t('globalDir')} className={classes.languCardWrapper} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
                 <div onClick={handleQuit} className={classes.xIcon}><XVector /></div>
-                <div onClick={() => navigate(`/${params.language}/card/edit?cardid=${searchParams.get('cardid')}`)} className={classes.editIcon}><PencilVector /></div>
+                <div onClick={() => navigate(`/${params.language}/card/edit?cardid=${cardId}`)} className={classes.editIcon}><PencilVector /></div>
                 <section dir={packetDir}>
                     <h1>{term}</h1>
                     {pos && <div style={{ backgroundColor: partsOfSpeech[pos].color, alignSelf: "center", ...circleStyle }}>{pos}</div>}
@@ -102,7 +69,7 @@ const LanguCard = () => {
             </div>
         )
     } else {
-        return <></>;
+        return <p>{error}</p>;
     }
 }
 

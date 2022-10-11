@@ -12,9 +12,11 @@ import LoadingSpinner from '../../UI/LoadingSpinner';
 import { ClickBelow } from '../../../generatedIcons';
 import { usePackets } from '../../../hooks/usePackets';
 import { addPacketPromise } from '../../../proxies/packetCrudProxy';
+import { useNavigate } from 'react-router-dom';
 
 const LearningBox = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { packets, performForcedReload, error } = usePackets();
     const authToken = useAppSelector(state => state.auth.jwt);
     const [newPacketModalShown, setNewPacketModalShown] = useState(false);
@@ -41,19 +43,22 @@ const LearningBox = () => {
     );
     const populatedLearningBox = (
         <>
-            {packets?.map((p, idx) => <PacketCover language={p.language} key={idx} packetId={p._id!} packetDir={p.dir} /> )}
+            {packets?.map((p, idx) => <PacketCover className={classes.packetCover} language={p.language} key={idx} packetId={p._id!} writingDir={p.writingDir} /> )}
         </>
     );
     return (
         <>
             {packets === null ? <LoadingSpinner /> :
-                <div dir={t('globalDir')} className={classes.learningBox + ' ' + (packets.length === 0 ? classes.emptyLearningBox : classes.populatedLearningBox)}>
+                !error && <div dir={t('globalDir')} className={classes.learningBox + ' ' + (packets.length === 0 ? classes.emptyLearningBox : classes.populatedLearningBox)}>
                     {packets.length === 0 ? emptyLearningBox : populatedLearningBox}
                     {ReactDOM.createPortal(<AddNew handler={toggleNewPacketModal} />, portalElement)}
                     {newPacketModalShown && <NewPacketModal toggler={toggleNewPacketModal} handler={handleNewPacketAddition} />}
                 </div>
             }
-            {error && <p>{error}</p>}
+            {error && <>
+                <p>{error}</p>
+                <button onClick={() => navigate(0)}>Tap to reload</button>
+            </>}
         </>
     );
 };

@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { settingsActions } from "../../../../store/redux-logic";
 import { backendUrl } from "../../../../backend-variables/address";
 
-const Tutorial = ({ packetDir }: { packetDir: "ltr" | "rtl" }) => {
+const Tutorial = ({ writingDir }: { writingDir: "ltr" | "rtl" }) => {
     const dispatch = useAppDispatch();
     const [stageIndex, setStageIndex] = useState(0);
     const authToken = useAppSelector(state => state.auth.jwt);
@@ -31,7 +31,7 @@ const Tutorial = ({ packetDir }: { packetDir: "ltr" | "rtl" }) => {
     return (
         <>
             {stageIndex === 4 && <div onClick={handleContinue} className={`${instructionClasses.instructionBubble} ${instructionClasses.bigBubble}`}>{t('continue')}</div>}
-            <Instruction stageIndex={stageIndex} nextStage={handleNextStage} packetDir={packetDir} />
+            <Instruction stageIndex={stageIndex} nextStage={handleNextStage} writingDir={writingDir} />
         </>
     );
 };

@@ -54,5 +54,15 @@
     "welcome1": "Welcome to LanguCards, an app for language learners!",
     "welcome2": "Log your vocabulary, study it and search it.",
     "welcome3": "Our search mechanism will help you retrieve those words that elude your memory mid-conversation so that you never fail to speak like a native.",
-    "welcome4": "Save this app to your home screen."
+    "welcome4": "Save this app to your home screen.",
+    "sort by": "Sort by",
+    "old - new": "old - new",
+    "new - old": "new - old",
+    "A - Z": "A - Z",
+    "Z - A": "Z - A",
+    "more filters": "more filters",
+    "apply": "APPLY",
+    "clear": "CLEAR",
+    "part of speech": "Part of speech",
+    "memorization level": "Memorization level"
 }

@@ -9,7 +9,7 @@ import classes from './LanguCard.module.css';
 
 const LanguCard = () => {
     const { t } = useTranslation();
-    const packetDir = useAppSelector(state => state.packet.packetDir);
+    const writingDir = useAppSelector(state => state.packet.writingDir);
     const navigate = useNavigate();
     const params = useParams();
     const {
@@ -35,12 +35,12 @@ const LanguCard = () => {
             <div dir={t('globalDir')} className={classes.languCardWrapper} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}}>
                 <div onClick={handleQuit} className={classes.xIcon}><XVector /></div>
                 <div onClick={() => navigate(`/${params.language}/card/edit?cardid=${cardId}`)} className={classes.editIcon}><PencilVector /></div>
-                <section dir={packetDir}>
+                <section dir={writingDir}>
                     <h1>{term}</h1>
                     {pos && <div style={{ backgroundColor: partsOfSpeech[pos].color, alignSelf: "center", ...circleStyle }}>{pos}</div>}
                 </section>
                 {definition && <p style={{ textAlign: t('globalDir') === "ltr" ? "left" : "right" }}>{definition}</p>}
-                {example && <div className={classes.exampleUsage} dir={packetDir} style={{ textAlign: packetDir === "ltr" ? "left" : "right" }}>{example}</div>}
+                {example && <div className={classes.exampleUsage} dir={writingDir} style={{ textAlign: writingDir === "ltr" ? "left" : "right" }}>{example}</div>}
                 {tags.length > 0 && (
                     <>
                         <h2>{t('tags')}</h2>
@@ -52,7 +52,7 @@ const LanguCard = () => {
                 {related && (
                     <>
                         <h2>{t('related_words')}</h2>
-                        <div style={{ textAlign: packetDir === "ltr" ? "left" : "right" }}>
+                        <div style={{ textAlign: writingDir === "ltr" ? "left" : "right" }}>
                             <h3>{related}</h3>
                         </div>
                     </>

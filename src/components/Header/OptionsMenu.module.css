@@ -1,14 +1,19 @@
 @import '../../css-variables/constants.css';
 
 .optionsMenu {
-    width: 55%;
+    width: auto;
     background-color: white;
     position: fixed;
     top: var(--headerHeight);
     right: 0px;
     padding-top: 1rem;
+    padding-right: 2rem;
     box-shadow: 0 3px 4px 0 #00000010;
     z-index: 7;
+}
+.optionsMenuRtl {
+    padding-right: 0;
+    padding-left: 2rem;
 }
 .option {
     padding-bottom: 1.2rem;
@@ -19,7 +24,7 @@
     font-size: 1.3rem;
     
     display: grid;
-    grid-template-columns: 30% 70%;
+    grid-template-columns: 5rem 1fr;
 }
 .option a img {
     justify-self: center;

@@ -1,1 +1,1 @@
-export const backendUrl = 'https://us-central1-langucardsapp.cloudfunctions.net/expressApi';
+export const backendUrl = process.env.NODE_ENV === 'production' ? 'https://us-central1-langucardsapp.cloudfunctions.net/expressApi' : '';

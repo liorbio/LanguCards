@@ -10,9 +10,9 @@ const stages = [
     { text: 'replay_tutorial', cssClass: ''}
 ];
 
-const Instruction = ({ stageIndex, nextStage, packetDir } : { stageIndex: number, nextStage: () => void, packetDir: "ltr" | "rtl" }) => { 
+const Instruction = ({ stageIndex, nextStage, writingDir } : { stageIndex: number, nextStage: () => void, writingDir: "ltr" | "rtl" }) => { 
     const { t } = useTranslation();
-    const direction = ([0,1].includes(stageIndex) && packetDir === "rtl") || ([2,3,4].includes(stageIndex) && t('globalDir') === "rtl") ? "rtl" : "ltr";
+    const direction = ([0,1].includes(stageIndex) && writingDir === "rtl") || ([2,3,4].includes(stageIndex) && t('globalDir') === "rtl") ? "rtl" : "ltr";
     return (
         <>
             <div className={classes.wholeScreenClickStealer} onClick={nextStage}></div>

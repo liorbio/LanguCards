@@ -12,7 +12,7 @@ const NewPacketModal = ({ handler, toggler }: { handler: (packet: PacketType) =>
 
     const handlerForCreateButton = () => {
         if (languageInput.current) {
-            const newPacket: PacketType = { language: languageInput.current.value.toLowerCase(), dir: showLeftToRight ? "ltr" : "rtl" };
+            const newPacket: PacketType = { language: languageInput.current.value.toLowerCase(), writingDir: showLeftToRight ? "ltr" : "rtl" };
             handler(newPacket);
 
             // return modal inputs to their default value:

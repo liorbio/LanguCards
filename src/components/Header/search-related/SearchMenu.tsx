@@ -7,8 +7,10 @@ import classes from '../Header.module.css';
 import FilterButton from "./FilterButton";
 import MoreFilters from './MoreFilters';
 import portalElement from '../../../elements/portalElement';
+import { useTranslation } from 'react-i18next';
 
 const SearchMenu = ({ nodeRef, transitionStyle }: { nodeRef: MutableRefObject<null>, transitionStyle: CSSProperties }) => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const [showMoreFilters, setShowMoreFilters] = useState(false);
     const sortAlphabetically = useAppSelector(state => state.search.sortAlphabetically);
@@ -25,13 +27,13 @@ const SearchMenu = ({ nodeRef, transitionStyle }: { nodeRef: MutableRefObject<nu
 
     return (
         <div className={classes.searchMenu} ref={nodeRef} style={transitionStyle}>
-            <div className={classes.sortBy}>Sort by:
-                <TextSwitchingToggleButtonWithDeselect textOne="new - old" textTwo="old - new" showTextOneState={sortByDate === 1} selected={selectedSorter === "date"} handler={() => dispatch(searchActions.pressSorter("date"))} />
-                <TextSwitchingToggleButtonWithDeselect textOne="A - Z" textTwo="Z - A" showTextOneState={sortAlphabetically === 1} selected={selectedSorter === "alphabetical"} handler={() => dispatch(searchActions.pressSorter("alphabetical"))} />
+            <div className={classes.sortBy} dir={t('globalDir')}>{t('sort by')}:
+                <TextSwitchingToggleButtonWithDeselect textOne={t('old - new')} textTwo={t('new - old')} showTextOneState={sortByDate === 1} selected={selectedSorter === "date"} handler={() => dispatch(searchActions.pressSorter("date"))} />
+                <TextSwitchingToggleButtonWithDeselect textOne={t('A - Z')} textTwo={t('Z - A')} showTextOneState={sortAlphabetically === 1} selected={selectedSorter === "alphabetical"} handler={() => dispatch(searchActions.pressSorter("alphabetical"))} />
             </div>
-            <div className={classes.sortBy} style={{ marginTop: "1.2rem" }}>
-                <FilterButton text="needs revision" selected={nrFilterOn} handler={() => dispatch(searchActions.pressNrFilter())} />
-                <FilterButton text="more filters..." selected={moreFiltersOn} handler={() => setShowMoreFilters(prev => !prev)} />
+            <div className={classes.sortBy} style={{ marginTop: "1.2rem" }} dir={t('globalDir')}>
+                <FilterButton text={t('needs_revision')} selected={nrFilterOn} handler={() => dispatch(searchActions.pressNrFilter())} />
+                <FilterButton text={`${t('more filters')}...`} selected={moreFiltersOn} handler={() => setShowMoreFilters(prev => !prev)} />
                 {showMoreFilters && ReactDOM.createPortal(<MoreFilters handler={() => dispatch(searchActions.clearMoreFilters())} toggler={() => setShowMoreFilters(false)} />, portalElement)}
             </div>
         </div>

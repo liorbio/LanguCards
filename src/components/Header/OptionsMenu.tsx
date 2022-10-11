@@ -21,13 +21,13 @@ const OptionsMenu = ({ full, toggleMenu }: { full: boolean, toggleMenu: () => vo
     const loggedIn = useAppSelector(state => !!state.auth.jwt);
 
     const menuInMain = (
-        <div dir={t('globalDir')} className={classes.optionsMenu} onClick={toggleMenu}>
+        <div dir={t('globalDir')} className={`${classes.optionsMenu} ${t('globalDir') === 'rtl' && classes.optionsMenuRtl}`} onClick={toggleMenu}>
             <OptionsMenuOption link="/settings" label={t("settings")} icon={<SettingsIcon />} />
             {loggedIn && <OptionsMenuOption link="/logout" label={t("logout")} icon={<LogoutIcon />} />}
         </div>
     );
     const menuInPacket = (
-        <div dir={t('globalDir')} className={classes.optionsMenu} onClick={toggleMenu}>
+        <div dir={t('globalDir')} className={`${classes.optionsMenu} ${t('globalDir') === 'rtl' && classes.optionsMenuRtl}`} onClick={toggleMenu}>
             <OptionsMenuOption link={`?show=${searchParams.get('show') === "coupons" ? "list": "coupons"}`} label={t("switch_view")} icon={<SwitchIcon />} />
             {/*<OptionsMenuOption link="/" label={t("play")} icon={<PuzzleIcon />} />*/}
             <OptionsMenuOption link="/settings" label={t("settings")} icon={<SettingsIcon />} />

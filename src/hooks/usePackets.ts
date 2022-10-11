@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { backendUrl } from "../backend-variables/address";
-import { packetActions, searchActions } from "../store/redux-logic";
+import { boxActions, packetActions, searchActions } from "../store/redux-logic";
 import { PacketType } from "../types/types";
 import { useAppDispatch, useAppSelector } from "./reduxHooks";
 
 export const usePackets = () => {
     const authToken = useAppSelector(state => state.auth.jwt);
     const dispatch = useAppDispatch();
-    const [packets, setPackets] = useState<PacketType[] | null>(null);
+    const packets = useAppSelector(state => state.box.packets);
     const [forcedReload, setForcedReload] = useState(false);
     const [error, setError] = useState<string | null>(null);
     
@@ -22,7 +22,7 @@ export const usePackets = () => {
             }
         })
             .then((res) => res.json())
-            .then((res) => setPackets(res))
+            .then((res) => dispatch(boxActions.setPackets(res)))
             .catch((err) => {
                 setError("Error fetching packets");
                 console.log(`Error fetching packets: ${err}`);

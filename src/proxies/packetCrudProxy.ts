@@ -9,6 +9,6 @@ export const addPacketPromise = (authToken: string, packet: PacketType) => {
             'Accept': 'application/json',
             'auth-token': authToken
         },
-        body: JSON.stringify({ language: packet.language, writingDir: packet.dir })
+        body: JSON.stringify({ language: packet.language, writingDir: packet.writingDir })
     });
 }

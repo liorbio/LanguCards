@@ -13,7 +13,7 @@
 }
 .top {
     display: grid;
-    grid-template-columns: 20% 60% 20%;
+    grid-template-columns: 4rem 1fr 4rem;
     align-items: center;
     justify-items: center;
     font-size: 12px;

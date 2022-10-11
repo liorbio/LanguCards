@@ -64,7 +64,7 @@ const HeaderInPacket = () => {
         if (inSearchMode === false) {
             setTimeout(() => {
                 inputRef.current?.focus();
-            }, 300);
+            }, 400);
         } else {
             inputRef.current?.blur();
         }

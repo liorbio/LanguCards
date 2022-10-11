@@ -14,6 +14,22 @@
 .emptyLearningBox {
     grid-template-rows: calc((100vh - 61px)*20/100) calc((100vh - 61px)*55/100) calc((100vh - 61px)*25/100);
 }
+@media screen and (max-width: 500px) {
+    .packetCover {
+        width: var(--bigButtonWidth);
+    }
+}
+@media screen and (min-width: 500px) {
+    .learningBox {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding-inline: 1.5rem;
+        width: calc(100% - 3rem);
+    }
+    .packetCover {
+        width: 14rem;
+    }
+}
 
 /* NewPacketModal */
 .modalBody {

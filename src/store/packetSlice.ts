@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CardType } from "../types/types";
 
-const initialPacket: { packetId: string, packetDir: "ltr" | "rtl", cards: CardType[] } = { packetId: "", packetDir: "ltr", cards: [] };
+const initialPacket: { packetId: string, writingDir: "ltr" | "rtl", cards: CardType[] } = { packetId: "", writingDir: "ltr", cards: [] };
 
 const packetSlice = createSlice({
     name: 'packet',
     initialState: initialPacket,
     reducers: {
-        setPacketDetails(state, action: PayloadAction<{ packetId: string, packetDir: "ltr" | "rtl" }>) {
-            state.packetDir = action.payload.packetDir;
+        setPacketDetails(state, action: PayloadAction<{ packetId: string, writingDir: "ltr" | "rtl" }>) {
+            state.writingDir = action.payload.writingDir;
             state.packetId = action.payload.packetId;
         },
         loadCards(state, action: PayloadAction<CardType[]>) {

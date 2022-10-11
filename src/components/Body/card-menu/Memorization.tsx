@@ -30,7 +30,7 @@ const Memorization = ({ chosenLevel, handleSetMemorization }: { chosenLevel: num
     }
     return (
         <>
-            <div style={{ marginTop: "3vh", display: "flex", width: "70vw", justifyContent: "space-evenly" }}>
+            <div style={{ marginTop: "3vh", display: "flex", width: "clamp(12rem, 65vw, 16rem)", justifyContent: "space-evenly" }}>
                 {memorizationLevels.map((level, idx) => <div onClick={handleClick} id={`${idx}`} key={`mem${idx}`} style={idx > chosenLevel ? uncheckedBall : checkedBall }></div>)}
             </div>
             <p style={{ fontSize: "1.2rem", color: "#6e6e6e", marginTop: "0.8rem" }}>{t(memorizationLevels[chosenLevel])}</p>

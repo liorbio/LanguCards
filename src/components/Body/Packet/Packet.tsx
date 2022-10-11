@@ -20,7 +20,7 @@ const Packet = () => {
     const params = useParams();
     const [searchParams] = useSearchParams();
     const cards = useAppSelector(state => state.packet.cards);
-    const packetDir = useAppSelector(state => state.packet.packetDir);
+    const writingDir = useAppSelector(state => state.packet.writingDir);
 
     const lang = params.language;
 
@@ -39,7 +39,7 @@ const Packet = () => {
     const populatedPacket = ( // list of coupons -- according to query params
         <>
             {searchParams.get('show') === "coupons" && cards.map(c => <LanguCoupon key={c._id as string} cardId={c._id as string} term={c.term} needsRevision={c.needsRevision} />)}
-            {searchParams.get('show') === "list" && cards.map(c => <LanguListItem key={c._id as string} cardId={c._id as string} term={c.term} definition={c.definition} pos={c.pos} needsRevision={c.needsRevision} packetDir={packetDir} />)}
+            {searchParams.get('show') === "list" && cards.map(c => <LanguListItem key={c._id as string} cardId={c._id as string} term={c.term} definition={c.definition} pos={c.pos} needsRevision={c.needsRevision} writingDir={writingDir} />)}
         </>
     );
 
@@ -52,7 +52,7 @@ const Packet = () => {
     }
 
     return (
-        <div className={`${classes.packet} ${packetIsEmpty ? classes.emptyPacket : classes.populatedPacket}`} style={searchParams.get('show') === "coupons" ? { display: "flex", flexDirection: "row", flexWrap: "wrap" } : {}} onScroll={handleScroll}>
+        <div className={`${classes.packet} ${packetIsEmpty ? classes.emptyPacket : classes.populatedPacket}`} style={searchParams.get('show') === "coupons" ? { display: "flex", flexDirection: "row", flexWrap: "wrap", alignContent: "flex-start" } : {}} onScroll={handleScroll}>
             {(!loading && packetIsEmpty) && emptyPacket}
             {(!loading && !packetIsEmpty) && populatedPacket}
             {!loading && ReactDOM.createPortal(<AddNew handler={handleGoToAddNewCard} />, portalElement)}

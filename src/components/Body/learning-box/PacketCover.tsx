@@ -4,18 +4,18 @@ import BigWhiteButton from "../../UI/BigWhiteButton";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
 import { packetActions } from "../../../store/redux-logic";
 
-const PacketCover = ({ language, packetId, packetDir }: { language: string, packetId: string, packetDir: "ltr" | "rtl" }) => {
+const PacketCover = ({ language, packetId, writingDir, className }: { language: string, packetId: string, writingDir: "ltr" | "rtl", className?: string }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     
     const navigateToPacketRoute = () => {
-        dispatch(packetActions.setPacketDetails({ packetId: packetId, packetDir: packetDir }))
+        dispatch(packetActions.setPacketDetails({ packetId: packetId, writingDir: writingDir }))
         navigate(`/${language}?show=list`);
     };
 
     return (
-        <BigWhiteButton action={navigateToPacketRoute} text={t('packet', { lang: language![0].toUpperCase()+language!.slice(1) })} />
+        <BigWhiteButton additionalClasses={className} action={navigateToPacketRoute} text={t('packet', { lang: language![0].toUpperCase()+language!.slice(1) })} />
     );
 };
 

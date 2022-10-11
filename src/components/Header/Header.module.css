@@ -65,16 +65,16 @@
     z-index: 3;
     width: 100vw;
     top: 0;
-    display: flex;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: 3rem 1fr 3rem;
     transition: right 300ms ease-in-out;
 }
 .searchBar .goBack {
-    flex-basis: 3rem;
     background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
+    grid-area: 1;
 }
 .searchBar input {
     --inputIndent: 4rem;
@@ -83,7 +83,9 @@
     border-style: solid;
     border-radius: 0;
     border: 0px solid;
-    flex-grow: 1;
+    grid-column-start: 2;
+    grid-column-end: 4;
+    grid-row: 1;
 }
 .searchBar input:focus {
     outline: none;
@@ -92,10 +94,11 @@
 }
 .searchBar .xSymbol {
     font-size: 2rem;
-    position: absolute;
-    right: 10px;
+    width: 3rem;
     height: 100%;
     line-height: 1.8;
+    grid-column: 3;
+    grid-row: 1;
 }
 .sortBy {
     display: flex;

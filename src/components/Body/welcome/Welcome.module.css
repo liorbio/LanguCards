@@ -50,7 +50,7 @@
 }
 .modalContent input[type=checkbox] {
     transform: scale(1.8);
-    margin-right: 0.7rem;
+    margin-inline: 0.7rem;
     margin-bottom: 1.5rem;
 }
 .modalContent p {

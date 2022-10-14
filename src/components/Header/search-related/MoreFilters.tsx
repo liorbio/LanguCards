@@ -14,7 +14,7 @@ const partsOfSpeech: {[name: string]: string} = {
     "conjunction": "cn",
     "interjection": "ij",
     "adverb": "adv",
-    "special structure": "st",
+    "special_structure": "st",
     "idiom": "id",
     "expression": "ex"
 }
@@ -36,7 +36,7 @@ const MoreFilters = ({ handler, toggler }: { handler: () => void, toggler: () =>
                 <div className={classes.filterSection}>
                     <h4>{t('part of speech')}</h4>
                     <div className={classes.filterPack}>
-                        {Object.keys(partsOfSpeech).map(pos => <FilterButton text={pos} key={pos} selected={posFilter.includes(partsOfSpeech[pos])} handler={() => dispatch(searchActions.pressOnPos(partsOfSpeech[pos]))} />)}
+                        {Object.keys(partsOfSpeech).map(pos => <FilterButton text={t(pos)} key={pos} selected={posFilter.includes(partsOfSpeech[pos])} handler={() => dispatch(searchActions.pressOnPos(partsOfSpeech[pos]))} />)}
                     </div>
                 </div>
                 <div className={classes.filterSection}>

@@ -25,19 +25,19 @@ const LoginModal = ({ toggleModal, switchToRegister }: { toggleModal: () => void
 
     return (
         <>
-            <DefaultModal title={t('login')} topRightX={true} buttonOne="ENTER" handler={executeLogin} toggler={toggleModal} modalType="Dialogue" overrideButtonStyle={buttonStyle} overrideModalStyle={modalStyle} >
-                <div className={classes.modalContent}>
-                    <input type="text" placeholder="Email" onChange={handleWriteEmail} value={emailInput} />
-                    <input type="password" placeholder="Password" onChange={handleWritePassword} value={passwordInput} />
+            <DefaultModal title={t('login')} topRightX={true} buttonOne={t('enter').toUpperCase()} handler={executeLogin} toggler={toggleModal} modalType="Dialogue" overrideButtonStyle={buttonStyle} overrideModalStyle={modalStyle} >
+                <div className={classes.modalContent} dir={t('globalDir')}>
+                    <input type="text" placeholder={t('email')} onChange={handleWriteEmail} value={emailInput} />
+                    <input type="password" placeholder={t('password')} onChange={handleWritePassword} value={passwordInput} />
                     <div>
                         <input type="checkbox" id="rememberme" defaultChecked={rememberMe} onChange={toggleRememberMe} />
-                        <label htmlFor="rememberme">Remember me on this device</label>
+                        <label htmlFor="rememberme">{t('remember_me')}</label>
                     </div>
-                    <p>Don't have a user yet?</p>
-                    <p style={{ color: "#0029FF" }} onClick={switchToRegister}>Create a user!</p>
+                    <p>{t('no_user_yet')}</p>
+                    <p style={{ color: "#0029FF" }} onClick={switchToRegister}>{t('create_a_user')}</p>
                 </div>
             </DefaultModal>
-            {showWrongCredentialsModal && <MessageModal text="Wrong email or password!" toggler={eliminateWrongCredentialsModal} overrideStyle={{ zIndex: 15 }}/>}
+            {showWrongCredentialsModal && <MessageModal text={t('wrong_credentials')} toggler={eliminateWrongCredentialsModal} overrideStyle={{ zIndex: 15 }}/>}
         </>
     );
 };

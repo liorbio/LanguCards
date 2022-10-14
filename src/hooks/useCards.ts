@@ -50,6 +50,7 @@ export const useCards = () => {
     const [blockLoadMore, setBlockLoadMore] = useState(false);
 
     useEffect(() => {
+        console.log(fullPath);
         if (!!packetId) {
             getCardsPromise(fullPath, authToken)
                 .then((res) => {

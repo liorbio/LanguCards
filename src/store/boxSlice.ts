@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PacketType } from "../types/types";
 
-const initialBox: { packets: PacketType[] } = { packets: [] };
+const initialBox: { packets: PacketType[] | null } = { packets: null };
 
 const boxSlice = createSlice({
     name: 'packet',

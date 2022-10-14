@@ -4,6 +4,11 @@
     padding-inline: 5vw;
     height: calc(100vh - 61px);
 }
+.allowTextSelection {
+    user-select: text;
+    -moz-user-select: text;
+    -webkit-user-select: text;
+}
 .languCardWrapper section {
     display: flex;
     justify-content: space-between;

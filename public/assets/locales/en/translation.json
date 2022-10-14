@@ -64,5 +64,18 @@
     "apply": "APPLY",
     "clear": "CLEAR",
     "part of speech": "Part of speech",
-    "memorization level": "Memorization level"
+    "memorization level": "Memorization level",
+    "edit": "EDIT",
+    "confirm": "CONFIRM",
+    "edit_packet": "Edit Packet Details",
+    "email": "Email",
+    "password": "Password",
+    "reenter_password": "Re-enter password",
+    "remember_me": "Remember me on this device",
+    "no_user_yet": "Don't have a user yet?",
+    "create_a_user": "Create a user!",
+    "read_tos1": "I have read an agree with the",
+    "read_tos2": "terms of service of this application",
+    "wrong_credentials": "Wrong email or password",
+    "enter": "Enter"
 }

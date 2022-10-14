@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 const LearningBox = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { packets, performForcedReload, error } = usePackets();
+    const { packets, performForcedReload, error, updatePacketDetailsFetch } = usePackets();
     const authToken = useAppSelector(state => state.auth.jwt);
     const [newPacketModalShown, setNewPacketModalShown] = useState(false);
 
@@ -33,7 +33,7 @@ const LearningBox = () => {
                 performForcedReload();
             })
             .catch((err) => console.log(`Error adding a ${packet.language} packet: ${err}`));
-    }
+    };
     
     const emptyLearningBox = (
         <>
@@ -43,7 +43,7 @@ const LearningBox = () => {
     );
     const populatedLearningBox = (
         <>
-            {packets?.map((p, idx) => <PacketCover className={classes.packetCover} language={p.language} key={idx} packetId={p._id!} writingDir={p.writingDir} /> )}
+            {packets?.map((p, idx) => <PacketCover handleUpdatePacketDetails={({ language, writingDir }: { language?: string, writingDir?: "ltr" | "rtl" }) => updatePacketDetailsFetch(p._id!, { language, writingDir })} className={classes.packetCover} language={p.language} key={idx} packetId={p._id!} writingDir={p.writingDir} /> )}
         </>
     );
     return (

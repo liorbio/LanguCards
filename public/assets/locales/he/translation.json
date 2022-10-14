@@ -64,5 +64,19 @@
     "apply": "הפעל",
     "clear": "הסר",
     "part of speech": "חלק הדיבור",
-    "memorization level": "רמת זיכרון"
+    "memorization level": "רמת זיכרון",
+    "edit": "ערוך",
+    "confirm": "אישור",
+    "edit_packet": "עריכת פרטי החפיסה",
+    "email": "אימייל",
+    "password": "סיסמה",
+    "reenter_password": "הזן סיסמה שוב",
+    "remember_me": "זכור אותי במכשיר זה",
+    "no_user_yet": "אין לך משתמש עדיין?",
+    "create_a_user": "צור משתמש חדש!",
+    "read_tos1": "קראתי ואני מאשר את",
+    "read_tos2": "תנאי השימוש באפליקציה זו",
+    "wrong_credentials": "אימייל או סיסמה שגויים",
+    "enter": "כניסה",
+    "fill_correctly": "נא מלא את הטופס בצורה נכונה וסמן שאתה מאשר את תנאי השימוש"
 }

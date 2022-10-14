@@ -28,7 +28,7 @@ const initialSearch: {
 } = {
     searchVal: "",
     sortAlphabetically: 1,
-    sortByDate: 1,
+    sortByDate: -1,
     selectedSorter: "date",
     posFilter: [],
     nrFilter: 0,
@@ -44,7 +44,7 @@ const searchSlice = createSlice({
         clearSearch(state) {
             state.searchVal = "";
             state.sortAlphabetically = 1;
-            state.sortByDate = 1;
+            state.sortByDate = -1;
             state.selectedSorter = "date";
             state.posFilter = [];
             state.nrFilter = 0;

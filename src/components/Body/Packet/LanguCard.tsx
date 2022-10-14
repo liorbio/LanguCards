@@ -13,7 +13,7 @@ const LanguCard = () => {
     const navigate = useNavigate();
     const params = useParams();
     const {
-        card, cardId, currentMemorization, handleChangeMemorization, updateMemorizationPromise, error
+        card, cardId, currentMemorization, handleChangeMemorization, updateMemorizationPromise, searchByTag, error
     } = useCard();
 
     if (card) {
@@ -36,23 +36,23 @@ const LanguCard = () => {
                 <div onClick={handleQuit} className={classes.xIcon}><XVector /></div>
                 <div onClick={() => navigate(`/${params.language}/card/edit?cardid=${cardId}`)} className={classes.editIcon}><PencilVector /></div>
                 <section dir={writingDir}>
-                    <h1>{term}</h1>
+                    <h1 className={classes.allowTextSelection}>{term}</h1>
                     {pos && <div style={{ backgroundColor: partsOfSpeech[pos].color, alignSelf: "center", ...circleStyle }}>{pos}</div>}
                 </section>
-                {definition && <p style={{ textAlign: t('globalDir') === "ltr" ? "left" : "right" }}>{definition}</p>}
-                {example && <div className={classes.exampleUsage} dir={writingDir} style={{ textAlign: writingDir === "ltr" ? "left" : "right" }}>{example}</div>}
+                {definition && <p style={{ textAlign: t('globalDir') === "ltr" ? "left" : "right" }} className={classes.allowTextSelection}>{definition}</p>}
+                {example && <div className={classes.exampleUsage+" "+classes.allowTextSelection} dir={writingDir} style={{ textAlign: writingDir === "ltr" ? "left" : "right" }}>{example}</div>}
                 {tags.length > 0 && (
                     <>
                         <h2>{t('tags')}</h2>
                         <div style={{ display: "flex", marginBottom: "0.7rem" }}>
-                            {tags.map(t => <div className={classes.tag} key={t}>{t}</div>)}
+                            {tags.map(t => <div className={classes.tag} key={t} onClick={() => searchByTag(t)}>{t}</div>)}
                         </div>
                     </>
                 )}
                 {related && (
                     <>
                         <h2>{t('related_words')}</h2>
-                        <div style={{ textAlign: writingDir === "ltr" ? "left" : "right" }}>
+                        <div style={{ textAlign: writingDir === "ltr" ? "left" : "right" }} className={classes.allowTextSelection}>
                             <h3>{related}</h3>
                         </div>
                     </>
@@ -60,7 +60,7 @@ const LanguCard = () => {
                 {dialect && (
                     <>
                         <h2>{t('dialect')}</h2>
-                        <h3>{dialect}</h3>
+                        <h3 className={classes.allowTextSelection}>{dialect}</h3>
                     </>
                 )}
                 <div style={{ alignSelf: "center" }}>

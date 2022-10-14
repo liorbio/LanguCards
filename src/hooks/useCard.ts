@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { backendUrl } from "../backend-variables/address";
+import { searchActions } from "../store/redux-logic";
 import { CardType } from "../types/types";
-import { useAppSelector } from "./reduxHooks";
+import { useAppDispatch, useAppSelector } from "./reduxHooks";
 
 export const useCard = () => {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const cardId = searchParams.get('cardid');
     const packetId = useAppSelector(state => state.packet.packetId);
@@ -48,7 +51,14 @@ export const useCard = () => {
             });
     }
 
+    const searchByTag = (tag: string) => {
+        dispatch(searchActions.clearSearch());
+        dispatch(searchActions.pressOnTag(tag));
+        navigate(-1);
+    }
+
+
     return {
-        card, cardId, currentMemorization, handleChangeMemorization, updateMemorizationPromise, error
+        card, cardId, currentMemorization, handleChangeMemorization, updateMemorizationPromise, searchByTag, error
     }
 };

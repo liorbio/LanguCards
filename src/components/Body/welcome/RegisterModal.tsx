@@ -26,18 +26,18 @@ const RegisterModal = ({ toggleModal, showRegisterComplete }: { toggleModal: () 
 
     return (
         <>
-            <DefaultModal title={t('register')} topRightX={true} buttonOne="REGISTER" handler={executeRegister} toggler={toggleModal} modalType="Dialogue" overrideButtonStyle={buttonStyle} overrideModalStyle={modalStyle} >
+            <DefaultModal title={t('register')} topRightX={true} buttonOne={t('register').toUpperCase()} handler={executeRegister} toggler={toggleModal} modalType="Dialogue" overrideButtonStyle={buttonStyle} overrideModalStyle={modalStyle} >
                 <div className={classes.modalContent}>
-                    <input type="text" placeholder="Email" value={emailInput} onChange={handleWriteEmail}/>
-                    <input type="password" placeholder="Password" value={passwordInput} onChange={handleWritePassword}/>
-                    <input type="password" placeholder="Re-enter password" value={repasswordInput} onChange={handleWriteRepassword}/>
+                    <input type="text" placeholder={t('email')} value={emailInput} onChange={handleWriteEmail}/>
+                    <input type="password" placeholder={t('password')} value={passwordInput} onChange={handleWritePassword}/>
+                    <input type="password" placeholder={t('reenter_password')} value={repasswordInput} onChange={handleWriteRepassword}/>
                     <div>
                         <input type="checkbox" value="agreeWithTOS" id="agreewithtos" defaultChecked={agreeWithTOS} onChange={toggleAgreeWithTOS} />
-                        <label htmlFor="agreewithtos">I have read and agree with the <u>terms of service of this application</u></label>
+                        <label htmlFor="agreewithtos">{t('read_tos1')} <u>{t('read_tos2')}</u></label>
                     </div>
                 </div>
             </DefaultModal>
-            {wrongDetailsModal && <MessageModal text="Please fill form correctly and check you agree with terms of service" toggler={()=>setWrongDetailsModal(false)} overrideStyle={{ zIndex: 15 }}/>}
+            {wrongDetailsModal && <MessageModal text={t('fill_correctly')} toggler={()=>setWrongDetailsModal(false)} overrideStyle={{ zIndex: 15 }}/>}
         </>
     )
 };

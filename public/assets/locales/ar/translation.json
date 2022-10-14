@@ -64,5 +64,19 @@
     "apply": "حط",
     "clear": "قيم",
     "part of speech": "قسم الكلام",
-    "memorization level": "مستوى الحفظ"
+    "memorization level": "مستوى الحفظ",
+    "edit": "تعديل",
+    "confirm": "تأكيد",
+    "edit_packet": "تعديل تفاصيل الرزمة",
+    "email": "ايميل",
+    "password": "كلمة السر",
+    "reenter_password": "كلمة السر كمان مرة",
+    "remember_me": "تذكرني في هذا الجهاز",
+    "no_user_yet": "بعدو فش عندك حساب عنا؟",
+    "create_a_user": "افتح حساب جديد!",
+    "read_tos1": "قرأت واقبل",
+    "read_tos2": "شروط الخدمة في هذا التطبيق",
+    "wrong_credentials": "ايميل او كلمة السر غلط",
+    "enter": "دخول",
+    "fill_correctly": "الرجاء تعبئة الاستمارة بشكل صحيح وتعليم انك تقبل شروط الخدمة"
 }

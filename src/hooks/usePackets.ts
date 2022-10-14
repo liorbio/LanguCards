@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { backendUrl } from "../backend-variables/address";
 import { boxActions, packetActions, searchActions } from "../store/redux-logic";
-import { PacketType } from "../types/types";
 import { useAppDispatch, useAppSelector } from "./reduxHooks";
 
 export const usePackets = () => {
@@ -31,9 +30,24 @@ export const usePackets = () => {
 
     const performForcedReload = () => {
         setForcedReload(prev => !prev);
+    };
+    const updatePacketDetailsFetch = (packetId: string, packetDetails: { language?: string, writingDir?: "ltr" | "rtl" }) => {
+        fetch(`${backendUrl}/packets/${packetId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'auth-token': authToken
+            },
+            body: JSON.stringify(packetDetails)
+        })
+            .then((res) => performForcedReload())
+            .catch((err) => {
+                setError("Error updating packet details");
+            });
     }
 
     return {
-        packets, performForcedReload, error
+        packets, performForcedReload, error, updatePacketDetailsFetch
     }
 }

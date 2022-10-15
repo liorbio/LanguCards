@@ -4,7 +4,11 @@ import DefaultModal from "../../UI/DefaultModal";
 import MessageModal from "../../UI/MessageModal";
 import classes from './Welcome.module.css';
 
-const buttonStyle = {
+const grayedButtonStyle = {
+    backgroundColor: "#999999",
+    fontWeight: 600  
+};
+const activeButtonStyle = {
     backgroundColor: "#9694F8",
     fontWeight: 600
 };
@@ -20,12 +24,13 @@ const LoginModal = ({ toggleModal, switchToRegister }: { toggleModal: () => void
         passwordInput, handleWritePassword,
         rememberMe, toggleRememberMe,
         showWrongCredentialsModal, eliminateWrongCredentialsModal,
+        inputsInsufficient,
         executeLogin
     } = useLogin(toggleModal);
 
     return (
         <>
-            <DefaultModal title={t('login')} topRightX={true} buttonOne={t('enter').toUpperCase()} handler={executeLogin} toggler={toggleModal} modalType="Dialogue" overrideButtonStyle={buttonStyle} overrideModalStyle={modalStyle} >
+            <DefaultModal title={t('login')} topRightX={true} buttonOne={t('enter').toUpperCase()} handler={inputsInsufficient ? () => {} : executeLogin} toggler={toggleModal} modalType="Dialogue" overrideButtonStyle={inputsInsufficient ? grayedButtonStyle : activeButtonStyle} overrideModalStyle={modalStyle} >
                 <div className={classes.modalContent} dir={t('globalDir')}>
                     <input type="text" placeholder={t('email')} onChange={handleWriteEmail} value={emailInput} />
                     <input type="password" placeholder={t('password')} onChange={handleWritePassword} value={passwordInput} />

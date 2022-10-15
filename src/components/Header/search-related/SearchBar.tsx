@@ -1,4 +1,4 @@
-import { CSSProperties, MutableRefObject, useEffect, useState } from "react";
+import { CSSProperties, MutableRefObject, useEffect, useState, forwardRef, ForwardedRef } from "react";
 import GoBackArrow from "../../../generatedIcons/GoBackArrow";
 import XIcon from '../../../generatedIcons/XVector';
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
@@ -7,7 +7,10 @@ import classes from '../Header.module.css';
 
 const DEBOUNCE_LAG = 800;
 
-const SearchBar = ({ nodeRef, inputRef, transitionStyle, toggler }: { nodeRef: MutableRefObject<null>, inputRef: MutableRefObject<HTMLInputElement | null>, transitionStyle: CSSProperties, toggler: () => void }) => {
+type propsType = { nodeRef: MutableRefObject<null>, transitionStyle: CSSProperties, toggler: () => void };
+
+const SearchBar = (props: propsType, ref: ForwardedRef<HTMLInputElement>) => {
+    const { nodeRef, transitionStyle, toggler } = props;
     const [searchVal, setSearchVal] = useState("");
     const dispatch = useAppDispatch();
     const searchValActuallyCleared = useAppSelector(state => state.search.searchVal === "");
@@ -29,10 +32,10 @@ const SearchBar = ({ nodeRef, inputRef, transitionStyle, toggler }: { nodeRef: M
     return (
         <div className={classes.searchBar} ref={nodeRef} style={transitionStyle}>
             <div onClick={toggler} className={classes.goBack}><GoBackArrow /></div>
-            <input type="text" ref={inputRef} value={searchVal} onChange={(event) => setSearchVal(event.target.value)} />
+            <input type="text" ref={ref} value={searchVal} onChange={(event) => setSearchVal(event.target.value)} />
             {searchVal.length > 0 && <div onClick={() => setSearchVal("")} className={classes.xSymbol}><XIcon /></div>}
         </div>
     )
 };
 
-export default SearchBar;
+export default forwardRef(SearchBar);

@@ -80,7 +80,7 @@ const AddCard = ({ editMode = false }: { editMode?: boolean }) => {
                     {chosenPOS ? <div style={{ backgroundColor: partsOfSpeech[chosenPOS].color, ...circleStyle }} onClick={() => setShowPOSModal(true)}>{chosenPOS}</div> : <CircledPlus onClick={() => setShowPOSModal(true)} />}
                     {showPOSModal && ReactDOM.createPortal(<PartOfSpeechModal handleChoose={handleChoosePOS} handleExit={() => setShowPOSModal(false)}/>, portalElement)}
                 </div>
-                <textarea id="definition" value={textStates.definition} onChange={handleChangeText} placeholder={t('definition')} className={classes.definition} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
+                <textarea id="definition" value={textStates.definition} onChange={handleChangeText} placeholder={t('definition')} className={classes.definition+" noOutlineTextarea"} style={needsRevision ? { backgroundColor: "#FAF1ED" } : {}} />
                 <textarea dir={writingDir} id="example" value={textStates.example} onChange={handleChangeText} placeholder={t('examples_of_usage')} className={classes.exampleUsage} />
                 <div style={{ display: "flex", justifyContent: "space-evenly", width: "100vw", marginTop: "2vh" }}>
                     <div className={`${classes.button} ${classes.buttonOfSet}`} style={needsRevision ? { backgroundColor: "#ee4444", color: "white" } : {}} onClick={toggleNeedsRevision}>{t('needs_revision')}</div>

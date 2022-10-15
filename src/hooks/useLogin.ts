@@ -19,13 +19,20 @@ export const useLogin = (toggleModal: () => void) => {
     const [emailInput, setEmailInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
+    const [inputsInsufficient, setInputsInsufficient] = useState(true);
     const [showWrongCredentialsModal, setShowWrongCredentialsModal] = useState(false);
 
     const handleWriteEmail = (event: ChangeEvent<HTMLInputElement>) => {
         setEmailInput(event.target.value);
+        if (event.target.value.toLowerCase().match(/^[a-zA-Z]+(\d|.|\w)*@[a-zA-Z]+.[a-zA-Z]+.*[a-zA-Z]+$/) && passwordInput.length >= 6) {
+            setInputsInsufficient(false);
+        }
     };
     const handleWritePassword = (event: ChangeEvent<HTMLInputElement>) => {
         setPasswordInput(event.target.value);
+        if (emailInput.toLowerCase().match(/^[a-zA-Z]+(\d|.|\w)*@[a-zA-Z]+.[a-zA-Z]+.*[a-zA-Z]+$/) && event.target.value.length >= 6) {
+            setInputsInsufficient(false);
+        }
     };
     const toggleRememberMe = () => {
         setRememberMe(prev => !prev);
@@ -34,9 +41,6 @@ export const useLogin = (toggleModal: () => void) => {
         setShowWrongCredentialsModal(false);
     };
     const executeLogin = () => {
-        if (!emailInput.toLowerCase().match(/^[a-zA-Z]+(\d|.|\w)*@[a-zA-Z]+.[a-zA-Z]+.*[a-zA-Z]+$/)) return setShowWrongCredentialsModal(true);
-        if (passwordInput.length < 6) return setShowWrongCredentialsModal(true);
-
         loginPromise(emailInput, passwordInput, rememberMe)
             .then((res) => res.json()).then((res) => {
                 dispatch(authActions.setJwtUponLogin({ jwt: res.authToken, jwtExpiryDate: res.expiryDate }));
@@ -54,6 +58,6 @@ export const useLogin = (toggleModal: () => void) => {
     }
 
     return {
-        handleWriteEmail, emailInput, handleWritePassword, passwordInput, toggleRememberMe, rememberMe, showWrongCredentialsModal, eliminateWrongCredentialsModal, executeLogin
+        handleWriteEmail, emailInput, handleWritePassword, passwordInput, toggleRememberMe, rememberMe, showWrongCredentialsModal, inputsInsufficient, eliminateWrongCredentialsModal, executeLogin
     };
 };

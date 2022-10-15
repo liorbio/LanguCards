@@ -4,4 +4,4 @@ Welcome to your Learning Box! Add a Language Packet according to the language yo
 
 ## Link to app: [LanguCards](https://langucardsapp.web.app/)
 
-The app has been birthed! Keep revisiting for any updates as it gets fixed and improved!
+## Link to [video explaining how to use LanguCards](https://youtu.be/HbNznS1AuXY)

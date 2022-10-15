@@ -63,10 +63,11 @@ const HeaderInPacket = () => {
     const toggleSearchMode = () => {
         if (inSearchMode === false) {
             setTimeout(() => {
-                inputRef.current?.focus();
+                inputRef.current!.focus();
+                inputRef.current!.click();
             }, 400);
         } else {
-            inputRef.current?.blur();
+            inputRef.current!.blur();
         }
         setSearchMode(prev => !prev);
     }
@@ -78,12 +79,12 @@ const HeaderInPacket = () => {
                     <nav className={`${classes.navbar} ${classes.packetNavBar}`} ref={nodeRef} style={navBarTransition[state]}>
                         <GoBack icon="arrow" goTo="LEARNING-BOX" />
                         <Logo />
-                        <SearchToggler toggle={toggleSearchMode} />
+                        <SearchToggler toggle={toggleSearchMode} searchActive={searchCriteriaOn} />
                         {searchCriteriaOn && <div className={classes.halo} onClick={toggleSearchMode}></div>}
                         <OptionsToggler fullOptionsMenu={true} />
                         {searchCriteriaOn && <div className={classes.clearSearchButton} style={clearSearchTransition[state]} onClick={() => dispatch(searchActions.clearSearch())}>clear search</div>}
                     </nav>
-                    <SearchBar nodeRef={nodeRef} inputRef={inputRef} transitionStyle={searchBarTransition[state]} toggler={toggleSearchMode} />
+                    <SearchBar nodeRef={nodeRef} ref={inputRef} transitionStyle={searchBarTransition[state]} toggler={toggleSearchMode} />
                     <SearchMenu nodeRef={nodeRef} transitionStyle={searchMenuTransition[state]}/>
                     {inSearchMode && <div className={classes.clickPreventionWhileSearching} onClick={toggleSearchMode}></div>}
                 </>

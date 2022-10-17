@@ -14,20 +14,23 @@ const SearchBar = (props: propsType, ref: ForwardedRef<HTMLInputElement>) => {
     const [searchVal, setSearchVal] = useState("");
     const dispatch = useAppDispatch();
     const searchValActuallyCleared = useAppSelector(state => state.search.searchVal === "");
+    const thisSearchWasDone = useAppSelector(state => state.search.thisSearchWasDone);
 
     useEffect(() => {
         if (searchValActuallyCleared) setSearchVal("");
     }, [searchValActuallyCleared]);
 
     useEffect(() => {
-        const debouncingTimer = setTimeout(() => {
-            dispatch(searchActions.updateSearchVal(searchVal));
-        }, DEBOUNCE_LAG);
+        if (!thisSearchWasDone) {
+            const debouncingTimer = setTimeout(() => {
+                dispatch(searchActions.updateSearchVal(searchVal));
+            }, DEBOUNCE_LAG);
 
-        return () => {
-            clearTimeout(debouncingTimer);
+            return () => {
+                clearTimeout(debouncingTimer);
+            }
         }
-    }, [dispatch, searchVal]);
+    }, [dispatch, searchVal, thisSearchWasDone]);
 
     return (
         <div className={classes.searchBar} ref={nodeRef} style={transitionStyle}>

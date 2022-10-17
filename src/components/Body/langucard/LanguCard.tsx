@@ -1,19 +1,24 @@
+import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from "react-router-dom";
+import { createSearchParams, useLocation, useNavigate, useParams } from "react-router-dom";
+import portalElement from '../../../elements/portalElement';
 import { PencilVector, XVector } from "../../../generatedIcons";
 import { useAppSelector } from "../../../hooks/reduxHooks";
 import { useCard } from "../../../hooks/useCard";
 import Memorization from "../card-menu/Memorization";
 import { circleStyle, partsOfSpeech } from "../card-menu/PartOfSpeechModal";
+import Clicker from './Clicker';
 import classes from './LanguCard.module.css';
 
 const LanguCard = () => {
     const { t } = useTranslation();
     const writingDir = useAppSelector(state => state.packet.writingDir);
     const navigate = useNavigate();
+    const location = useLocation();
+    const prevPath = location.pathname.match(/\/[a-zA-Z]*\/[a-zA-Z\d%]*/)![0];
     const params = useParams();
     const {
-        card, cardId, currentMemorization, handleChangeMemorization, updateMemorizationPromise, searchByTag, error
+        card, cardId, prevCardId, nextCardId, currentMemorization, handleChangeMemorization, updateMemorizationPromise, searchByTag, error
     } = useCard();
 
     if (card) {
@@ -24,10 +29,16 @@ const LanguCard = () => {
                 updateMemorizationPromise(card)
                     .then((res) => {
                         console.log(`Card updated successfully!`);
-                        navigate(-1);
+                        navigate({
+                            pathname: prevPath,
+                            search: `${createSearchParams({ show: 'list' })}`
+                        });
                     });
             } else {
-                navigate(-1);
+                navigate({
+                    pathname: prevPath,
+                    search: `${createSearchParams({ show: 'list' })}`
+                });
             }
         };
 
@@ -66,6 +77,7 @@ const LanguCard = () => {
                 <div style={{ alignSelf: "center" }}>
                     <Memorization chosenLevel={currentMemorization ?? memorization} handleSetMemorization={handleChangeMemorization} />
                 </div>
+                {ReactDOM.createPortal(<Clicker prevCardId={prevCardId} nextCardId={nextCardId} />, portalElement)}
             </div>
         )
     } else {

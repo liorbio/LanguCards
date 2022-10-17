@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { backendUrl } from "../backend-variables/address";
 import { searchActions } from "../store/redux-logic";
 import { CardType } from "../types/types";
@@ -12,23 +12,21 @@ export const useCard = () => {
     const cardId = searchParams.get('cardid');
     const packetId = useAppSelector(state => state.packet.packetId);
     const authToken = useAppSelector(state => state.auth.jwt);
-    const [card, setCard] = useState<CardType | null>(null);
-    const [currentMemorization, setCurrentMemorization] = useState<number | null>(null);
+    const { card, cardIndexInList } = useAppSelector(state => {
+        const card = state.packet.cards.filter(c => c._id === cardId)[0];
+        const cardIndexInList = state.packet.cards.findIndex(c => c._id === cardId);
+        return { card, cardIndexInList }
+    });
+    const prevCardId: string | null = useAppSelector(state => {
+        if (cardIndexInList === 0) return null;
+        return state.packet.cards[cardIndexInList - 1]._id!;
+    });
+    const nextCardId: string | null = useAppSelector(state => {
+        if (cardIndexInList === state.packet.cards.length-1) return null;
+        return state.packet.cards[cardIndexInList + 1]._id!;
+    })
+    const [currentMemorization, setCurrentMemorization] = useState<number>(card.memorization);
     const [error, setError] = useState<null | string>(null);
-
-    useEffect(() => {
-        fetch(`${backendUrl}/packets/${packetId}/${cardId}`, {
-            headers: {
-                'auth-token': authToken
-            }
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                setCard(res);
-                setCurrentMemorization(res.memorization);
-            })
-            .catch((err) => console.log(`Error fetching card: ${err}`));
-    }, [packetId, cardId, authToken]);
 
     const handleChangeMemorization = (level: number) => {
         setCurrentMemorization(level);
@@ -45,6 +43,10 @@ export const useCard = () => {
             },
             body: JSON.stringify({ term, definition, pos, example, needsRevision, tags, related, dialect, memorization: currentMemorization })
         })
+            .then(() => {
+                dispatch(searchActions.searchIsStale());
+                return null;
+            })
             .catch((err) => {
                 setError('Card update failed');
                 console.log(`Card update failed`);
@@ -59,6 +61,6 @@ export const useCard = () => {
 
 
     return {
-        card, cardId, currentMemorization, handleChangeMemorization, updateMemorizationPromise, searchByTag, error
+        card, cardId, prevCardId, nextCardId, currentMemorization, handleChangeMemorization, updateMemorizationPromise, searchByTag, error
     }
 };

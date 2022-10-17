@@ -77,5 +77,6 @@
     "read_tos1": "I have read an agree with the",
     "read_tos2": "terms of service of this application",
     "wrong_credentials": "Wrong email or password",
-    "enter": "Enter"
+    "enter": "Enter",
+    "fill_correctly": "Please fill form correctly and check you agree with terms of service"
 }

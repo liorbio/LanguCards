@@ -24,7 +24,8 @@ const initialSearch: {
     nrFilter: 0 | 1,
     tagsFilter: string[],
     diaFilter: string[],
-    memoFilter: string[]
+    memoFilter: string[],
+    thisSearchWasDone: boolean
 } = {
     searchVal: "",
     sortAlphabetically: 1,
@@ -34,7 +35,8 @@ const initialSearch: {
     nrFilter: 0,
     tagsFilter: [],
     diaFilter: [],
-    memoFilter: []
+    memoFilter: [],
+    thisSearchWasDone: false
 };
 
 const searchSlice = createSlice({
@@ -51,18 +53,22 @@ const searchSlice = createSlice({
             state.tagsFilter = [];
             state.diaFilter = [];
             state.memoFilter = [];
+            state.thisSearchWasDone = false;
         },
         clearSearchValOnly(state) {
             state.searchVal = "";
+            state.thisSearchWasDone = false;
         },
         clearMoreFilters(state) {
             state.posFilter = [];
             state.memoFilter = [];
             state.tagsFilter = [];
             state.diaFilter = [];
+            state.thisSearchWasDone = false;
         },
         updateSearchVal(state, action: PayloadAction<string>) {
             state.searchVal = action.payload;
+            state.thisSearchWasDone = false;
         },
         pressSorter(state, action: PayloadAction<"alphabetical" | "date">) {
             if (state.selectedSorter === "alphabetical") {
@@ -72,21 +78,33 @@ const searchSlice = createSlice({
                 if (action.payload === "date") state.sortByDate = state.sortByDate * -1 as (1 | -1);
                 if (action.payload === "alphabetical") state.selectedSorter = "alphabetical";
             }
+            state.thisSearchWasDone = false;
         },
         pressNrFilter(state) {
             state.nrFilter = flipOneZero(state.nrFilter);
+            state.thisSearchWasDone = false;
         },
         pressOnTag(state, action: PayloadAction<string>) {
             state.tagsFilter = insertOrPop(state.tagsFilter, action.payload);
+            state.thisSearchWasDone = false;
         },
         pressOnMemo(state, action: PayloadAction<string>) {
             state.memoFilter = insertOrPop(state.memoFilter, action.payload);
+            state.thisSearchWasDone = false;
         },
         pressOnPos(state, action: PayloadAction<string>) {
             state.posFilter = insertOrPop(state.posFilter, action.payload);
+            state.thisSearchWasDone = false;
         },
         pressOnDia(state, action: PayloadAction<string>) {
             state.diaFilter = insertOrPop(state.diaFilter, action.payload);
+            state.thisSearchWasDone = false;
+        },
+        markThisSearchAsDone(state) {
+            state.thisSearchWasDone = true;
+        },
+        searchIsStale(state) {
+            state.thisSearchWasDone = false;
         }
     }
 });

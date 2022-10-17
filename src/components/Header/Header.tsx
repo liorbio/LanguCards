@@ -12,10 +12,10 @@ const Header = () => {
             <Routes>
                 <Route path="/" element={<HeaderInMain />} />
                 <Route path="/learning-box" element={<HeaderInMain />} />
-                <Route path="/:language" element={<HeaderInPacket />} />
-                <Route path="/:language/add" element={<HeaderInAddCard />} />
-                <Route path="/:language/card" element={<HeaderInCard />} />
-                <Route path="/:language/card/edit" element={<HeaderInAddCard />} />
+                <Route path="/packet/:language" element={<HeaderInPacket />} />
+                <Route path="/packet/:language/add" element={<HeaderInAddCard />} />
+                <Route path="/packet/:language/card" element={<HeaderInCard />} />
+                <Route path="/packet/:language/card/edit" element={<HeaderInAddCard />} />
                 <Route path="/settings" element={<HeaderInSettings />} />
             </Routes>
             <div className={classes.contentPusher}></div>

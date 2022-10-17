@@ -71,3 +71,12 @@
     margin: 0;
     margin-bottom: 0.7rem;
 }
+
+.clicker {
+    bottom: 1.5rem;
+    position: fixed;
+    display: flex;
+    width: 7rem;
+    justify-content: space-between;
+    right: 1rem;
+}

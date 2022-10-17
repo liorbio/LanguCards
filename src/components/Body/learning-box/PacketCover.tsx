@@ -14,7 +14,7 @@ const PacketCover = ({ language, packetId, writingDir, className, handleUpdatePa
     
     const navigateToPacketRoute = () => {
         dispatch(packetActions.setPacketDetails({ packetId: packetId, writingDir: writingDir }))
-        navigate(`/${language}?show=list`);
+        navigate(`/packet/${language}?show=list`);
     };
     const updatingFunction = ({ language, writingDir }: { language?: string, writingDir?: "ltr" | "rtl" }) => {
         setShowEditModal(false);

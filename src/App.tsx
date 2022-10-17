@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import LearningBox from './components/body/learning-box/LearningBox';
 import AddCard from './components/body/card-menu/AddCard';
-import LanguCard from './components/body/packet/LanguCard';
+import LanguCard from './components/body/langucard/LanguCard';
 import Packet from './components/body/packet/Packet';
 import Settings from './components/body/settings/Settings';
 import Header from './components/header/Header';
@@ -57,10 +57,10 @@ function App() {
     <div className="App">
       <Header />
       <Routes>
-        <Route path="/:language" element={<LoginRequired><Packet /></LoginRequired>} />
-        <Route path="/:language/add" element={<LoginRequired><AddCard /></LoginRequired>} />
-        <Route path="/:language/card" element={<LoginRequired><LanguCard /></LoginRequired>} />
-        <Route path="/:language/card/edit" element={<LoginRequired><AddCard editMode={true} /></LoginRequired>} />
+        <Route path="/packet/:language" element={<LoginRequired><Packet /></LoginRequired>} />
+        <Route path="/packet/:language/add" element={<LoginRequired><AddCard /></LoginRequired>} />
+        <Route path="/packet/:language/card" element={<LoginRequired><LanguCard /></LoginRequired>} />
+        <Route path="/packet/:language/card/edit" element={<LoginRequired><AddCard editMode={true} /></LoginRequired>} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/learning-box" element={<LoginRequired><LearningBox /></LoginRequired>} />
         <Route path="/logout" element={<Logout />} />

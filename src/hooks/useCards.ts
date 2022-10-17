@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { backendUrl } from "../backend-variables/address";
 import { delimitBySemicolon } from "../helpers/functions";
-import { packetActions } from "../store/redux-logic";
+import { packetActions, searchActions } from "../store/redux-logic";
 import { useAppDispatch, useAppSelector } from "./reduxHooks";
 
 const getCardsPromise = async (url: string, authToken: string) => {
@@ -16,6 +16,7 @@ export const useCards = () => {
     const dispatch = useAppDispatch();
     const packetId = useAppSelector(state => state.packet.packetId);
     const authToken = useAppSelector(state => state.auth.jwt);
+    const thisSearchWasDone = useAppSelector(state => state.search.thisSearchWasDone);
     const [packetIsEmpty, setPacketIsEmpty] = useState(false);
     const [loading, setLoading] = useState(true);
     const [pageNumber, setPageNumber] = useState(1);
@@ -50,11 +51,12 @@ export const useCards = () => {
     const [blockLoadMore, setBlockLoadMore] = useState(false);
 
     useEffect(() => {
-        console.log(fullPath);
-        if (!!packetId) {
+        if (thisSearchWasDone) setLoading(false);
+        if (!!packetId && !thisSearchWasDone) {
             getCardsPromise(fullPath, authToken)
                 .then((res) => {
                     setLoading(false);
+                    dispatch(searchActions.markThisSearchAsDone());
                     if (!searchCriteriaOn && res.length === 0) {
                         setPacketIsEmpty(true);
                     } else {
@@ -63,7 +65,7 @@ export const useCards = () => {
                 })
                 .catch((err) => console.log(`Error loading cards: ${err}`));
         }
-    }, [dispatch, packetId, authToken, fullPath, searchCriteriaOn]);
+    }, [dispatch, packetId, authToken, fullPath, searchCriteriaOn, thisSearchWasDone]);
 
     const loadMoreCardsFetch = () => {
         getCardsPromise(`${fullPath}&page=${pageNumber}`, authToken)

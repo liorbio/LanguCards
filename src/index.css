@@ -16,7 +16,7 @@ code {
     monospace;
 }
 
-input[type="text"], .noOutlineTextarea {
+input[type="text"] {
   -webkit-border-radius: 0;
   border-radius: 0;
   -webkit-appearance: none;

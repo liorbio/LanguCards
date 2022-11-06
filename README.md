@@ -6,7 +6,7 @@ Are you a language learner? Need a better way to store your vocabulary than mere
 
 With LanguCards you may study several languages. In your Learning Box, open as many language Packets as you'd like. You can conveniently work with right-to-left and left-to-right language, no worries.
 
-![learning box](/readme_images/IMG_9012.jpg)
+![learning box](/readme_images/LearningBox.jpg)
 
 ## LanguCards view inside Packet
 
